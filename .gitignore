@@ -1,0 +1,23 @@
+node_modules/
+ui/dist/
+ui/ui-shots/
+
+# The example series is committed as scenarios; everything the pipeline makes
+# from it is reproducible with the three commands in the README.
+workspace/prompts/compiled/
+workspace/prompts/sheets/
+workspace/takes/
+workspace/build/
+workspace/out/
+workspace/kits/
+workspace/plans/
+workspace/reshoot.json
+workspace/spend.json
+workspace/*.log
+
+# Keys and hosts live in the environment, never here.
+.env
+.env.*
+engine/.env.local
+reports/
+__pycache__/

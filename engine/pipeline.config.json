@@ -1,0 +1,94 @@
+{
+  "comment": "Firstlight pipeline configuration. Paths are relative to the repository root.",
+  "width": 1920,
+  "height": 1080,
+  "fps": 30,
+  "colors": {
+    "cream": "0xF2E9DC",
+    "coral": "0xD96A5F",
+    "ink": "0x2B2320",
+    "plateBox": "0xF2E9DC@0.82"
+  },
+  "fonts": {
+    "candidates": [
+      "workspace/brand/title.ttf",
+      "C:/Windows/Fonts/arialbd.ttf",
+      "/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf"
+    ],
+    "comment": "The first existing file is used for every caption. Put the series font at workspace/brand/title.ttf; the system fonts are fallbacks."
+  },
+  "logoPng": "",
+  "logoComment": "PNG raster of the logo for the title card (ffmpeg does not read SVG). Empty: the title card is typographic.",
+  "cards": {
+    "titleBg": "workspace/brand/title-bg.png",
+    "dividerBg": "workspace/brand/divider-bg.png",
+    "memoBg": "workspace/brand/memo-bg.png",
+    "comment": "Optional designer card backgrounds: PNG 1920x1080 without text. If a file is missing the card is drawn programmatically."
+  },
+  "transitionSec": 0.15,
+  "plate": {
+    "fontSize": 44,
+    "margin": 48,
+    "padX": 28,
+    "padY": 18
+  },
+  "title": {
+    "fontSize": 88,
+    "subFontSize": 36
+  },
+  "memo": {
+    "titleFontSize": 64,
+    "itemFontSize": 42,
+    "lineSpacing": 22
+  },
+  "audio": {
+    "loudnormFilter": "loudnorm=I=-16:TP=-1.6:LRA=11",
+    "voCharsPerSec": 15.5,
+    "elevenlabs": {
+      "voiceId": "PASTE_SERIES_VOICE_ID",
+      "modelId": "eleven_multilingual_v2",
+      "apiKeyEnv": "ELEVENLABS_API_KEY",
+      "comment": "Pin one voice for the whole series and never change it mid-way: every episode must sound like the same narrator. The API key comes only from the environment variable named in apiKeyEnv; it is never written to the repository."
+    }
+  },
+  "paths": {
+    "compiled": "workspace/prompts/compiled",
+    "takes": "workspace/takes",
+    "out": "workspace/out",
+    "build": "workspace/build"
+  },
+  "encode": {
+    "videoArgs": [
+      "-c:v",
+      "libx264",
+      "-profile:v",
+      "high",
+      "-level:v",
+      "4.1",
+      "-pix_fmt",
+      "yuv420p",
+      "-crf",
+      "18",
+      "-maxrate",
+      "8M",
+      "-bufsize",
+      "12M"
+    ],
+    "audioArgs": [
+      "-c:a",
+      "aac",
+      "-b:a",
+      "192k",
+      "-ar",
+      "48000",
+      "-ac",
+      "2"
+    ]
+  },
+  "detail": {
+    "comment": "A 'detail' shot: the last frame of the clip, larger, with a slow push-in. Extends a long scene without a new generation.",
+    "minSec": 3,
+    "zoomStart": 1.28,
+    "zoomDrift": 0.1
+  }
+}

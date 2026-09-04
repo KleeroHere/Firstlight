@@ -1,0 +1,88 @@
+# One episode of the example series. Scenes carry everything the pipeline
+# needs: timing, who is in the frame, which background, what the frame shows
+# (`img`), how it moves (`anim`), the caption (`plate`) and the narration
+# (`vo`). `refs` picks which reference sheets travel with the frame prompt.
+#
+# The engine reads this through build_prompts.py, which compiles it into
+# workspace/prompts/compiled/fog-signal-check.json — the one file every later
+# stage reads.
+
+id: fog-signal-check
+title: "Fog signal check"
+scenario: "Fog signal check.md"
+duration_target: 72
+
+scenes:
+  - id: s0
+    kind: title
+    t: [0, 6]
+    vo_at: 1
+    plate: "Fog signal check"
+    vo: >-
+      Fog in the forecast: the signal is checked. Three steps.
+
+  - id: s1
+    t: [6, 22]
+    vo_at: 0.5
+    motion: anim
+    plate: "Step 1. Read the forecast, write the time"
+    chars: [ines]
+    refs: {ines: [base, dialog]}
+    bg: harbour-office
+    img: >-
+      Ines at the desk of the harbour office, one hand on the radio set, the
+      other writing a line into an open logbook; the window shows a grey,
+      hazy evening over the pier. Medium shot.
+    anim: "She finishes the line and looks up at the window."
+    vo: >-
+      The clerk reads the evening forecast off the radio and writes the time
+      into the log. Fog after nine — that is the trigger.
+
+  - id: s2
+    t: [22, 40]
+    vo_at: 0.5
+    motion: anim
+    plate: "Step 2. Test the horn — two short, one long"
+    chars: [mara, tomas]
+    refs: {mara: [base, fullbody], tomas: [base, fullbody]}
+    bg: lantern-room
+    img: >-
+      Mara stands at the signal panel in the lantern room with one hand on a
+      large lever; Tomas is beside her, notebook open, watching the panel.
+      Wide shot, the lens behind them catching the last light.
+    anim: "Mara pulls the lever down once, holds it, lets it back up."
+    vo: >-
+      The keeper tests the horn from the panel: two short blasts, one long.
+      The apprentice counts them and writes what he heard, not what he
+      expected.
+
+  - id: s3
+    t: [40, 56]
+    vo_at: 0.5
+    motion: anim
+    plate: "Step 3. Confirm with the harbour by radio"
+    chars: [tomas]
+    refs: {tomas: [base, dialog]}
+    bg: pier
+    img: >-
+      Tomas on the pier at dusk, a handheld radio at his mouth, looking back
+      up at the lighthouse; the lamp above has just come on. Medium shot.
+    anim: "He lowers the radio and gives a small thumbs-up towards the tower."
+    vo: >-
+      Then somebody outside confirms it was heard. The apprentice calls the
+      office from the pier; the clerk answers and logs the time. Now the check
+      is done.
+
+  - id: s4
+    kind: memo
+    t: [56, 72]
+    vo_at: 1
+    plate: "Fog signal: three steps"
+    memo:
+      title: "Fog signal: three steps"
+      items:
+        - "Forecast read, time written"
+        - "Horn tested: two short, one long"
+        - "Confirmed by radio, time logged"
+    vo: >-
+      Forecast. Horn. Radio. Three lines in the log, and the night can come in.

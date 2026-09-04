@@ -1,0 +1,119 @@
+# The series: what every episode shares.
+#
+# This is the example world that ships with Firstlight — a small harbour
+# lighthouse and the three people who run it. It exists so the pipeline can be
+# run end to end without a real production behind it: `make_synthetic_takes`
+# turns these scenes into placeholder clips, `assemble_video` cuts an episode,
+# `verify_video` grades it. Replace this file with your own series to make
+# your own.
+
+series:
+  title: Harbour Light
+  resolution: 1920x1080
+  fps: 30
+
+# Read by every frame prompt. Keep it short and concrete: a model follows a
+# style it can picture, not a style it has to interpret.
+style: >-
+  Flat illustration with soft gradients, warm evening light, clean outlines,
+  muted teal and amber palette. Calm, precise, a little old-fashioned. No text
+  anywhere in the frame; signs and screens are blank.
+
+negative: >-
+  Photorealism, extra fingers, duplicated people, readable text, watermarks,
+  motion blur, dramatic lighting, faces cut by the frame edge.
+
+# Repeated verbatim in every prompt that has a character: the single most
+# effective way to keep a face the same across forty frames.
+consistency: >-
+  Characters keep exactly the appearance from their reference sheets: the same
+  face, hair, build and clothing in every frame. Nobody who is not named in the
+  scene appears in it.
+
+animation_rules: >-
+  One action per shot, with one object at most. Movement is slow and complete:
+  it starts and finishes inside the clip. Camera is still unless the scene says
+  otherwise. Looping gestures are split into two half-phases.
+
+characters:
+  mara:
+    name: Mara
+    role: keeper, runs the light and the log
+    passport: >-
+      Woman in her fifties, grey hair in a short practical cut, weathered face,
+      navy wool jumper with a high collar, small brass keys on a lanyard.
+    dir: workspace/refs/mara
+    refs:
+      base: base.png
+      fullbody: fullbody.png
+      dialog: dialog.png
+      night: night.png
+    attach_default: [base, fullbody]
+    # lora_trigger: mara_hl        # only if you train a LoRA; optional
+
+  tomas:
+    name: Tomas
+    role: apprentice, first season
+    passport: >-
+      Young man in his twenties, dark curly hair, lanky, orange waterproof
+      jacket half-zipped over a grey hoodie, always a notebook in one pocket.
+    dir: workspace/refs/tomas
+    refs:
+      base: base.png
+      fullbody: fullbody.png
+      dialog: dialog.png
+    attach_default: [base, fullbody]
+
+  ines:
+    name: Ines
+    role: harbour clerk, keeps the radio and the paperwork
+    passport: >-
+      Woman in her thirties, black hair tied back, round glasses, dark green
+      cardigan over a white shirt, pencil behind one ear.
+    dir: workspace/refs/ines
+    refs:
+      base: base.png
+      fullbody: fullbody.png
+      dialog: dialog.png
+    attach_default: [base, fullbody]
+
+# Voice-over pacing. `chars_per_sec` is the narrator's reading speed and drives
+# the "does the line fit the scene" check; lead/tail are the silences around
+# a line; scene lengths are in seconds.
+pacing:
+  chars_per_sec: 15.5
+  lead: 8
+  tail: 7
+  min_scene: 30
+  max_scene: 40
+  title: 10
+  divider: 6
+  memo_min: 30
+  drift: 0.08
+
+backgrounds:
+  lantern-room:
+    name: Lantern room
+    file: workspace/backgrounds/lantern-room.png
+    wave: 0
+    desc: >-
+      The top of the lighthouse: a circular glass room around the big lens,
+      brass fittings, a narrow walkway, dusk sky outside the panes.
+  harbour-office:
+    name: Harbour office
+    file: workspace/backgrounds/harbour-office.png
+    wave: 0
+    desc: >-
+      A small office with a desk, a VHF radio set, a wall of pigeonholes with
+      papers, a window onto the pier, a kettle on a side table.
+  pier:
+    name: Pier
+    file: workspace/backgrounds/pier.png
+    wave: 1
+    desc: >-
+      A stone pier at evening, coiled ropes, a bollard, two moored boats, the
+      lighthouse in the background, low sun on the water.
+
+logo:
+  # PNG for the title card; empty means a typographic title card.
+  file: ""

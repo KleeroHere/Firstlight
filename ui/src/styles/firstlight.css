@@ -1,0 +1,41 @@
+/*
+  Firstlight's own palette, laid over Aurora's tokens.
+
+  The components and spacing are Aurora's; only the values change. The colours
+  come from the mark: a ribbon that runs from cyan through blue into violet.
+  Aurora reads as a knot of the same ribbon — the two are meant to sit side by
+  side and be recognised as family without being confused.
+*/
+:root,
+[data-palette] {
+  --color-accent: #2f6fe4;
+  --color-accent-hover: #245bc4;
+  --color-accent-secondary: #22c6d8;
+  --color-accent-soft: rgba(47, 111, 228, 0.12);
+  --color-accent-glow: rgba(34, 198, 216, 0.35);
+  --color-focus-ring: rgba(47, 111, 228, 0.45);
+  --color-sidebar-bg: #1b1740;
+  --color-sidebar-accent: #6b3fd6;
+  --color-bg: #f5f6fb;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: #dfe3ef;
+  --color-text-primary: #1b1740;
+  --color-text-secondary: #5a5f7a;
+  --color-text-muted: #8a8fa8;
+  --color-success: #1f9d6a;
+  --color-danger: #d9534f;
+  --fl-warn: #d6931c;
+  --fl-ribbon: linear-gradient(120deg, #22c6d8 0%, #2f6fe4 45%, #6b3fd6 100%);
+}
+
+[data-theme="dark"],
+:root[data-scheme="dark"] {
+  --color-bg: #12102a;
+  --color-surface: #1b1740;
+  --color-surface-raised: #221d4f;
+  --color-border: #2f2a5e;
+  --color-text-primary: #eef0fa;
+  --color-text-secondary: #b9bdd6;
+  --color-text-muted: #8a8fa8;
+}

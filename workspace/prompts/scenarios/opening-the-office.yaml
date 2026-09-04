@@ -1,0 +1,79 @@
+# A second episode of the example series, left at the planning stage on
+# purpose: the interface shows a roll that has not been shot next to one that
+# has, which is what a real workspace looks like most of the time.
+
+id: opening-the-office
+title: "Opening the harbour office"
+scenario: "Opening the harbour office.md"
+duration_target: 66
+
+scenes:
+  - id: s0
+    kind: title
+    t: [0, 6]
+    vo_at: 1
+    plate: "Opening the harbour office"
+    vo: >-
+      Every morning, in the same order. Three steps.
+
+  - id: s1
+    t: [6, 22]
+    vo_at: 0.5
+    motion: anim
+    plate: "Step 1. Radio on, log open"
+    chars: [ines]
+    refs: {ines: [base, dialog]}
+    bg: harbour-office
+    img: >-
+      Ines switches on the radio set with one hand and opens the logbook to a
+      fresh page with the other; morning light through the window. Medium shot.
+    anim: "She turns the dial, then flattens the page."
+    vo: >-
+      The radio goes on before anything else, and the log is opened at the
+      day's page. Whatever happens next gets a line.
+
+  - id: s2
+    t: [22, 38]
+    vo_at: 0.5
+    motion: anim
+    plate: "Step 2. Walk the pier, count the boats"
+    chars: [tomas]
+    refs: {tomas: [base, fullbody]}
+    bg: pier
+    img: >-
+      Tomas walking along the pier in the morning, notebook in hand, looking at
+      the moored boats; the lighthouse behind him with its lamp off. Wide shot.
+    anim: "A slow walk along the pier, two steps."
+    vo: >-
+      The apprentice walks the pier and counts what is tied up. The number goes
+      in the log next to yesterday's.
+
+  - id: s3
+    t: [38, 52]
+    vo_at: 0.5
+    motion: anim
+    plate: "Step 3. Report to the keeper"
+    chars: [tomas, mara]
+    refs: {tomas: [base, dialog], mara: [base, dialog]}
+    bg: harbour-office
+    img: >-
+      Tomas at the office door with his notebook; Mara at the desk, looking up
+      from the log with a mug in her hand. Medium shot, both in frame.
+    anim: "Tomas holds up the notebook; Mara nods once."
+    vo: >-
+      Then the count goes to the keeper, out loud, and she writes it down
+      herself. Two people, one number, no surprises.
+
+  - id: s4
+    kind: memo
+    t: [52, 66]
+    vo_at: 1
+    plate: "Opening the office: three steps"
+    memo:
+      title: "Opening the office: three steps"
+      items:
+        - "Radio on, log open"
+        - "Pier walked, boats counted"
+        - "Count reported to the keeper"
+    vo: >-
+      Radio. Pier. Keeper. The office is open.
