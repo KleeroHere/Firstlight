@@ -99,12 +99,26 @@ node engine/verify_video.mjs "workspace/out/Fog signal check.mp4"
 
 That produces a real 1080p30 episode — title card, three captioned scenes, a memo card, placeholder narration, normalised audio — and grades it: on the example it comes out 20 pass, 2 warn, 0 fail — both warnings about the placeholder narration (it is silent, so the audio track compresses below the nominal bitrate). With a real voice they go away.
 
-For the interface:
+### The interface
+
+On Windows, double-click **`start.cmd`** in the repository root. It installs
+what is missing, builds the interface if the sources are newer than the build,
+serves both the interface and the API on one port and opens the browser at
+<http://localhost:7331>. Closing the window stops it.
+
+The same thing by hand, on any platform:
 
 ```bash
-cd ui && npm install
-npm run server        # API and files on :7331
-npm run dev           # interface on :1421
+cd ui && npm install && npm run build
+cd .. && node ui/server/server.mjs --serve dist   # http://localhost:7331
+```
+
+While working on the interface itself, run the two halves separately so Vite
+can hot-reload:
+
+```bash
+node ui/server/server.mjs   # API and files on :7331
+cd ui && npm run dev        # interface on :1421, proxying /api to the server
 ```
 
 ### Making it real
