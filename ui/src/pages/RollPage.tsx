@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { api, fileUrl, STAGE_LABEL } from "../api";
 import type { Roll, Scene } from "../api";
 import { humanError } from "../utils/humanText";
 import { runJob } from "../components/JobsDrawer";
+import ScenarioEditor from "../components/ScenarioEditor";
 import { showToast } from "../data/toastBus";
 
 /**
@@ -19,12 +20,18 @@ export default function RollPage() {
   const { id = "" } = useParams();
   const [roll, setRoll] = useState<Roll | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [tab, setTab] = useState<"frames" | "takes" | "episode">("frames");
+  const [tab, setTab] = useState<"scenario" | "frames" | "takes" | "episode" | null>(null);
+  const navigate = useNavigate();
 
   const reload = useCallback(() => {
     api
       .roll(id)
-      .then(setRoll)
+      .then((r) => {
+        setRoll(r);
+        // Open where there is something to do. A roll nobody has shot yet has
+        // empty keyframe and take tabs; what it needs is the scenario written.
+        setTab((current) => current ?? (r.stage === "planned" ? "scenario" : "frames"));
+      })
       .catch((e) => setError(humanError(e)));
   }, [id]);
   useEffect(reload, [reload]);
@@ -33,6 +40,32 @@ export default function RollPage() {
   if (!roll) return <p className="fl-muted">Reading the roll…</p>;
 
   const scenes = roll.scenes.filter((s) => s.kind === "scene");
+
+  /**
+   * Deleting removes the scenario and its compiled copy — not the frames and
+   * takes. Those are hours of generation and a scenario can be written again,
+   * so the confirmation says exactly what goes and what stays.
+   */
+  async function remove() {
+    if (!roll) return;
+    const ok = window.confirm(
+      `Delete the scenario for “${roll.title}”?
+
+` +
+        "Keyframes and takes stay in the workspace — only the scenario and its compiled copy go.",
+    );
+    if (!ok) return;
+    try {
+      const res = await api.deleteRoll(roll.id);
+      showToast({
+        message: res.takesKept ? "Scenario deleted — frames and takes kept" : "Scenario deleted",
+        role: "neutral",
+      });
+      navigate("/");
+    } catch (e) {
+      showToast({ message: humanError(e), role: "error" });
+    }
+  }
 
   async function run(script: string, args: string[], label: string) {
     const code = await runJob(script, args, label);
@@ -69,16 +102,26 @@ export default function RollPage() {
               Verify
             </button>
           )}
+          <button
+            type="button"
+            className="fl-button fl-button--danger"
+            onClick={() => void remove()}
+            title="Deletes the scenario. Frames and takes stay on disk."
+          >
+            Delete
+          </button>
         </div>
       </div>
 
       <nav className="fl-tabs" aria-label="Sections">
-        {(["frames", "takes", "episode"] as const).map((t) => (
+        {(["scenario", "frames", "takes", "episode"] as const).map((t) => (
           <button key={t} type="button" className={"fl-tab" + (tab === t ? " fl-tab--active" : "")} onClick={() => setTab(t)}>
-            {t === "frames" ? "Keyframes" : t === "takes" ? "Takes" : "Episode"}
+            {t === "scenario" ? "Scenario" : t === "frames" ? "Keyframes" : t === "takes" ? "Takes" : "Episode"}
           </button>
         ))}
       </nav>
+
+      {tab === "scenario" && <ScenarioEditor rollId={roll.id} onSaved={reload} />}
 
       {tab === "frames" && (
         <div className="fl-scenes">

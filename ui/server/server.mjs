@@ -13,6 +13,7 @@
 // No dependencies beyond Node itself, on purpose.
 import { createServer } from "node:http";
 import { spawn } from "node:child_process";
+import { rmSync } from "node:fs";
 import { existsSync, readdirSync, readFileSync, statSync, mkdirSync, renameSync, createReadStream } from "node:fs";
 import { join, resolve, extname, basename, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -157,6 +158,95 @@ function startJob(script, args) {
   return job;
 }
 
+// --- scenarios: create, edit, delete -----------------------------------------
+
+/**
+ * The scenario is YAML, and YAML belongs with the library that understands it.
+ * engine/scenario.py is the only thing that reads or writes those files —
+ * from here and from the command line alike — so a file edited by hand and a
+ * file edited in the browser stay the same shape.
+ */
+function runPython(args, stdin) {
+  return new Promise((resolve) => {
+    const child = spawn("python", [join(ROOT, "engine", "scenario.py"), ...args], {
+      cwd: ROOT,
+      env: { ...process.env, PYTHONIOENCODING: "utf-8" },
+    });
+    let out = "";
+    let err = "";
+    child.stdout.on("data", (c) => (out += c.toString("utf8")));
+    child.stderr.on("data", (c) => (err += c.toString("utf8")));
+    if (stdin !== undefined) child.stdin.end(JSON.stringify(stdin), "utf8");
+    child.on("close", (code) => resolve({ code, out: out.trim(), err: err.trim() }));
+  });
+}
+
+/** Compiling is what turns an edited scenario into what every other stage reads. */
+function compile() {
+  return new Promise((resolve) => {
+    const child = spawn("python", [join(ROOT, "engine", "build_prompts.py")], {
+      cwd: ROOT,
+      env: { ...process.env, PYTHONIOENCODING: "utf-8" },
+    });
+    let out = "";
+    child.stdout.on("data", (c) => (out += c.toString("utf8")));
+    child.stderr.on("data", (c) => (out += c.toString("utf8")));
+    child.on("close", (code) => resolve({ code, out: out.trim() }));
+  });
+}
+
+const slug = (title) =>
+  (title || "")
+    .toLowerCase()
+    .replace(/[Ѐ-ӿ]/g, (ch) => TRANSLIT[ch] ?? "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "") || "roll";
+
+const TRANSLIT = { а: "a", б: "b", в: "v", г: "g", д: "d", е: "e", ё: "e", ж: "zh", з: "z", и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t", у: "u", ф: "f", х: "kh", ц: "ts", ч: "ch", ш: "sh", щ: "sch", ъ: "", ы: "y", ь: "", э: "e", ю: "yu", я: "ya" };
+
+// --- what is in the workspace -------------------------------------------------
+
+/**
+ * The workspace, described rather than assumed. "Where do the files go" was the
+ * first thing anybody asked, and the honest answer is a list of folders with
+ * what is in each one right now.
+ */
+function readWorkspace() {
+  const dirSize = (dir) => {
+    if (!existsSync(dir)) return { files: 0, bytes: 0 };
+    let files = 0;
+    let bytes = 0;
+    const walk = (d) => {
+      for (const name of readdirSync(d)) {
+        const p = join(d, name);
+        const st = statSync(p);
+        if (st.isDirectory()) walk(p);
+        else {
+          files += 1;
+          bytes += st.size;
+        }
+      }
+    };
+    walk(dir);
+    return { files, bytes };
+  };
+  const entry = (key, dir, what) => ({ key, path: dir.replace(ROOT + "\\", "").replace(ROOT + "/", ""), what, ...dirSize(dir) });
+  return {
+    root: ROOT,
+    config: join("engine", "pipeline.config.json"),
+    folders: [
+      entry("scenarios", join(ROOT, "workspace", "prompts", "scenarios"), "One YAML per episode. This is the source of truth — everything else is made from it."),
+      entry("series", join(ROOT, "workspace", "prompts"), "series.yaml: the style, the cast and their reference sheets, the backgrounds."),
+      entry("compiled", P.compiled, "What the scenarios compile into. Every later stage reads these, not the YAML."),
+      entry("refs", join(ROOT, "workspace", "refs"), "Reference sheets per character, named as in series.yaml."),
+      entry("backgrounds", join(ROOT, "workspace", "backgrounds"), "One image per background."),
+      entry("takes", P.takes, "Per roll: keyframes, generated clips, and _rejected/ for what was turned down."),
+      entry("build", P.build, "Intermediate segments while an episode is being cut."),
+      entry("out", P.out, "Finished episodes, each with its build log and its grade."),
+    ],
+  };
+}
+
 // --- frame decisions ----------------------------------------------------------
 
 /** Rejecting a frame moves it to _rejected/, which is where the engine already keeps them. */
@@ -210,8 +300,46 @@ const server = createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   const path = url.pathname;
   try {
-    if (path === "/api/rolls") return sendJson(res, 200, { rolls: readRolls(), spend: readSpend() });
+    if (path === "/api/rolls" && req.method === "GET") return sendJson(res, 200, { rolls: readRolls(), spend: readSpend() });
+    if (path === "/api/workspace") return sendJson(res, 200, readWorkspace());
+
+    // Create a roll: a starter scenario, then compile, so it appears at once.
+    if (path === "/api/rolls" && req.method === "POST") {
+      const { title, duration = 72 } = await readBody(req);
+      if (!String(title ?? "").trim()) return sendJson(res, 400, { error: "a title is needed" });
+      const id = slug(title);
+      const made = await runPython(["new", "--id", id, "--title", String(title), "--duration", String(Number(duration) || 72)]);
+      if (made.code !== 0) return sendJson(res, 400, { error: made.err || made.out || "could not create the scenario" });
+      const built = await compile();
+      return sendJson(res, 200, { id, compiled: built.code === 0, log: built.out });
+    }
+
     let m;
+    // The scenario behind a roll, as JSON. Editing it writes the YAML back and
+    // recompiles: an edit nobody compiled would show in the interface and
+    // nowhere else, which is worse than not saving at all.
+    if ((m = /^\/api\/rolls\/([\w-]+)\/scenario$/.exec(path))) {
+      if (req.method === "GET") {
+        const r = await runPython(["read", "--id", m[1]]);
+        if (r.code !== 0) return sendJson(res, 404, { error: r.err || "no scenario" });
+        return sendJson(res, 200, JSON.parse(r.out));
+      }
+      if (req.method === "PUT") {
+        const doc = await readBody(req);
+        const w = await runPython(["write", "--id", m[1]], doc);
+        if (w.code !== 0) return sendJson(res, 400, { error: w.err || "could not write the scenario" });
+        const built = await compile();
+        return sendJson(res, 200, { compiled: built.code === 0, log: built.out });
+      }
+    }
+    if ((m = /^\/api\/rolls\/([\w-]+)$/.exec(path)) && req.method === "DELETE") {
+      const r = await runPython(["delete", "--id", m[1]]);
+      if (r.code !== 0) return sendJson(res, 400, { error: r.err || "could not delete" });
+      // Frames and takes are not deleted: they are hours of generation, and a
+      // scenario can be written again. Say so rather than quietly removing them.
+      const left = existsSync(join(P.takes, m[1]));
+      return sendJson(res, 200, { ok: true, takesKept: left });
+    }
     if ((m = /^\/api\/rolls\/([\w-]+)$/.exec(path))) {
       const roll = readRoll(m[1]);
       return roll ? sendJson(res, 200, roll) : sendJson(res, 404, { error: "no such roll" });
@@ -251,6 +379,25 @@ const server = createServer(async (req, res) => {
     sendJson(res, 400, { error: err.message });
   }
 });
+
+// A crash must not take the window with it: the message is the only thing the
+// person has to go on, and a vanished window says nothing at all.
+server.on("error", (err) => {
+  if (err.code === "EADDRINUSE") {
+    console.error(`\nPort ${PORT} is busy.\n`);
+    console.error("Firstlight is probably already running — try http://localhost:%d first.", PORT);
+    console.error("If it is something else, start this one on another port:");
+    console.error("  set PORT=7332 && node ui/server/server.mjs --serve dist");
+  } else {
+    console.error(`\nThe server could not start: ${err.message}\n`);
+  }
+  process.exit(1);
+});
+
+// One bad request must not end the session. Anything unexpected is printed and
+// the server carries on; the workspace is on disk, so nothing is lost either way.
+process.on("uncaughtException", (err) => console.error(`Unexpected error: ${err.stack ?? err}`));
+process.on("unhandledRejection", (err) => console.error(`Unexpected rejection: ${err}`));
 
 server.listen(PORT, () => {
   console.log(`Firstlight server on http://localhost:${PORT}  workspace: ${join(ROOT, "workspace")}${serveDist ? `  serving ${serveDist}` : ""}`);

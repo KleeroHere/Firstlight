@@ -1,5 +1,6 @@
 import { NavLink, Route, Routes } from "react-router-dom";
 import RollsPage from "./pages/RollsPage";
+import WorkspacePage from "./pages/WorkspacePage";
 import RollPage from "./pages/RollPage";
 import JobsDrawer from "./components/JobsDrawer";
 import ToastHost from "./components/ToastHost/ToastHost";
@@ -29,11 +30,20 @@ export default function App() {
           <span className="fl-brand__name">Firstlight</span>
         </NavLink>
         <span className="fl-header__tagline">the first frame, and everything after it</span>
+        <nav className="fl-nav" aria-label="Sections">
+          <NavLink to="/" className={({ isActive }) => "fl-nav__link" + (isActive ? " fl-nav__link--active" : "")} end>
+            Rolls
+          </NavLink>
+          <NavLink to="/workspace" className={({ isActive }) => "fl-nav__link" + (isActive ? " fl-nav__link--active" : "")}>
+            Workspace
+          </NavLink>
+        </nav>
       </header>
       <main className="fl-main">
         <Routes>
           <Route path="/" element={<RollsPage />} />
           <Route path="/roll/:id" element={<RollPage />} />
+          <Route path="/workspace" element={<WorkspacePage />} />
         </Routes>
       </main>
       <JobsDrawer />

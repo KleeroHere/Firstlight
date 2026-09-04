@@ -42,5 +42,17 @@ await page.getByRole("button", { name: "Takes", exact: true }).click();
 await page.locator(".fl-take").first().waitFor({ timeout: 15000 }).catch(() => {});
 ok("takes tab shows the synthetic takes", (await page.locator(".fl-take").count()) === 3);
 
+// Scenario editor and the workspace page — the two screens people asked for.
+await page.goto(URL + "#/roll/fog-signal-check", { waitUntil: "networkidle" });
+await page.getByRole("button", { name: "Scenario" }).click();
+await page.locator(".fl-editor__bar").waitFor({ timeout: 15000 }).catch(() => {});
+ok("scenario editor opens", (await page.locator(".fl-editor .fl-scene").count()) > 0);
+await page.screenshot({ path: `${OUT}/scenario.png` });
+
+await page.goto(URL + "#/workspace", { waitUntil: "networkidle" });
+await page.locator(".fl-table").waitFor({ timeout: 15000 }).catch(() => {});
+ok("workspace page lists the folders", (await page.locator(".fl-table tbody tr").count()) >= 8);
+await page.screenshot({ path: `${OUT}/workspace.png`, fullPage: true });
+
 await browser.close();
 console.log(`Screenshots in ${OUT}/`);

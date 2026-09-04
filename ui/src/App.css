@@ -485,3 +485,177 @@ code {
     columns: 1;
   }
 }
+
+/* --- navigation ------------------------------------------------------------ */
+.fl-nav {
+  margin-left: auto;
+  display: flex;
+  gap: 4px;
+}
+.fl-nav__link {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+.fl-nav__link:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.08);
+}
+.fl-nav__link--active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* --- forms ----------------------------------------------------------------- */
+.fl-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 12px;
+  flex: 1;
+}
+.fl-field--inline {
+  margin-bottom: 0;
+}
+.fl-field--narrow {
+  flex: 0 0 130px;
+}
+.fl-field-row {
+  display: flex;
+  gap: 12px;
+}
+.fl-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+}
+.fl-input {
+  font: inherit;
+  font-size: 14px;
+  padding: 8px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  width: 100%;
+  box-sizing: border-box;
+}
+.fl-input:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 1px;
+  border-color: var(--color-accent);
+}
+.fl-textarea {
+  resize: vertical;
+  line-height: 1.45;
+}
+.fl-input--id {
+  width: 68px;
+  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-weight: 700;
+  color: var(--color-accent);
+}
+.fl-input--kind {
+  width: 120px;
+}
+.fl-input--num {
+  width: 74px;
+}
+
+.fl-new {
+  border-radius: 14px;
+  padding: 16px 18px;
+  margin-bottom: 20px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+}
+.fl-new__hint {
+  flex-basis: 100%;
+  margin: 0;
+}
+
+.fl-empty {
+  border-radius: 14px;
+  padding: 20px 22px;
+  max-width: 640px;
+}
+.fl-empty p {
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+.fl-h2 {
+  font-family: "Unbounded", system-ui, sans-serif;
+  font-size: 18px;
+  margin: 0 0 8px;
+}
+
+/* --- scenario editor -------------------------------------------------------- */
+.fl-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.fl-editor__bar {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding: 14px 16px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.fl-spacer {
+  flex: 1;
+}
+
+/* --- workspace table --------------------------------------------------------- */
+.fl-path {
+  margin: -8px 0 18px;
+}
+.fl-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+.fl-table th,
+.fl-table td {
+  text-align: left;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: top;
+}
+.fl-table th {
+  color: var(--color-text-secondary);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+.fl-table__num {
+  text-align: right;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.fl-note {
+  border-radius: 14px;
+  padding: 18px 20px;
+  max-width: 820px;
+}
+.fl-steps {
+  margin: 0 0 10px;
+  padding-left: 20px;
+  font-size: 14px;
+  line-height: 1.55;
+}
+.fl-steps li {
+  margin-bottom: 8px;
+}

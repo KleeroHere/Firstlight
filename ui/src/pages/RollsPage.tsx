@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { api, STAGES, STAGE_LABEL } from "../api";
 import type { Roll } from "../api";
 import { humanError } from "../utils/humanText";
+import { showToast } from "../data/toastBus";
 
 /**
  * Every roll, grouped by how far it has got. The stage is not stored anywhere:
@@ -12,13 +13,36 @@ import { humanError } from "../utils/humanText";
 export default function RollsPage() {
   const [rolls, setRolls] = useState<Roll[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [creating, setCreating] = useState(false);
+  const [title, setTitle] = useState("");
+  const [duration, setDuration] = useState(72);
+  const [busy, setBusy] = useState(false);
+  const navigate = useNavigate();
 
-  useEffect(() => {
+  const reload = useCallback(() => {
     api
       .rolls()
       .then((r) => setRolls(r.rolls))
       .catch((e) => setError(humanError(e)));
   }, []);
+  useEffect(reload, [reload]);
+
+  /** A new roll starts as a scenario with a title card, one scene and a memo. */
+  async function create() {
+    if (!title.trim()) return;
+    setBusy(true);
+    try {
+      const res = await api.createRoll(title.trim(), duration);
+      showToast({ message: `Created “${title.trim()}” — fill in the scenes`, role: "success" });
+      setCreating(false);
+      setTitle("");
+      navigate(`/roll/${encodeURIComponent(res.id)}`);
+    } catch (e) {
+      showToast({ message: humanError(e), role: "error" });
+    } finally {
+      setBusy(false);
+    }
+  }
 
   if (error) return <p className="fl-error">{error}</p>;
   if (!rolls) return <p className="fl-muted">Reading the workspace…</p>;
@@ -32,7 +56,36 @@ export default function RollsPage() {
         <p className="fl-muted">
           {rolls.length} in the workspace · {done} accepted
         </p>
+        <button type="button" className="fl-button fl-button--primary" onClick={() => setCreating((v) => !v)}>
+          {creating ? "Cancel" : "New roll"}
+        </button>
       </div>
+
+      {creating && (
+        <form
+          className="fl-new surface-card"
+          onSubmit={(e) => {
+            e.preventDefault();
+            void create();
+          }}
+        >
+          <label className="fl-field">
+            <span className="fl-label">Title — the episode's name, on screen and in the file name</span>
+            <input className="fl-input" autoFocus value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Fog signal check" />
+          </label>
+          <label className="fl-field fl-field--narrow">
+            <span className="fl-label">Target length, s</span>
+            <input className="fl-input" type="number" min={20} max={300} value={duration} onChange={(e) => setDuration(Number(e.target.value))} />
+          </label>
+          <button type="submit" className="fl-button fl-button--primary" disabled={busy || !title.trim()}>
+            {busy ? "Creating…" : "Create"}
+          </button>
+          <p className="fl-muted fl-new__hint">
+            Creates the scenario with a title card, one scene and a closing memo, then opens it for
+            editing. Nothing is generated yet.
+          </p>
+        </form>
+      )}
 
       <ol className="fl-stages" aria-label="Stages">
         {STAGES.map((s) => (
@@ -43,11 +96,18 @@ export default function RollsPage() {
         ))}
       </ol>
 
-      {rolls.length === 0 && (
-        <p className="fl-muted">
-          No compiled scenarios yet. Put a series in <code>workspace/prompts/</code> and run{" "}
-          <code>python engine/build_prompts.py</code>.
-        </p>
+      {rolls.length === 0 && !creating && (
+        <div className="fl-empty surface-card">
+          <h2 className="fl-h2">Nothing here yet</h2>
+          <p>
+            A roll is one episode. Press <b>New roll</b> and it starts as a scenario — a title card,
+            one scene to fill in, a closing card — which you edit on the Scenario tab.
+          </p>
+          <p className="fl-muted">
+            Scenarios written by hand live in <code>workspace/prompts/scenarios/</code> and appear
+            here once compiled. The <Link to="/workspace">Workspace</Link> page says what goes where.
+          </p>
+        </div>
       )}
 
       <ul className="fl-rolls">

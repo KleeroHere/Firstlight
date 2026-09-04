@@ -46,5 +46,13 @@ echo.
 start "" http://localhost:7331
 node ui\server\server.mjs --serve dist
 
+rem Stopped by itself rather than by closing the window: keep the reason on
+rem screen. A window that vanishes with the error in it is worse than no window.
+if errorlevel 1 (
+  echo.
+  echo Firstlight stopped with an error. The lines above say why.
+  pause
+)
+
 popd
 endlocal
