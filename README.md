@@ -29,9 +29,11 @@ You write an episode as a scenario: scenes with a caption, who is in the frame, 
 
 There is no timeline and no editor. The scenario is the edit.
 
-| The acceptance screen | One roll, keyframes and takes |
+| Every roll and how far it has got | One roll: keyframes with their checklist |
 | --- | --- |
 | ![Rolls](docs/screenshots/rolls.png) | ![Roll](docs/screenshots/roll.png) |
+| **The scenario, edited in place** | **What is in the workspace** |
+| ![Scenario](docs/screenshots/scenario.png) | ![Workspace](docs/screenshots/workspace.png) |
 
 ## Why it is built this way
 
@@ -79,6 +81,10 @@ flowchart LR
 The engine ran from the command line for a month. What it needed was not a dashboard but a better version of the one thing that was already there: the acceptance sheet — a static HTML page the keyframe stage wrote beside the frames, with a checklist per frame, opened in a browser and acted on in a file manager.
 
 The interface is that page made live. It reads the same folders the scripts read, shows every roll and how far it has got, every scene with its keyframes and the checklist, the takes, the cut episode and its grade — and it runs the scripts. Rejecting a frame moves it to `_rejected/`, which is where the engine already kept them. There is no database: close the server and nothing is lost, because the workspace was the state all along.
+
+It also writes, in one place. **New roll** creates a scenario — a title card, one scene, a closing card — and the **Scenario** tab edits it: the caption, who is in the frame, the background, what the frame shows, the one movement, the narration. Saving writes the YAML and compiles it in the same press, because an edit that was saved but not compiled would show in the interface and nowhere else. The file stays hand-editable and keeps its shape — prose as block text, timings on one line, keys in order — so it can be edited in a text editor between two visits and the interface picks it up.
+
+Deleting a roll removes its scenario and the compiled copy, never the frames and takes. Those are hours of generation; a scenario can be written again in ten minutes.
 
 ```
 ui/server/server.mjs   lists rolls, serves frames and clips, runs scripts as jobs (SSE log)
