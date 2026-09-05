@@ -14,7 +14,7 @@
 import { createServer } from "node:http";
 import { spawn, spawnSync, exec } from "node:child_process";
 import { rmSync } from "node:fs";
-import { existsSync, readdirSync, readFileSync, writeFileSync, statSync, mkdirSync, renameSync, createReadStream } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync, appendFileSync, statSync, mkdirSync, renameSync, createReadStream } from "node:fs";
 import { join, resolve, extname, basename, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { isSea } from "node:sea";
@@ -32,14 +32,49 @@ function resolveRoot() {
   return resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
 }
 const ROOT = resolveRoot();
-const CFG = JSON.parse(readFileSync(join(ROOT, "engine", "pipeline.config.json"), "utf8"));
-const P = Object.fromEntries(Object.entries(CFG.paths).map(([k, v]) => [k, join(ROOT, v)]));
 const PORT = Number(process.env.PORT || 7331);
 // The packaged .exe always serves ui/dist next to itself; a dev server passes
 // --serve explicitly (see start.cmd) and can point at a different folder.
 const serveArg = process.argv.includes("--serve") ? process.argv[process.argv.indexOf("--serve") + 1] || "dist" : null;
 const serveDist = serveArg ? join(ROOT, "ui", serveArg) : isSea() ? join(ROOT, "ui", "dist") : null;
 const shouldOpen = process.argv.includes("--open") || isSea();
+
+// The packaged .exe has no console a person is reliably watching — a Windows
+// console window opened for it can flash and close before anyone reads it,
+// especially if something throws before the server is even listening. This
+// file is the one place left to look; every event below that matters for
+// "why didn't it start" goes here too, not just to stdout/stderr.
+const LOG_PATH = join(isSea() ? dirname(process.execPath) : ROOT, "firstlight.log");
+function log(line) {
+  const msg = `[${new Date().toISOString()}] ${line}`;
+  console.log(msg);
+  try {
+    appendFileSync(LOG_PATH, msg + "\n", "utf8");
+  } catch {
+    // The log folder itself is unwritable — nothing more to do about it here.
+  }
+}
+log(`starting — root=${ROOT} sea=${isSea()} port=${PORT} argv=${JSON.stringify(process.argv.slice(2))}`);
+
+// engine/pipeline.config.json is the one file everything else here depends
+// on; if ROOT is wrong (a bad --workspace, an unexpected install layout) this
+// is where it shows up. A server that never starts because of it is the
+// worst version of that failure — right now nothing is listening on PORT at
+// all, so a browser (this one's own, or an old tab) reports exactly
+// "could not reach the server" with no way to see why. So: never let this
+// throw before the HTTP server exists — keep going with empty stand-ins and
+// serve the reason instead, on every path, until it is fixed.
+let CFG = { paths: {} };
+let P = {};
+let startupError = null;
+try {
+  CFG = JSON.parse(readFileSync(join(ROOT, "engine", "pipeline.config.json"), "utf8"));
+  P = Object.fromEntries(Object.entries(CFG.paths).map(([k, v]) => [k, join(ROOT, v)]));
+  log("engine/pipeline.config.json read OK");
+} catch (err) {
+  startupError = `Could not read engine/pipeline.config.json under "${ROOT}": ${err.message}`;
+  log(`STARTUP ERROR: ${startupError}`);
+}
 
 // --- reading the workspace ----------------------------------------------------
 
@@ -399,9 +434,19 @@ async function readBody(req) {
   return s ? JSON.parse(s) : {};
 }
 
+const escapeHtml = (s) => s.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
   const path = url.pathname;
+  if (startupError) {
+    res.writeHead(500, { "content-type": "text/html; charset=utf-8" });
+    return res.end(
+      `<!doctype html><meta charset="utf-8"><title>Firstlight — startup error</title>` +
+        `<h1>Firstlight could not start properly</h1><p>${escapeHtml(startupError)}</p>` +
+        `<p>Full detail in <code>${escapeHtml(LOG_PATH)}</code>.</p>`,
+    );
+  }
   try {
     if (path === "/api/rolls" && req.method === "GET") return sendJson(res, 200, { rolls: readRolls(), spend: readSpend() });
     if (path === "/api/workspace") return sendJson(res, 200, readWorkspace());
@@ -511,32 +556,43 @@ const server = createServer(async (req, res) => {
   }
 });
 
-// A crash must not take the window with it: the message is the only thing the
-// person has to go on, and a vanished window says nothing at all.
+function openBrowser(url) {
+  try {
+    const opener = process.platform === "win32" ? `start "" "${url}"` : process.platform === "darwin" ? `open "${url}"` : `xdg-open "${url}"`;
+    exec(opener, (err) => {
+      if (err) log(`could not open a browser at ${url}: ${err.message}`);
+    });
+  } catch (err) {
+    log(`could not open a browser at ${url}: ${err.message}`);
+  }
+}
+
+// A crash must not take the window with it: the log file is the only thing
+// the person has to go on if the console window itself flashes and closes.
 server.on("error", (err) => {
   if (err.code === "EADDRINUSE") {
-    console.error(`\nPort ${PORT} is busy.\n`);
-    console.error("Firstlight is probably already running — try http://localhost:%d first.", PORT);
-    console.error("If it is something else, start this one on another port:");
-    console.error("  set PORT=7332 && node ui/server/server.mjs --serve dist");
+    log(`port ${PORT} is already in use — Firstlight is very likely already running.`);
+    // Whatever is already listening there is, in the ordinary case, this same
+    // app started a moment earlier — the friendly outcome for a second
+    // double-click is the existing window getting focus, not an error the
+    // person has no console open to read. If it turns out to be something
+    // else entirely, the tab it opens will say so.
+    if (shouldOpen) openBrowser(`http://127.0.0.1:${PORT}`);
+    process.exit(0);
   } else {
-    console.error(`\nThe server could not start: ${err.message}\n`);
+    log(`STARTUP ERROR: the server could not start: ${err.stack ?? err.message}`);
+    process.exit(1);
   }
-  process.exit(1);
 });
 
-// One bad request must not end the session. Anything unexpected is printed and
+// One bad request must not end the session. Anything unexpected is logged and
 // the server carries on; the workspace is on disk, so nothing is lost either way.
-process.on("uncaughtException", (err) => console.error(`Unexpected error: ${err.stack ?? err}`));
-process.on("unhandledRejection", (err) => console.error(`Unexpected rejection: ${err}`));
+process.on("uncaughtException", (err) => log(`Unexpected error: ${err.stack ?? err}`));
+process.on("unhandledRejection", (err) => log(`Unexpected rejection: ${err instanceof Error ? (err.stack ?? err.message) : err}`));
 
 server.listen(PORT, () => {
-  console.log(`Firstlight server on http://localhost:${PORT}  workspace: ${join(ROOT, "workspace")}${serveDist ? `  serving ${serveDist}` : ""}`);
+  log(`Firstlight server on http://127.0.0.1:${PORT}  workspace: ${join(ROOT, "workspace")}${serveDist ? `  serving ${serveDist}` : ""}`);
   // The packaged .exe has no terminal a person is watching, so it opens the
   // browser itself instead of printing a URL to click.
-  if (shouldOpen) {
-    const url = `http://127.0.0.1:${PORT}`;
-    const opener = process.platform === "win32" ? `start "" "${url}"` : process.platform === "darwin" ? `open "${url}"` : `xdg-open "${url}"`;
-    exec(opener, () => {});
-  }
+  if (shouldOpen) openBrowser(`http://127.0.0.1:${PORT}`);
 });

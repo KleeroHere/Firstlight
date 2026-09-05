@@ -22,6 +22,10 @@ workspace/spend.json
 workspace/*.log
 workspace/*/acceptance.json
 
+# The packaged .exe's own runtime log, written beside it — see LOG_PATH in
+# ui/server/server.mjs. Not workspace state, and not something to commit.
+firstlight.log
+
 # Keys and hosts live in the environment, never here.
 .env
 .env.*

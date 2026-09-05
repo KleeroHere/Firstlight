@@ -64,7 +64,7 @@ const RULES: ErrorRule[] = [
   },
   {
     match: /Failed to fetch|NetworkError|ECONNREFUSED|ENOTFOUND|ETIMEDOUT/i,
-    text: "Could not reach the server. This is not fatal: the app works without it — try again later.",
+    text: "Could not reach Firstlight's own server on this machine. If it just started, wait a moment and reload; if this keeps happening, check firstlight.log next to Firstlight.exe for the reason.",
   },
   {
     match: /Unauthorized|401|403|Forbidden/i,
