@@ -1,0 +1,137 @@
+{
+  "file": "docs/demo/How Firstlight works.mp4",
+  "checkedAt": "2026-09-05T16:58:22.895Z",
+  "verdict": "warn",
+  "counts": {
+    "pass": 24,
+    "warn": 1,
+    "fail": 0
+  },
+  "checks": [
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "контейнер mp4 (mov,mp4,m4a,3gp,3g2,mj2)"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "видеокодек H.264 (h264)"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "профиль High"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "level 4.1 ≤ 4.1"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "разрешение 1920×1080"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "частота кадров 30.00 fps"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "pix_fmt yuv420p"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "аудиокодек AAC (aac)"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "частота 48000 Гц"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "каналы: 2"
+    },
+    {
+      "section": "Формат",
+      "verdict": "warn",
+      "message": "битрейт аудио 84 кбит/с — ниже номинала 192к (либо дорожка тихая и сжалась, либо сборка шла под лимит размера: --target-mb ставит звук в 96к)"
+    },
+    {
+      "section": "Формат",
+      "verdict": "pass",
+      "message": "faststart: moov в начале файла"
+    },
+    {
+      "section": "Хронометраж",
+      "verdict": "pass",
+      "message": "длительность 161.0 с в границах стандарта 60–180 с"
+    },
+    {
+      "section": "Хронометраж",
+      "verdict": "pass",
+      "message": "в пределах ±10% цели сценария (161 с)"
+    },
+    {
+      "section": "Хронометраж",
+      "verdict": "pass",
+      "message": "все сцены собраны из настоящих дублей"
+    },
+    {
+      "section": "Хронометраж",
+      "verdict": "pass",
+      "message": "стоп-кадровых дотяжек длиннее секунды нет"
+    },
+    {
+      "section": "Громкость",
+      "verdict": "pass",
+      "message": "integrated -16.1 LUFS (цель −16 ±1)"
+    },
+    {
+      "section": "Громкость",
+      "verdict": "pass",
+      "message": "true peak -1.6 dBTP (порог −1.5)"
+    },
+    {
+      "section": "Плашки (по кадрам из середины сцен)",
+      "verdict": "pass",
+      "message": "s1: плашка в кадре (перепад яркости 180)"
+    },
+    {
+      "section": "Плашки (по кадрам из середины сцен)",
+      "verdict": "pass",
+      "message": "s2: плашка в кадре (перепад яркости 255)"
+    },
+    {
+      "section": "Плашки (по кадрам из середины сцен)",
+      "verdict": "pass",
+      "message": "s3: плашка в кадре (перепад яркости 211)"
+    },
+    {
+      "section": "Плашки (по кадрам из середины сцен)",
+      "verdict": "pass",
+      "message": "s4: плашка в кадре (перепад яркости 189)"
+    },
+    {
+      "section": "Плашки (по кадрам из середины сцен)",
+      "verdict": "pass",
+      "message": "s5: плашка в кадре (перепад яркости 204)"
+    },
+    {
+      "section": "Плашки (по кадрам из середины сцен)",
+      "verdict": "pass",
+      "message": "s6: плашка в кадре (перепад яркости 223)"
+    },
+    {
+      "section": "Плашки (по кадрам из середины сцен)",
+      "verdict": "pass",
+      "message": "s7: плашка в кадре (перепад яркости 179)"
+    }
+  ]
+}

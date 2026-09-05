@@ -2,43 +2,34 @@
 #
 # Edited through the interface or by hand — both write this file. Compile it
 # with: python engine/build_prompts.py
+#
+# Scene lengths are 15s on purpose: three shots at 5s each (wide, medium,
+# close) give 15s of real clip, so assemble_from_plans.mjs never has to
+# stretch, slow down or hold a frame. `vo_at: 0.2` because the narration for a
+# 15s scene really does run ~14.5s — synthesised speech is slower than the
+# characters-per-second estimate, and a line that overruns its scene is cut off
+# by the mixer, not squeezed.
 
 id: handover-at-the-pier
 title: Handover at the pier
 scenario: Handover at the pier.md
-duration_target: 60
+duration_target: 80
 scenes:
   - id: s0
     kind: title
     t: [0, 6]
-    vo_at: 1
+    vo_at: 0.6
     plate: Handover at the pier
-    vo: 'End of shift: the watch changes hands. Three steps.'
+    vo: 'A shift ends when the keys change hands. Four things, in order.'
   - id: s1
-    t: [6, 20]
-    vo_at: 0.5
+    t: [6, 21]
+    vo_at: 0.2
     motion: anim
-    plate: Step 1. Confirm the last boat
-    chars:
-      - tomas
-    refs:
-      tomas:
-        - base
-        - dialog
-    bg: pier
-    img: >-
-      Tomas out on the pier at dusk, confirming the last boat in over the radio
-      before the watch changes.
-    anim: He lowers the radio and notes the time in his pocket notebook.
-    vo: >-
-      Before anything else, the last boat gets confirmed. The apprentice calls it
-      in from the pier, radio to his mouth, and writes the time down before he walks
-      back.
-  - id: s2
-    t: [20, 38]
-    vo_at: 0.5
-    motion: anim
-    plate: Step 2. Pass the log and the keys
+    key: edit
+    key_change: >-
+      the ring of brass keys now rests in the younger man's palm and the older
+      woman's hand is back down at her side.
+    plate: Step 1. Keys, hand to hand
     chars:
       - mara
       - tomas
@@ -51,21 +42,26 @@ scenes:
         - fullbody
     bg: lantern-room
     img: >-
-      Mara and Tomas in the lantern room at the signal panel, a small paper logbook
-      (a handwritten notebook, not a piece of wood) and the brass keys changing
-      hands between them.
+      Mara stands beside the great lens holding a small ring of brass keys out
+      over an open palm; Tomas stands facing her with one hand held open and
+      level, waiting for them.
     anim: >-
-      Mara hands over the paper logbook and the keys; Tomas takes them with both
-      hands.
+      Mara lowers the ring of keys onto the open palm and takes her hand back;
+      Tomas closes his fingers around the keys and lowers his hand.
     vo: >-
-      Then the logbook itself changes hands. The keeper passes the notebook and
-      the keys to the apprentice, so the next watch starts from the same page, not
-      a guess.
-  - id: s3
-    t: [38, 52]
-    vo_at: 0.5
+      A shift ends when the keys are in somebody else's hand and both people
+      have watched it happen. The keeper gives them over; the apprentice closes
+      his fingers. Nothing is signed, and it already counts.
+  - id: s2
+    t: [21, 36]
+    vo_at: 0.2
     motion: anim
-    plate: Step 3. Log it in the office too
+    key: edit
+    solo_key: closed
+    key_change: >-
+      the blank wooden tag now hangs on the next peg along and the peg it came from
+      is empty.
+    plate: Step 2. The board ashore agrees
     chars:
       - ines
     refs:
@@ -74,21 +70,85 @@ scenes:
         - dialog
     bg: harbour-office
     img: >-
-      Ines at the harbour office desk, marking the new watch's name in the log and
-      switching on the desk lamp as evening comes on.
-    anim: She writes the name, then reaches over and turns on the lamp.
+      Ines at the harbour office desk, a small blank wooden tag held between two
+      fingers above a row of brass pegs on the wall board, the radio set on the
+      desk beside her.
+    anim: >-
+      Ines lifts the blank wooden tag off its peg and hangs it on the next peg along.
     vo: >-
-      The office logs the change too - a name, a time, the lamp switched on for
-      the night. Three logs, one line each, and they all agree.
+      Ashore, the clerk hears it on the radio and moves one wooden tag across
+      the board. That tag is the harbour's entire answer to the question of who
+      is on the light tonight.
+  - id: s3
+    t: [36, 51]
+    vo_at: 0.2
+    motion: anim
+    key: edit
+    key_change: >-
+      the loop of rope lies loose on the stones and the iron bollard is bare.
+    plate: Step 3. Cast off the last line
+    chars:
+      - mara
+      - tomas
+    refs:
+      mara:
+        - base
+        - fullbody
+      tomas:
+        - base
+        - fullbody
+    bg: pier
+    img: >-
+      Mara crouches over a thick mooring rope looped around an iron bollard on
+      the stone pier; Tomas stands a step behind her holding a coil of the same
+      rope against his chest with both hands.
+    anim: >-
+      Mara lifts the loop of rope off the bollard and lowers it onto the stones;
+      Tomas draws the slack coil in against his chest.
+    vo: >-
+      Then the last boat goes. The keeper casts off the line herself, the way
+      she has every evening for thirty years, and the pier belongs to one person
+      again.
   - id: s4
+    t: [51, 66]
+    vo_at: 0.2
+    motion: anim
+    key: closed
+    plate: Step 4. One lift of the lantern
+    chars:
+      - tomas
+    refs:
+      tomas:
+        - base
+        - dialog
+    bg: pier
+    img: >-
+      Tomas alone on the stone pier at dusk, a storm lantern held out at
+      shoulder height in one hand, the lit lighthouse above and behind him, dark
+      water beyond the stones.
+    anim: >-
+      Tomas raises the storm lantern to shoulder height, holds it steady, and
+      lowers it again.
+    anim_wide: >-
+      Tomas lowers the storm lantern from shoulder height down to his side,
+      holds it there, then swings his arm back up and holds the lantern out at
+      shoulder height again.
+    vo: >-
+      One lift of the lantern says the same thing every night: seen you, you are
+      clear. Then the apprentice turns back up the steps, and the light is his
+      until morning.
+  - id: s5
     kind: memo
-    t: [52, 60]
+    t: [66, 80]
     vo_at: 1
-    plate: 'Handover: three logs, one line'
+    plate: 'Handover: four things'
     memo:
-      title: 'Handover: three logs, one line'
+      title: 'Handover: four things'
       items:
-        - Last boat confirmed on the pier
-        - Log and keys passed in the lantern room
-        - New watch logged in the office
-    vo: Pier, lantern room, office - one same watch, three lines that agree.
+        - Keys, hand to hand, both watching
+        - Tag moved on the board ashore
+        - Last line cast off by the outgoing keeper
+        - 'Lantern raised once: seen you, you are clear'
+    vo: >-
+      Keys, tag, line, lantern. Four small things that decide who is answerable
+      at three in the morning.

@@ -1,0 +1,128 @@
+# How Firstlight works — the explainer.
+#
+# A roll like any other, except that its pictures are not generated: every
+# scene is `kind: clip` and points at a file that already exists — the screen
+# recording of the interface, the pipeline diagram drawing itself, the two
+# finished episodes, the cost counter. Same timing model, same caption plates,
+# same narration cache, same verify pass. That is the point: the video about
+# the pipeline is cut by the pipeline.
+#
+# Sources (all silent; the assembler takes video only):
+#   docs/demo/motion/pipeline-build.mp4   39.9s  make_pipeline_anim.py
+#   docs/demo/motion/ui-tour.mp4          64.0s  record_ui_tour.mjs (Playwright)
+#   docs/demo/motion/cost-counter.mp4     12.0s  make_cost_counter.py
+#   workspace/out/Fog signal check.mp4    80s    this pipeline
+#   workspace/out/Handover at the pier.mp4 80s   this pipeline
+#
+# Build:
+#   node engine/assemble_from_plans.mjs --id how-firstlight-works \
+#        --out "docs/demo/How Firstlight works.mp4" --target-mb 24
+
+id: how-firstlight-works
+title: How Firstlight works
+scenario: How Firstlight works.md
+duration_target: 161
+scenes:
+  - id: s0
+    kind: title
+    t: [0, 7]
+    vo_at: 0.6
+    plate: How Firstlight works
+    vo: 'Firstlight turns a written scenario into a finished, narrated episode.'
+  - id: s1
+    kind: clip
+    t: [7, 33]
+    at: 0
+    vo_at: 0.3
+    file: docs/demo/motion/pipeline-build.mp4
+    plate: Six steps, one command each
+    vo: >-
+      Six steps. A scenario compiles into prompts. Each scene becomes three
+      shots: a wide, a medium and a close. Those start frames go to an image
+      model, the shots go to a video model with a first and a last frame, and
+      what comes back is judged before anything is cut together. Then captions,
+      narration and a verify pass.
+  - id: s2
+    kind: clip
+    t: [33, 53]
+    at: 0
+    vo_at: 0.3
+    file: docs/demo/motion/ui-tour.mp4
+    plate: A roll is scenario, frames and takes
+    vo: >-
+      The unit of work is a roll. It holds the scenario you wrote, the start
+      frames the pipeline generated from it, and the takes it shot. Nothing is
+      hidden behind a job id: every artefact of every step stays on disk with a
+      name you can read.
+  - id: s3
+    kind: clip
+    t: [53, 76]
+    at: 20
+    vo_at: 0.3
+    file: docs/demo/motion/ui-tour.mp4
+    plate: Nothing reaches the cut unjudged
+    vo: >-
+      Acceptance is a screen, not a habit. Every clip arrives with a twelve
+      frame contact sheet and its own measurements, and somebody decides. A
+      reject has to name a cause to change: the prompt, or the start frame. A
+      clip that nothing moves in is rejected however good its other numbers.
+  - id: s4
+    kind: clip
+    t: [76, 98]
+    at: 8
+    vo_at: 0.3
+    file: workspace/out/Fog signal check.mp4
+    plate: 'Output: Fog signal check'
+    vo: >-
+      This is what comes out. Seventy-six seconds of a lighthouse crew checking
+      a fog signal, cut wide to medium to close and back, with a caption on
+      every step and one narrator across the series. Twelve clips, four scenes,
+      no frozen frames.
+  - id: s5
+    kind: clip
+    t: [98, 120]
+    at: 8
+    vo_at: 0.3
+    file: workspace/out/Handover at the pier.mp4
+    plate: 'Output: Handover at the pier'
+    vo: >-
+      The same pipeline, a different scenario, the same cast and the same three
+      backgrounds. A shift changes hands: keys, a tag on a board, the last line
+      cast off, a lantern raised once. Nothing about the second episode needed a
+      new tool.
+  - id: s6
+    kind: clip
+    t: [120, 134]
+    at: 44
+    vo_at: 0.3
+    file: docs/demo/motion/ui-tour.mp4
+    plate: The rules live in the config
+    vo: >-
+      The shooting rules are not in anybody's head. The head count clause, the
+      banned camera verbs and the acceptance thresholds are one config file the
+      whole engine reads.
+  - id: s7
+    kind: clip
+    t: [134, 146]
+    at: 0
+    vo_at: 0.3
+    file: docs/demo/motion/cost-counter.mp4
+    plate: What it cost
+    vo: >-
+      Two episodes, start to finish, for under ten dollars of model time and an
+      afternoon of machine time. Every reshoot is inside that number.
+  - id: s8
+    kind: memo
+    t: [146, 161]
+    vo_at: 0.6
+    plate: What Firstlight is
+    memo:
+      title: What Firstlight is
+      items:
+        - A scenario, character sheets and backgrounds go in
+        - Three shots per scene, judged one at a time
+        - An episode, a build log and a verify report come out
+        - Open source; every backend is a flag, not a rewrite
+    vo: >-
+      Write the scenario. Judge the shots. Keep the log. Everything else is a
+      command, and every one of them is in the repository.

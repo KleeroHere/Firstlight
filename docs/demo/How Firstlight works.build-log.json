@@ -1,0 +1,204 @@
+{
+  "id": "how-firstlight-works",
+  "title": "How Firstlight works",
+  "version": "from-plans",
+  "createdAt": "2026-09-05T16:57:31.555Z",
+  "scenes": [
+    {
+      "id": "s0",
+      "kind": "title",
+      "t": [
+        0,
+        7
+      ],
+      "plate": "How Firstlight works",
+      "source": "rendered"
+    },
+    {
+      "id": "s1",
+      "kind": "clip",
+      "t": [
+        7,
+        33
+      ],
+      "plate": "Six steps, one command each",
+      "source": "docs/demo/motion/pipeline-build.mp4",
+      "sourceDuration": 39.9,
+      "at": 0,
+      "target": 26,
+      "screen": 26,
+      "still": false
+    },
+    {
+      "id": "s2",
+      "kind": "clip",
+      "t": [
+        33,
+        53
+      ],
+      "plate": "A roll is scenario, frames and takes",
+      "source": "docs/demo/motion/ui-tour.mp4",
+      "sourceDuration": 64,
+      "at": 0,
+      "target": 20,
+      "screen": 20,
+      "still": false
+    },
+    {
+      "id": "s3",
+      "kind": "clip",
+      "t": [
+        53,
+        76
+      ],
+      "plate": "Nothing reaches the cut unjudged",
+      "source": "docs/demo/motion/ui-tour.mp4",
+      "sourceDuration": 64,
+      "at": 20,
+      "target": 23,
+      "screen": 23,
+      "still": false
+    },
+    {
+      "id": "s4",
+      "kind": "clip",
+      "t": [
+        76,
+        98
+      ],
+      "plate": "Output: Fog signal check",
+      "source": "workspace/out/Fog signal check.mp4",
+      "sourceDuration": 80,
+      "at": 8,
+      "target": 22,
+      "screen": 22,
+      "still": false
+    },
+    {
+      "id": "s5",
+      "kind": "clip",
+      "t": [
+        98,
+        120
+      ],
+      "plate": "Output: Handover at the pier",
+      "source": "workspace/out/Handover at the pier.mp4",
+      "sourceDuration": 80,
+      "at": 8,
+      "target": 22,
+      "screen": 22,
+      "still": false
+    },
+    {
+      "id": "s6",
+      "kind": "clip",
+      "t": [
+        120,
+        134
+      ],
+      "plate": "The rules live in the config",
+      "source": "docs/demo/motion/ui-tour.mp4",
+      "sourceDuration": 64,
+      "at": 44,
+      "target": 14,
+      "screen": 14,
+      "still": false
+    },
+    {
+      "id": "s7",
+      "kind": "clip",
+      "t": [
+        134,
+        146
+      ],
+      "plate": "What it cost",
+      "source": "docs/demo/motion/cost-counter.mp4",
+      "sourceDuration": 12,
+      "at": 0,
+      "target": 12,
+      "screen": 12,
+      "still": false
+    },
+    {
+      "id": "s8",
+      "kind": "memo",
+      "t": [
+        146,
+        161
+      ],
+      "plate": "What Firstlight is",
+      "source": "rendered"
+    }
+  ],
+  "output": "docs/demo/How Firstlight works.mp4",
+  "totalDuration": 161,
+  "durationTarget": 161,
+  "vo": [
+    {
+      "scene": "s0",
+      "at": 0.6,
+      "voAt": 0.6,
+      "mode": "cached",
+      "duration": 5.34059
+    },
+    {
+      "scene": "s1",
+      "at": 7.3,
+      "voAt": 0.3,
+      "mode": "cached",
+      "duration": 25.031111
+    },
+    {
+      "scene": "s2",
+      "at": 33.3,
+      "voAt": 0.3,
+      "mode": "cached",
+      "duration": 18.854603
+    },
+    {
+      "scene": "s3",
+      "at": 53.3,
+      "voAt": 0.3,
+      "mode": "cached",
+      "duration": 22.198277
+    },
+    {
+      "scene": "s4",
+      "at": 76.3,
+      "voAt": 0.3,
+      "mode": "cached",
+      "duration": 19.133243
+    },
+    {
+      "scene": "s5",
+      "at": 98.3,
+      "voAt": 0.3,
+      "mode": "cached",
+      "duration": 18.343764
+    },
+    {
+      "scene": "s6",
+      "at": 120.3,
+      "voAt": 0.3,
+      "mode": "cached",
+      "duration": 11.842177
+    },
+    {
+      "scene": "s7",
+      "at": 134.3,
+      "voAt": 0.3,
+      "mode": "cached",
+      "duration": 10.541859
+    },
+    {
+      "scene": "s8",
+      "at": 146.6,
+      "voAt": 0.6,
+      "mode": "cached",
+      "duration": 8.452063
+    }
+  ],
+  "voMode": "elevenlabs",
+  "sizeMb": 22.53,
+  "targetMb": 24
+}

@@ -1,0 +1,71 @@
+{
+  "title": "How Firstlight works — moving assets",
+  "generatedAt": "2026-09-05",
+  "spec": {
+    "container": "mp4",
+    "video": "H.264 High profile, yuv420p, crf 18",
+    "width": 1920,
+    "height": 1080,
+    "fps": 30,
+    "audio": "none — every asset is silent, narration and the final cut are the producer's"
+  },
+  "assets": [
+    {
+      "id": "ui-tour",
+      "path": "docs/demo/motion/ui-tour.mp4",
+      "madeBy": "docs/demo/motion/record_ui_tour.mjs",
+      "durationSec": 64.0,
+      "frames": 1920,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "description": "A real screen recording of the Firstlight interface being driven with a visible cursor: the Rolls list, a shot roll's Keyframes and Takes, the Acceptance board where one plan is accepted and another is rejected with a defect ticked and a note typed, the assembled episode playing beside its verify report, the scenario text, and back to the Rolls list, which has refetched and now reads \"7 accepted · 1 in reshoot queue\"."
+    },
+    {
+      "id": "pipeline-build",
+      "path": "docs/demo/motion/pipeline-build.mp4",
+      "madeBy": "docs/demo/make_pipeline_anim.py",
+      "durationSec": 39.9,
+      "frames": 1197,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "description": "The six-stage pipeline diagram drawing itself on the brand cream — Scenario, Compile, Start frames, Motion, Acceptance, Cut & verify each fade and slide in coral, settle to teal or amber as an arrow grows from them to the next box and lands its head, with the finished diagram and its footer held for the last four seconds."
+    },
+    {
+      "id": "cost-counter",
+      "path": "docs/demo/motion/cost-counter.mp4",
+      "madeBy": "docs/demo/make_cost_counter.py",
+      "durationSec": 12.0,
+      "frames": 360,
+      "width": 1920,
+      "height": 1080,
+      "fps": 30,
+      "description": "Three figures counting up from zero on the brand cream with a quintic ease-out and a beat between each — $7.20 spent in coral, 28 start frames in teal, 24 clips accepted in amber — under the kicker \"What it cost\" and over the footnote \"two 76-second episodes, start to finish\"."
+    }
+  ],
+  "howToRebuild": [
+    "node docs/demo/motion/record_ui_tour.mjs",
+    "python docs/demo/make_pipeline_anim.py",
+    "python docs/demo/make_cost_counter.py --spent 7.20 --frames 28 --clips 24"
+  ],
+  "notes": {
+    "figuresAreArguments": "make_cost_counter.py takes --spent, --frames, --clips and --footnote; the values in this manifest are its defaults. Re-run it with new numbers and the mp4 is overwritten in place — no other asset has to change.",
+    "nothingInTheRepoWasWrittenTo": "The acceptance screen writes files, so record_ui_tour.mjs mirrors engine/, workspace/, reports/ and ui/dist into a throwaway sandbox under the system temp folder and points ui/server/server.mjs at that with --workspace. The accept and the reject in the recording are real writes by the real server to the sandbox's workspace/<roll>/acceptance.json — nothing is mocked in the browser, and nothing in the repository's own workspace/ was modified. No ui/ source file was edited; the dev server and dist build were only run.",
+    "sandboxStaging": "Two staging steps happen in that sandbox copy, both documented in the script. (1) A later pass of the example series moved the two finished rolls' media into takes/<roll>/_old/, which leaves the Keyframes, Takes and Acceptance tabs empty; the script copies those archived files back to the names the server reads. Every file put back is one that roll actually produced — no file is invented. (2) Two plans that have a clip on disk lose their recorded decision so there is something left to decide on camera; the tour then decides them for real.",
+    "keyframesTabShownOnADifferentRoll": "The tour opens the Keyframes tab on \"Fog signal check\" and the Acceptance board on \"Handover at the pier\". In this workspace only the fog roll has scene-level keyframes in the s<N>_sh<N>_frame.png naming the server reads; the handover roll's start frames live per plan and show up on the Acceptance board's First/Last panes instead. Its Keyframes tab is genuinely empty, and the recording does not pretend otherwise — the Rolls list in the last shot still reads \"0 keyed\" for it.",
+    "noSeparateFramesOrPlansScreen": "There is no screen in the UI between the roll and the acceptance board: the plan-list is the Acceptance board. The tour therefore shows Keyframes -> Takes -> Acceptance rather than a distinct \"plans\" screen.",
+    "syntheticCursor": "Chromium's screencast — what playwright's recordVideo captures — never contains the mouse pointer. The recorder injects a cursor overlay with addInitScript that follows the real mouse events and pulses on mousedown, so what you see is where playwright actually clicked. This is runtime injection only; no UI source file was touched.",
+    "legibilityAtVideoResolution": "The app's main column is capped at 1280 px, so at a 1920 viewport it would be a small column in a large frame. The recorder sets document.documentElement.style.zoom = 1.5 at 1920x1080, which makes the 1280 layout fill the frame and renders it natively crisp — no upscaling anywhere in the chain.",
+    "playbackSpeed": "The tour was written to land inside the 45-70 s slot; this take's raw recording was 73.9 s (browser start-up and page loads vary a few seconds per run), so it is played back at a uniform 1.154x to land on 64.0 s. That is one setpts filter over the whole clip — no padding, no frozen frames, no screen cut out. The script applies this only above 70 s and caps it at 1.35x.",
+    "brandCardBackgroundsNotUsed": "workspace/brand/{title,divider,memo}-bg.png were left out on purpose: these are full-frame motion graphics, and a photographic card behind a number counting up or an arrow drawing itself costs more legibility than it buys. They still belong under the title and memo cards the assembler draws.",
+    "fonts": "System fonts only, resolved by the same ladder engine/pipeline.config.json uses: arialbd.ttf / arial.ttf on Windows, DejaVu on Linux, with PIL's bitmap default as a last resort. workspace/brand/title.ttf does not exist in this repo, so the config's first candidate falls through as intended.",
+    "notDone": [
+      "No paid API was called — no WaveSpeed, no ElevenLabs, no Anthropic. Nothing here needs one.",
+      "No network asset of any kind: no web fonts, no CDN, no downloaded imagery.",
+      "Nothing was committed or pushed, and engine/, workspace/prompts/, workspace/plans/, workspace/takes/, docs/PRODUCTION-RULES.md, docs/QA-CHECKLIST.md, CLAUDE.md and .env.example were not modified.",
+      "docs/demo/make_diagram.py was read for its visual language and left in place rather than deleted; make_pipeline_anim.py supersedes it for the explainer, and the still pipeline-diagram.png it makes is still what the README-style contexts use.",
+      "The workspace was being regenerated by another agent while these were built, so the roll counts visible in ui-tour.mp4 (spend $0.76, 12 plans on the handover roll, 4 not shot) are that moment's state, not the cost-counter's figures. Re-run record_ui_tour.mjs if the numbers on screen need to match a later ledger."
+    ]
+  }
+}

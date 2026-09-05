@@ -1,0 +1,137 @@
+{
+  "roll": "fog-signal-check",
+  "mode": "frames",
+  "thresholds": {
+    "jumpMax": 0.12,
+    "colorDrift": 6,
+    "maxAreaDev": 0.06,
+    "minAreaDev": 0.02,
+    "minAreaDevComment": "Floor, not a ceiling: a clip whose busiest frame differs from its own median by less than this share of the picture did not move — that is the still-frame defect, and it is a reject even though every other metric is perfect.",
+    "k0Match": 0.9,
+    "k1Match": 0.85,
+    "minDurationSec": 4,
+    "sharpDropRatio": 0.6
+  },
+  "items": [
+    {
+      "plan": 1,
+      "scene": "s1",
+      "shot": "wide",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the handset to her ear, listens, and sets it back down on its cradle.",
+      "image": "workspace/takes/fog-signal-check/plan1_master.png",
+      "end_key": "workspace/takes/fog-signal-check/keys/plan1_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan1.jpg"
+    },
+    {
+      "plan": 2,
+      "scene": "s1",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the handset to her ear, listens, and sets it back down on its cradle.",
+      "image": "workspace/takes/fog-signal-check/plan2_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan2.jpg"
+    },
+    {
+      "plan": 3,
+      "scene": "s1",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Ines lifts the handset to her ear, listens, and sets it back down on its cradle. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/fog-signal-check/plan3_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan3.jpg"
+    },
+    {
+      "plan": 4,
+      "scene": "s2",
+      "shot": "wide",
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara pulls the lever down, holds it, and lets it rise back; Tomas marks two short strokes and one long stroke in his open notebook.",
+      "image": "workspace/takes/fog-signal-check/plan4_master.png",
+      "end_key": "workspace/takes/fog-signal-check/keys/plan4_key.png",
+      "cast_size": 2,
+      "packet_image": "sheets/plan4.jpg"
+    },
+    {
+      "plan": 5,
+      "scene": "s2",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara pulls the lever down, holds it, and lets it rise back.",
+      "image": "workspace/takes/fog-signal-check/plan5_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan5.jpg"
+    },
+    {
+      "plan": 6,
+      "scene": "s2",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas marks two short strokes and one long stroke in his open notebook. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/fog-signal-check/plan6_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan6.jpg"
+    },
+    {
+      "plan": 7,
+      "scene": "s3",
+      "shot": "wide",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas draws the pencil across the ruled column from left to right, writing one short line, then lifts the pencil clear of the page and lays it down flat across the open page.",
+      "image": "workspace/takes/fog-signal-check/plan7_master.png",
+      "end_key": "workspace/takes/fog-signal-check/keys/plan7_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan7.jpg"
+    },
+    {
+      "plan": 8,
+      "scene": "s3",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas draws the pencil across the ruled column from left to right, writing one short line, then lifts the pencil clear of the page and lays it down flat across the open page.",
+      "image": "workspace/takes/fog-signal-check/plan8_master.png",
+      "end_key": "workspace/takes/fog-signal-check/keys/plan8_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan8.jpg"
+    },
+    {
+      "plan": 9,
+      "scene": "s3",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas writes the count into the column and lays the pencil down flat across the page. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/fog-signal-check/plan9_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan9.jpg"
+    },
+    {
+      "plan": 10,
+      "scene": "s4",
+      "shot": "wide",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas raises the radio, presses the side key with his thumb, and lowers it again.",
+      "image": "workspace/takes/fog-signal-check/plan10_master.png",
+      "end_key": "workspace/takes/fog-signal-check/keys/plan10_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan10.jpg"
+    },
+    {
+      "plan": 11,
+      "scene": "s4",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas lowers the radio from beside his face all the way down to his hip, holds it there for a moment, then lifts it back up beside his face.",
+      "image": "workspace/takes/fog-signal-check/plan11_master.png",
+      "end_key": "workspace/takes/fog-signal-check/keys/plan11_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan11.jpg"
+    },
+    {
+      "plan": 12,
+      "scene": "s4",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas raises the radio, presses the side key with his thumb, and lowers it again. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/fog-signal-check/plan12_master.png",
+      "end_key": "workspace/takes/fog-signal-check/keys/plan12_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan12.jpg"
+    }
+  ]
+}

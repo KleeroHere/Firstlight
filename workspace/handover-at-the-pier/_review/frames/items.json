@@ -1,0 +1,137 @@
+{
+  "roll": "handover-at-the-pier",
+  "mode": "frames",
+  "thresholds": {
+    "jumpMax": 0.12,
+    "colorDrift": 6,
+    "maxAreaDev": 0.06,
+    "minAreaDev": 0.02,
+    "minAreaDevComment": "Floor, not a ceiling: a clip whose busiest frame differs from its own median by less than this share of the picture did not move — that is the still-frame defect, and it is a reject even though every other metric is perfect.",
+    "k0Match": 0.9,
+    "k1Match": 0.85,
+    "minDurationSec": 4,
+    "sharpDropRatio": 0.6
+  },
+  "items": [
+    {
+      "plan": 1,
+      "scene": "s1",
+      "shot": "wide",
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lowers the ring of keys onto the open palm and takes her hand back; Tomas closes his fingers around the keys and lowers his hand.",
+      "image": "workspace/takes/handover-at-the-pier/plan1_master.png",
+      "end_key": "workspace/takes/handover-at-the-pier/keys/plan1_key.png",
+      "cast_size": 2,
+      "packet_image": "sheets/plan1.jpg"
+    },
+    {
+      "plan": 2,
+      "scene": "s1",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lowers the ring of keys onto the open palm and takes her hand back.",
+      "image": "workspace/takes/handover-at-the-pier/plan2_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan2.jpg"
+    },
+    {
+      "plan": 3,
+      "scene": "s1",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas closes his fingers around the keys and lowers his hand. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/handover-at-the-pier/plan3_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan3.jpg"
+    },
+    {
+      "plan": 4,
+      "scene": "s2",
+      "shot": "wide",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the wooden tag off its peg and hangs it on the next peg along.",
+      "image": "workspace/takes/handover-at-the-pier/plan4_master.png",
+      "end_key": "workspace/takes/handover-at-the-pier/keys/plan4_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan4.jpg"
+    },
+    {
+      "plan": 5,
+      "scene": "s2",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the blank wooden tag off its peg and hangs it on the next peg along.",
+      "image": "workspace/takes/handover-at-the-pier/plan5_master.png",
+      "end_key": "workspace/takes/handover-at-the-pier/keys/plan5_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan5.jpg"
+    },
+    {
+      "plan": 6,
+      "scene": "s2",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Ines lifts the blank wooden tag off its peg and hangs it on the next peg along. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/handover-at-the-pier/plan6_master.png",
+      "end_key": "workspace/takes/handover-at-the-pier/keys/plan6_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan6.jpg"
+    },
+    {
+      "plan": 7,
+      "scene": "s3",
+      "shot": "wide",
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lifts the loop of rope off the bollard and lowers it onto the stones; Tomas draws the slack coil in against his chest.",
+      "image": "workspace/takes/handover-at-the-pier/plan7_master.png",
+      "end_key": "workspace/takes/handover-at-the-pier/keys/plan7_key.png",
+      "cast_size": 2,
+      "packet_image": "sheets/plan7.jpg"
+    },
+    {
+      "plan": 8,
+      "scene": "s3",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lifts the loop of rope off the bollard and lowers it onto the stones.",
+      "image": "workspace/takes/handover-at-the-pier/plan8_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan8.jpg"
+    },
+    {
+      "plan": 9,
+      "scene": "s3",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas draws the slack coil in against his chest. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/handover-at-the-pier/plan9_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan9.jpg"
+    },
+    {
+      "plan": 10,
+      "scene": "s4",
+      "shot": "wide",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas lowers the storm lantern from shoulder height down to his side, holds it there, then swings his arm back up and holds the lantern out at shoulder height again.",
+      "image": "workspace/takes/handover-at-the-pier/plan10_master.png",
+      "end_key": "workspace/takes/handover-at-the-pier/keys/plan10_key.png",
+      "cast_size": 1,
+      "packet_image": "sheets/plan10.jpg"
+    },
+    {
+      "plan": 11,
+      "scene": "s4",
+      "shot": "medium",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas raises the storm lantern to shoulder height, holds it steady, and lowers it again.",
+      "image": "workspace/takes/handover-at-the-pier/plan11_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan11.jpg"
+    },
+    {
+      "plan": 12,
+      "scene": "s4",
+      "shot": "close",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas raises the storm lantern to shoulder height, holds it steady, and lowers it again. The motion starts and finishes once; it does not loop or repeat.",
+      "image": "workspace/takes/handover-at-the-pier/plan12_master.png",
+      "end_key": null,
+      "cast_size": 1,
+      "packet_image": "sheets/plan12.jpg"
+    }
+  ]
+}

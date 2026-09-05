@@ -1,5 +1,125 @@
 # Demo production log — Harbour Light
 
+## 2026-09-05, second pass — everything rebuilt, and rebuilt *by the pipeline*
+
+The owner watched the first cut and called it what it was: frozen frames, stray
+hands, motion you could not read, and an explainer made of still screenshots.
+Everything below is the rebuild. Two things changed at once — the material, and
+the rule that the material had to be produced by Firstlight itself rather than
+by an operator working around it. Every step is a command, and this is the
+sequence, in order, exactly as it ran.
+
+### What was actually wrong (causes, not symptoms)
+
+| Symptom | Cause found | Fix, in the product |
+|---|---|---|
+| A whole episode letterboxed | `wavespeed_stills.mjs` never sent `size` on the *edit* endpoint. Seedream does not inherit aspect ratio from its reference images, so a 16:9 background plus a portrait character sheet came back **1792×2240** — a portrait "master", pillarboxed for the rest of its life. | `size` is sent in both modes and validated; `auto_storyboard.py` defaults to `2560x1440`. |
+| "First and last frame" did nothing | `wavespeed_batch.mjs` sent the end frame as `last_image`. Kling 2.6 Pro's field is **`end_image`**; the API accepts the request and silently drops the unknown key. Every "FLF" clip was really i2v. | Per-model end-frame field in the models table; a plan asking for a key on a model that has none is now an error, not a silent downgrade. |
+| Scenes held on a frozen frame | Scenes were 16–18 s with 5 s of clip. The assembler filled the rest with a push-in on the last frame. | Scenes are 15 s and carry three 5 s shots. The assembler trims; `still: false` in every build log. |
+| Every scene one camera angle | One plan per scene. | `auto_storyboard.py` writes wide + medium + close for **every** scene, and `assemble_from_plans.mjs` cuts wide → medium → close → back to the wide's own tail (the return costs no extra clip). |
+| Nothing caught a dead clip | `qa_clip.py` flagged *too much* change, never too little. | `qa.thresholds.minAreaDev` (2 %): a clip whose busiest frame differs from its own median by less than that is a **STILL** and is rejected however good its other numbers. It caught three clips in this pass. |
+| A reshoot silently did nothing | `wavespeed_batch.mjs` decided what to shoot by "is there a file", so a plan the acceptance screen had rejected was skipped — "к съёмке 0". | The shot list now includes anything acceptance marked `rejected`/`redo`. |
+| A reshot frame reverted | `color_match.py` grades from a cached original in `_raw/`. After a reshoot the cache was older than the frame, and the grade wrote the **old picture** back over the new one — money spent, defect still on screen. | `raw_copy()` refreshes the cache when the target is newer. |
+| Rules lived in the operator's head | — | `engine/pipeline.config.json` → `production` (guard clause, banned motion verbs, negative prompt, frame composition) and `qa` (thresholds); `engine/guard.mjs` + `engine/guard.py` read them, so the Node and Python halves cannot drift; `docs/PRODUCTION-RULES.md` and `docs/QA-CHECKLIST.md` are the prose.
+
+### The run, command by command
+
+```bash
+# 0. rules and integration, once
+#    engine/guard.{mjs,py}      GUARD applied by wavespeed_batch.mjs and flf_batch.mjs
+#    engine/claude_agent.mjs    acceptance and storyboard review, API or agent-packet
+#    docs/PRODUCTION-RULES.md, docs/QA-CHECKLIST.md, CLAUDE.md, .env.example
+
+# 1. scenario -> compiled prompts
+python engine/build_prompts.py
+
+# 2. storyboard: 3 shots per scene, start frames + end keys, one tone per scene
+python engine/auto_storyboard.py --id fog-signal-check --redo
+python engine/auto_storyboard.py --id handover-at-the-pier --redo
+#    (calls engine/wavespeed_stills.mjs per frame, then engine/color_match.py
+#     --masters; 28 stills, $0.756)
+
+# 3. FRAME ACCEPTANCE — gate one
+node engine/claude_agent.mjs frames --roll fog-signal-check     --packet
+node engine/claude_agent.mjs frames --roll handover-at-the-pier --packet
+node engine/claude_agent.mjs frames --roll fog-signal-check     --apply workspace/fog-signal-check/_review/frames/verdict.json
+node engine/claude_agent.mjs frames --roll handover-at-the-pier --apply workspace/handover-at-the-pier/_review/frames/verdict.json
+#    18 accepted, 6 rejected: two close-ups relocated to the wrong background,
+#    one with a door behind the actor's hands, one with the word "Shift"
+#    legible on a prop, one holding a pen from another scene, one mid-word.
+
+# 4. fix the CAUSE, then reshoot only the rejected frames
+#    - the location is now named before the character in medium/close prompts
+#    - production.frame.oneProp: only the object this shot names
+#    - production.frame.noText hardened; the scenario stopped calling it a "shift tag"
+python engine/auto_storyboard.py --id fog-signal-check     --plans 6,9      --redo
+python engine/auto_storyboard.py --id handover-at-the-pier --plans 3,5,9,12 --redo
+node engine/claude_agent.mjs frames --roll fog-signal-check     --apply .../verdict-redo.json
+node engine/claude_agent.mjs frames --roll handover-at-the-pier --apply .../verdict-redo.json
+
+# 5. narration (one voice, both episodes and the explainer)
+node engine/tts_all.mjs --only fog-signal-check
+node engine/tts_all.mjs --only handover-at-the-pier
+
+# 6. shoot: Kling 2.6 Pro with an end frame for keyed shots, Std for i2v
+node engine/wavespeed_batch.mjs --id fog-signal-check     --model auto --concurrency 3
+node engine/wavespeed_batch.mjs --id handover-at-the-pier --model auto --concurrency 3
+
+# 7. CLIP ACCEPTANCE — gate two
+python engine/qa_clip.py --dir workspace/takes/<roll>/_flf --plans workspace/plans/<roll>.json --out reports/qa-<roll>
+node engine/claude_agent.mjs qa --roll <roll> --packet
+node engine/claude_agent.mjs qa --roll <roll> --apply workspace/<roll>/_review/qa/verdict.json
+
+# 8. fix the cause again, reshoot
+#    - the scenario gains `solo_key: closed` (medium/close shot first-to-last-frame
+#      against their own start frame) where the actor walked out of frame, a door
+#      opened behind them, or a prop turned into a different prop
+#    - the scenario gains `anim_wide` where the start frame had already arrived at
+#      the end of its action and the wide came back frozen
+python engine/build_prompts.py
+python engine/auto_storyboard.py --id <roll> --plans <n,...>      # re-plan, no new frames
+node engine/wavespeed_batch.mjs  --id <roll> --model auto         # reshoots what acceptance rejected
+
+# 9. cut, and grade the cut
+node engine/assemble_from_plans.mjs --id fog-signal-check
+node engine/assemble_from_plans.mjs --id handover-at-the-pier
+node engine/verify_video.mjs "workspace/out/Fog signal check.mp4"
+node engine/verify_video.mjs "workspace/out/Handover at the pier.mp4"
+
+# 10. the explainer — a roll like any other, whose pictures already exist
+node docs/demo/motion/record_ui_tour.mjs        # Playwright, 1920x1080, the real UI
+python docs/demo/make_pipeline_anim.py          # the diagram drawing itself
+python docs/demo/make_cost_counter.py           # animated cost panel
+node engine/tts_all.mjs --only how-firstlight-works
+node engine/assemble_from_plans.mjs --id how-firstlight-works --out "docs/demo/How Firstlight works.mp4" --target-mb 24
+node engine/verify_video.mjs "docs/demo/How Firstlight works.mp4"
+```
+
+Two engine features were added for step 10 rather than worked around: `kind:
+clip` scenes (a scene whose picture is an existing file — a screen recording, a
+rendered diagram, an insert from a finished episode) and `--target-mb` (a
+two-pass encode sized to a release asset's cap). The explainer is therefore cut
+by the same assembler, with the same caption plates, the same narration cache
+and the same verify pass as the episodes.
+
+### Working with an agent
+
+`engine/claude_agent.mjs` is the integration point. With `ANTHROPIC_API_KEY` set
+(and `npm install` run in `engine/`) it calls Claude with the checklist and the
+contact sheets as images and writes verdicts into `workspace/<roll>/acceptance.json`.
+Without a key — this machine had none — it writes an **agent packet** to
+`workspace/<roll>/_review/<mode>/`: the contact sheets, the metrics, the motion
+lines, the checklist verbatim from `docs/QA-CHECKLIST.md`, and a verdict
+template. Any agent session or person can review that folder, and `--apply`
+puts the answer back. Frame verdicts land under `frames`, clip verdicts under
+`plans`, because `wavespeed_batch.mjs` reads `plans` to decide what still needs
+shooting and a frame verdict landing there would tell it a clip it has never
+shot is already accepted.
+
+---
+
+## Earlier passes (kept as history)
+
 ## Later same day — QA, redo, assembly, verify
 
 - Independent QA agent (owner-launched, see `docs/QA-DEMO.md`) reviewed all

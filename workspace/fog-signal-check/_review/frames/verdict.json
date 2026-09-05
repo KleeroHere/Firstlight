@@ -1,0 +1,14 @@
+[
+ {"plan":1,"verdict":"accept","reasons":[],"note":"s1 wide. Ines alone, cardigan/glasses/pencil match the sheet, hands on handset and log, mouth closed, pigeonholes blank, no door. Grey hazy evening is the scene reference tone.","cause":"none","confidence":0.9,"reviewer":"producer"},
+ {"plan":2,"verdict":"accept","reasons":[],"note":"s1 medium. Three-quarter, waist-up, both hands in frame, mouth closed, no opening behind her. Tone matched to plan1.","cause":"none","confidence":0.9,"reviewer":"producer"},
+ {"plan":3,"verdict":"accept","reasons":[],"note":"s1 close. Lips slightly parted but not open-mouthed; hand on the set, hand on the handset, same room. Tone was a warm sunset and is now graded to plan1. Accepted with the mouth noted rather than spending a reshoot on a two-frame detail.","cause":"none","confidence":0.6,"reviewer":"producer"},
+ {"plan":4,"verdict":"accept","reasons":[],"note":"s2 wide. Mara at the panel with the lever, Tomas beside her with the notebook, lantern room reads correctly, no readable text.","cause":"none","confidence":0.9,"reviewer":"producer"},
+ {"plan":5,"verdict":"accept","reasons":[],"note":"s2 medium. Mara alone, both hands on the lever, mouth closed. Graded to plan4.","cause":"none","confidence":0.85,"reviewer":"producer"},
+ {"plan":6,"verdict":"reject","reasons":["object_moved"],"note":"s2 close. Tomas's hands and notebook are right, but the background is the pier walkway, not the lantern room the rest of the scene is in. The character sheet outranked the location in the prompt.","cause":"prompt","confidence":0.85,"reviewer":"producer"},
+ {"plan":7,"verdict":"accept","reasons":[],"note":"s3 wide. Tomas at the chart table, lantern room, logbook and pencil in frame, mouth closed.","cause":"none","confidence":0.9,"reviewer":"producer"},
+ {"plan":8,"verdict":"accept","reasons":[],"note":"s3 medium. Three-quarter, both hands on the book, no opening behind him. Graded to plan7.","cause":"none","confidence":0.9,"reviewer":"producer"},
+ {"plan":9,"verdict":"reject","reasons":["object_moved"],"note":"s3 close. Hands and pencil are correct but the background is the pier, not the lantern room; cut after plan7 and plan8 it reads as a different place.","cause":"prompt","confidence":0.8,"reviewer":"producer"},
+ {"plan":10,"verdict":"accept","reasons":[],"note":"s4 wide. Tomas on the pier with the radio, hand on the bollard, lighthouse lit behind, no door.","cause":"none","confidence":0.9,"reviewer":"producer"},
+ {"plan":11,"verdict":"accept","reasons":[],"note":"s4 medium. Three-quarter, radio in hand, notebook in pocket for continuity, mouth closed.","cause":"none","confidence":0.85,"reviewer":"producer"},
+ {"plan":12,"verdict":"accept","reasons":[],"note":"s4 close. Both hands on the radio, pier behind, correct. A faint letter-like mark at the top right corner is the only blemish and it is outside the safe area.","cause":"none","confidence":0.75,"reviewer":"producer"}
+]

@@ -1,0 +1,98 @@
+[
+  {
+    "plan": 1,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 2,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 3,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 4,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 5,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 6,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 7,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 8,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 9,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 10,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 11,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  },
+  {
+    "plan": 12,
+    "verdict": "accept|reject",
+    "reasons": [],
+    "note": "which frame, and what exactly",
+    "cause": "prompt|start-frame|none",
+    "confidence": 0
+  }
+]
