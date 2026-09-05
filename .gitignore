@@ -2,6 +2,12 @@ node_modules/
 ui/dist/
 ui/ui-shots/
 
+# build/build-exe.mjs output: a copy of the Node binary plus everything it
+# packages (engine/, ui/dist/, the example workspace) — rebuilt on demand,
+# not committed.
+build/out/
+build/dist/
+
 # The example series is committed as scenarios; everything the pipeline makes
 # from it is reproducible with the three commands in the README.
 workspace/prompts/compiled/
@@ -19,6 +25,9 @@ workspace/*/acceptance.json
 # Keys and hosts live in the environment, never here.
 .env
 .env.*
+# ...except this one: it holds no secret, just the flag that switches a build
+# to demo mode (VITE_DEMO=1) — see ui/vite.config.ts and .github/workflows/pages.yml.
+!ui/.env.demo
 engine/.env.local
 reports/
 __pycache__/

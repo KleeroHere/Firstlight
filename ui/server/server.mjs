@@ -12,17 +12,34 @@
 //
 // No dependencies beyond Node itself, on purpose.
 import { createServer } from "node:http";
-import { spawn, spawnSync } from "node:child_process";
+import { spawn, spawnSync, exec } from "node:child_process";
 import { rmSync } from "node:fs";
 import { existsSync, readdirSync, readFileSync, writeFileSync, statSync, mkdirSync, renameSync, createReadStream } from "node:fs";
 import { join, resolve, extname, basename, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
+import { isSea } from "node:sea";
 
-const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
+// In the packaged .exe (build/build-exe.mjs) this file is bundled to CJS and
+// has no meaningful source location — import.meta.url would point inside the
+// executable, not at the folders on disk. There, ROOT is the folder the .exe
+// itself sits in (engine/ and ui/dist/ are expected right beside it), unless
+// --workspace names a different one. In every other case (dev, `npm start`)
+// nothing changes: ROOT is still two levels above this file.
+function resolveRoot() {
+  const wsArg = process.argv.indexOf("--workspace");
+  if (wsArg !== -1 && process.argv[wsArg + 1]) return resolve(process.argv[wsArg + 1]);
+  if (isSea()) return dirname(process.execPath);
+  return resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
+}
+const ROOT = resolveRoot();
 const CFG = JSON.parse(readFileSync(join(ROOT, "engine", "pipeline.config.json"), "utf8"));
 const P = Object.fromEntries(Object.entries(CFG.paths).map(([k, v]) => [k, join(ROOT, v)]));
 const PORT = Number(process.env.PORT || 7331);
-const serveDist = process.argv.includes("--serve") ? join(ROOT, "ui", process.argv[process.argv.indexOf("--serve") + 1] || "dist") : null;
+// The packaged .exe always serves ui/dist next to itself; a dev server passes
+// --serve explicitly (see start.cmd) and can point at a different folder.
+const serveArg = process.argv.includes("--serve") ? process.argv[process.argv.indexOf("--serve") + 1] || "dist" : null;
+const serveDist = serveArg ? join(ROOT, "ui", serveArg) : isSea() ? join(ROOT, "ui", "dist") : null;
+const shouldOpen = process.argv.includes("--open") || isSea();
 
 // --- reading the workspace ----------------------------------------------------
 
@@ -515,4 +532,11 @@ process.on("unhandledRejection", (err) => console.error(`Unexpected rejection: $
 
 server.listen(PORT, () => {
   console.log(`Firstlight server on http://localhost:${PORT}  workspace: ${join(ROOT, "workspace")}${serveDist ? `  serving ${serveDist}` : ""}`);
+  // The packaged .exe has no terminal a person is watching, so it opens the
+  // browser itself instead of printing a URL to click.
+  if (shouldOpen) {
+    const url = `http://127.0.0.1:${PORT}`;
+    const opener = process.platform === "win32" ? `start "" "${url}"` : process.platform === "darwin" ? `open "${url}"` : `xdg-open "${url}"`;
+    exec(opener, () => {});
+  }
 });
