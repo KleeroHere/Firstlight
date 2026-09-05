@@ -1,0 +1,348 @@
+{
+  "rolls": [
+    {
+      "id": "fog-signal-check",
+      "title": "Fog signal check",
+      "durationTarget": 72,
+      "scenes": [
+        {
+          "id": "s0",
+          "kind": "title",
+          "plate": "Fog signal check",
+          "t": [
+            0,
+            6
+          ],
+          "chars": [],
+          "bg": null,
+          "img": "",
+          "anim": "",
+          "vo": "Fog in the forecast: the signal is checked. Three steps.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        },
+        {
+          "id": "s1",
+          "kind": "scene",
+          "plate": "Step 1. Read the forecast, write the time",
+          "t": [
+            6,
+            22
+          ],
+          "chars": [
+            "ines"
+          ],
+          "bg": "harbour-office",
+          "img": "Ines at the desk of the harbour office, one hand on the radio set, the other writing a line into an open logbook; the window shows a grey, hazy evening over the pier. Medium shot.",
+          "anim": "She finishes the line and looks up at the window.",
+          "vo": "The clerk reads the evening forecast off the radio and writes the time into the log. Fog after nine — that is the trigger.",
+          "frames": [
+            "s1_sh1_frame.png",
+            "s1_sh2_frame.png"
+          ],
+          "takes": [
+            "s1_take1.mp4"
+          ],
+          "rejected": 0
+        },
+        {
+          "id": "s2",
+          "kind": "scene",
+          "plate": "Step 2. Test the horn — two short, one long",
+          "t": [
+            22,
+            40
+          ],
+          "chars": [
+            "mara",
+            "tomas"
+          ],
+          "bg": "lantern-room",
+          "img": "Mara stands at the signal panel in the lantern room with one hand on a large lever; Tomas is beside her, notebook open, watching the panel. Wide shot, the lens behind them catching the last light.",
+          "anim": "Mara pulls the lever down once, holds it, lets it back up.",
+          "vo": "The keeper tests the horn from the panel: two short blasts, one long. The apprentice counts them and writes what he heard, not what he expected.",
+          "frames": [
+            "s2_sh1_frame.png",
+            "s2_sh2_frame.png"
+          ],
+          "takes": [
+            "s2_take1.mp4"
+          ],
+          "rejected": 0
+        },
+        {
+          "id": "s3",
+          "kind": "scene",
+          "plate": "Step 3. Confirm with the harbour by radio",
+          "t": [
+            40,
+            56
+          ],
+          "chars": [
+            "tomas"
+          ],
+          "bg": "pier",
+          "img": "Tomas on the pier at dusk, a handheld radio at his mouth, looking back up at the lighthouse; the lamp above has just come on. Medium shot.",
+          "anim": "He lowers the radio and gives a small thumbs-up towards the tower.",
+          "vo": "Then somebody outside confirms it was heard. The apprentice calls the office from the pier; the clerk answers and logs the time. Now the check is done.",
+          "frames": [
+            "s3_sh1_frame.png",
+            "s3_sh2_frame.png"
+          ],
+          "takes": [
+            "s3_take1.mp4"
+          ],
+          "rejected": 0
+        },
+        {
+          "id": "s4",
+          "kind": "memo",
+          "plate": "Fog signal: three steps",
+          "t": [
+            56,
+            72
+          ],
+          "chars": [],
+          "bg": null,
+          "img": "",
+          "anim": "",
+          "vo": "Forecast. Horn. Radio. Three lines in the log, and the night can come in.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        }
+      ],
+      "output": "Fog signal check.mp4",
+      "buildLog": {
+        "createdAt": "2026-09-04T12:25:52.089Z",
+        "totalDuration": 72,
+        "voMode": "placeholder"
+      },
+      "verify": {
+        "verdict": "warn",
+        "counts": {
+          "pass": 20,
+          "warn": 2,
+          "fail": 0
+        },
+        "checkedAt": "2026-09-04T12:02:18.708Z",
+        "checks": [
+          {
+            "section": "Format",
+            "verdict": "pass",
+            "message": "container mp4"
+          },
+          {
+            "section": "Format",
+            "verdict": "pass",
+            "message": "video codec H.264, High profile, level 4.1"
+          },
+          {
+            "section": "Format",
+            "verdict": "pass",
+            "message": "1920×1080, 30.00 fps, yuv420p"
+          },
+          {
+            "section": "Format",
+            "verdict": "pass",
+            "message": "audio AAC, 48000 Hz, 2 channels"
+          },
+          {
+            "section": "Format",
+            "verdict": "warn",
+            "message": "audio bitrate 96 kbps — below the 192k nominal (a quiet placeholder track compresses down; a real voice-over brings it back up)"
+          },
+          {
+            "section": "Format",
+            "verdict": "pass",
+            "message": "faststart: moov at the front of the file"
+          },
+          {
+            "section": "Timing",
+            "verdict": "pass",
+            "message": "duration 72.0 s, within the 60–180 s standard"
+          },
+          {
+            "section": "Timing",
+            "verdict": "pass",
+            "message": "within ±10% of the scenario's target (72 s)"
+          },
+          {
+            "section": "Timing",
+            "verdict": "pass",
+            "message": "every scene cut from a real take"
+          },
+          {
+            "section": "Timing",
+            "verdict": "pass",
+            "message": "no still-frame extension longer than a second"
+          },
+          {
+            "section": "Timing",
+            "verdict": "warn",
+            "message": "voice-over: placeholder — a real one (ElevenLabs) is needed before this ships"
+          },
+          {
+            "section": "Loudness",
+            "verdict": "pass",
+            "message": "integrated -16.2 LUFS (target −16 ±1)"
+          },
+          {
+            "section": "Loudness",
+            "verdict": "pass",
+            "message": "true peak -4.7 dBTP (threshold −1.5)"
+          },
+          {
+            "section": "Title cards (sampled mid-scene)",
+            "verdict": "pass",
+            "message": "s1: card in frame (brightness delta 191)"
+          },
+          {
+            "section": "Title cards (sampled mid-scene)",
+            "verdict": "pass",
+            "message": "s2: card in frame (brightness delta 201)"
+          },
+          {
+            "section": "Title cards (sampled mid-scene)",
+            "verdict": "pass",
+            "message": "s3: card in frame (brightness delta 188)"
+          }
+        ]
+      },
+      "priemka": false,
+      "acceptance": {
+        "total": 3,
+        "accepted": 1,
+        "rejected": 1,
+        "pending": 1,
+        "unshot": 0,
+        "defects": [
+          "extra-person",
+          "extra-hand",
+          "object-moved",
+          "cut-jump",
+          "face-drift",
+          "blur"
+        ]
+      },
+      "updatedAt": 1788523338708,
+      "stage": "assembled"
+    },
+    {
+      "id": "opening-the-office",
+      "title": "Opening the harbour office",
+      "durationTarget": 66,
+      "scenes": [
+        {
+          "id": "s0",
+          "kind": "title",
+          "plate": "Opening the harbour office",
+          "t": [
+            0,
+            6
+          ],
+          "chars": [],
+          "bg": null,
+          "img": "",
+          "anim": "",
+          "vo": "Every morning, in the same order. Three steps.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        },
+        {
+          "id": "s1",
+          "kind": "scene",
+          "plate": "Step 1. Radio on, log open",
+          "t": [
+            6,
+            22
+          ],
+          "chars": [
+            "ines"
+          ],
+          "bg": "harbour-office",
+          "img": "Ines switches on the radio set with one hand and opens the logbook to a fresh page with the other; morning light through the window. Medium shot.",
+          "anim": "She turns the dial, then flattens the page.",
+          "vo": "The radio goes on before anything else, and the log is opened at the day's page. Whatever happens next gets a line.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        },
+        {
+          "id": "s2",
+          "kind": "scene",
+          "plate": "Step 2. Walk the pier, count the boats",
+          "t": [
+            22,
+            38
+          ],
+          "chars": [
+            "tomas"
+          ],
+          "bg": "pier",
+          "img": "Tomas walking along the pier in the morning, notebook in hand, looking at the moored boats; the lighthouse behind him with its lamp off. Wide shot.",
+          "anim": "A slow walk along the pier, two steps.",
+          "vo": "The apprentice walks the pier and counts what is tied up. The number goes in the log next to yesterday's.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        },
+        {
+          "id": "s3",
+          "kind": "scene",
+          "plate": "Step 3. Report to the keeper",
+          "t": [
+            38,
+            52
+          ],
+          "chars": [
+            "tomas",
+            "mara"
+          ],
+          "bg": "harbour-office",
+          "img": "Tomas at the office door with his notebook; Mara at the desk, looking up from the log with a mug in her hand. Medium shot, both in frame.",
+          "anim": "Tomas holds up the notebook; Mara nods once.",
+          "vo": "Then the count goes to the keeper, out loud, and she writes it down herself. Two people, one number, no surprises.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        },
+        {
+          "id": "s4",
+          "kind": "memo",
+          "plate": "Opening the office: three steps",
+          "t": [
+            52,
+            66
+          ],
+          "chars": [],
+          "bg": null,
+          "img": "",
+          "anim": "",
+          "vo": "Radio. Pier. Keeper. The office is open.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        }
+      ],
+      "output": null,
+      "buildLog": null,
+      "verify": null,
+      "priemka": false,
+      "acceptance": null,
+      "updatedAt": 1788512400000,
+      "stage": "planned"
+    }
+  ],
+  "spend": {
+    "backends": {
+      "wavespeed": {
+        "spent_usd": 4.85,
+        "runs": 6
+      }
+    },
+    "total_usd": 4.85
+  }
+}

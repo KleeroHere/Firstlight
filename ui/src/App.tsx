@@ -4,6 +4,7 @@ import WorkspacePage from "./pages/WorkspacePage";
 import RollPage from "./pages/RollPage";
 import JobsDrawer from "./components/JobsDrawer";
 import ToastHost from "./components/ToastHost/ToastHost";
+import { DEMO } from "./api";
 
 /**
  * Two screens and a drawer. The list of rolls, one roll — frames, takes, the
@@ -15,6 +16,12 @@ import ToastHost from "./components/ToastHost/ToastHost";
 export default function App() {
   return (
     <div className="fl-app">
+      {DEMO && (
+        <p className="fl-demo-banner">
+          Demo — the Harbour Light example, read-only, no server behind it.{" "}
+          <a href="https://github.com/KleeroHere/Firstlight">Get Firstlight</a> to run the real pipeline.
+        </p>
+      )}
       <header className="fl-header">
         <NavLink to="/" className="fl-brand" end>
           {/* The mark is optional: without the file the wordmark stands alone

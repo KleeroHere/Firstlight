@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "server": "node server/server.mjs",
-    "start": "node server/server.mjs --serve dist"
+    "start": "node server/server.mjs --serve dist",
+    "demo:data": "node scripts/build-demo-data.mjs",
+    "build:demo": "tsc && vite build --mode demo"
   },
   "dependencies": {
     "react": "^19.1.0",

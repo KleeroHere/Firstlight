@@ -1,0 +1,62 @@
+{
+  "root": "workspace",
+  "config": "engine/pipeline.config.json",
+  "folders": [
+    {
+      "key": "scenarios",
+      "path": "workspace/prompts/scenarios",
+      "what": "One YAML per episode. This is the source of truth — everything else is made from it.",
+      "files": 2,
+      "bytes": 5325
+    },
+    {
+      "key": "series",
+      "path": "workspace/prompts",
+      "what": "series.yaml: the style, the cast and their reference sheets, the backgrounds.",
+      "files": 10,
+      "bytes": 43002
+    },
+    {
+      "key": "compiled",
+      "path": "workspace/prompts/compiled",
+      "what": "What the scenarios compile into. Every later stage reads these, not the YAML.",
+      "files": 2,
+      "bytes": 10319
+    },
+    {
+      "key": "refs",
+      "path": "workspace/refs",
+      "what": "Reference sheets per character, named as in series.yaml.",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "key": "backgrounds",
+      "path": "workspace/backgrounds",
+      "what": "One image per background.",
+      "files": 0,
+      "bytes": 0
+    },
+    {
+      "key": "takes",
+      "path": "workspace/takes",
+      "what": "Per roll: keyframes, generated clips, and _rejected/ for what was turned down.",
+      "files": 12,
+      "bytes": 9693158
+    },
+    {
+      "key": "build",
+      "path": "workspace/build",
+      "what": "Intermediate segments while an episode is being cut.",
+      "files": 35,
+      "bytes": 7007615
+    },
+    {
+      "key": "out",
+      "path": "workspace/out",
+      "what": "Finished episodes, each with its build log and its grade.",
+      "files": 3,
+      "bytes": 2729338
+    }
+  ]
+}

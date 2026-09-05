@@ -8,6 +8,20 @@
   color: var(--color-text-primary);
 }
 
+.fl-demo-banner {
+  margin: 0;
+  padding: 8px 28px;
+  background: var(--color-accent, #3182e4);
+  color: #fff;
+  font-size: var(--font-size-sm, 0.8125rem);
+  text-align: center;
+}
+.fl-demo-banner a {
+  color: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+}
+
 .fl-header {
   display: flex;
   align-items: center;

@@ -1,0 +1,65 @@
+name: Deploy demo to GitHub Pages
+
+# Builds ui/ in demo mode and publishes it to Pages: no server, no engine,
+# nothing generated at build time. The interface reads the static snapshot of
+# the Harbour Light example already committed at ui/public/demo/ — see
+# DEMO in ui/src/api.ts and, for how that snapshot itself is made,
+# ui/scripts/build-demo-data.mjs (run by hand, not by this workflow: its
+# source is generated media that is gitignored and needs API keys this
+# workflow does not have). Project pages are served from /Firstlight/, hence
+# BASE_PATH below.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ui/**"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - name: Install UI dependencies
+        run: npm ci
+        working-directory: ui
+
+      - name: Build the demo
+        run: npm run build:demo
+        working-directory: ui
+        env:
+          BASE_PATH: /Firstlight/
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ui/dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

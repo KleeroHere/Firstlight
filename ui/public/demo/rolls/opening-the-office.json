@@ -1,0 +1,106 @@
+{
+  "id": "opening-the-office",
+  "title": "Opening the harbour office",
+  "durationTarget": 66,
+  "scenes": [
+    {
+      "id": "s0",
+      "kind": "title",
+      "plate": "Opening the harbour office",
+      "t": [
+        0,
+        6
+      ],
+      "chars": [],
+      "bg": null,
+      "img": "",
+      "anim": "",
+      "vo": "Every morning, in the same order. Three steps.",
+      "frames": [],
+      "takes": [],
+      "rejected": 0
+    },
+    {
+      "id": "s1",
+      "kind": "scene",
+      "plate": "Step 1. Radio on, log open",
+      "t": [
+        6,
+        22
+      ],
+      "chars": [
+        "ines"
+      ],
+      "bg": "harbour-office",
+      "img": "Ines switches on the radio set with one hand and opens the logbook to a fresh page with the other; morning light through the window. Medium shot.",
+      "anim": "She turns the dial, then flattens the page.",
+      "vo": "The radio goes on before anything else, and the log is opened at the day's page. Whatever happens next gets a line.",
+      "frames": [],
+      "takes": [],
+      "rejected": 0
+    },
+    {
+      "id": "s2",
+      "kind": "scene",
+      "plate": "Step 2. Walk the pier, count the boats",
+      "t": [
+        22,
+        38
+      ],
+      "chars": [
+        "tomas"
+      ],
+      "bg": "pier",
+      "img": "Tomas walking along the pier in the morning, notebook in hand, looking at the moored boats; the lighthouse behind him with its lamp off. Wide shot.",
+      "anim": "A slow walk along the pier, two steps.",
+      "vo": "The apprentice walks the pier and counts what is tied up. The number goes in the log next to yesterday's.",
+      "frames": [],
+      "takes": [],
+      "rejected": 0
+    },
+    {
+      "id": "s3",
+      "kind": "scene",
+      "plate": "Step 3. Report to the keeper",
+      "t": [
+        38,
+        52
+      ],
+      "chars": [
+        "tomas",
+        "mara"
+      ],
+      "bg": "harbour-office",
+      "img": "Tomas at the office door with his notebook; Mara at the desk, looking up from the log with a mug in her hand. Medium shot, both in frame.",
+      "anim": "Tomas holds up the notebook; Mara nods once.",
+      "vo": "Then the count goes to the keeper, out loud, and she writes it down herself. Two people, one number, no surprises.",
+      "frames": [],
+      "takes": [],
+      "rejected": 0
+    },
+    {
+      "id": "s4",
+      "kind": "memo",
+      "plate": "Opening the office: three steps",
+      "t": [
+        52,
+        66
+      ],
+      "chars": [],
+      "bg": null,
+      "img": "",
+      "anim": "",
+      "vo": "Radio. Pier. Keeper. The office is open.",
+      "frames": [],
+      "takes": [],
+      "rejected": 0
+    }
+  ],
+  "output": null,
+  "buildLog": null,
+  "verify": null,
+  "priemka": false,
+  "acceptance": null,
+  "updatedAt": 1788512400000,
+  "stage": "planned"
+}

@@ -1,0 +1,83 @@
+{
+  "plans": [
+    {
+      "plan": 1,
+      "scene": "s1",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "She finishes the line and looks up at the window.",
+      "frames": 8,
+      "master": "plan1_master.png",
+      "key": "keys/plan1_key.png",
+      "variants": [
+        {
+          "file": "plan1.mp4",
+          "key": "plan1",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Clean — the look-up reads clearly, keeps both keyframes."
+        }
+      ]
+    },
+    {
+      "plan": 2,
+      "scene": "s2",
+      "i2v": false,
+      "cycle": true,
+      "closeup": false,
+      "motion": "Mara pulls the lever down once, holds it, lets it back up.",
+      "frames": 16,
+      "master": "plan2_master.png",
+      "key": "keys/plan2_key.png",
+      "variants": [
+        {
+          "file": "plan2.mp4",
+          "key": "plan2",
+          "decision": "redo",
+          "defects": [
+            "cut-jump"
+          ],
+          "comment": "The hold reads as two separate pulls — retime it to one beat."
+        }
+      ]
+    },
+    {
+      "plan": 3,
+      "scene": "s3",
+      "i2v": true,
+      "cycle": false,
+      "closeup": true,
+      "motion": "He lowers the radio and gives a small thumbs-up towards the tower.",
+      "frames": 24,
+      "master": "plan3_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "plan3_s1.mp4",
+          "key": "plan3_s1",
+          "decision": "rejected",
+          "defects": [
+            "extra-hand"
+          ],
+          "comment": "A second hand appears on the radio for two frames."
+        },
+        {
+          "file": "plan3_s2.mp4",
+          "key": "plan3_s2",
+          "decision": null,
+          "defects": [],
+          "comment": ""
+        }
+      ]
+    }
+  ],
+  "defects": [
+    "extra-person",
+    "extra-hand",
+    "object-moved",
+    "cut-jump",
+    "face-drift",
+    "blur"
+  ]
+}

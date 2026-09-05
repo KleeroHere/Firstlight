@@ -101,6 +101,24 @@ async function send<T>(method: string, url: string, body?: unknown): Promise<T> 
 }
 const post = <T,>(url: string, body: unknown) => send<T>("POST", url, body);
 
+/**
+ * Demo mode: no server behind the interface at all (GitHub Pages, or a normal
+ * build previewed with ?demo=1). Reads become static JSON snapshots of the
+ * Harbour Light example — see scripts/build-demo-data.mjs, which writes them
+ * to ui/public/demo/ — and writes are refused with one clear message instead
+ * of a fetch to a server that is not there.
+ */
+export const DEMO =
+  import.meta.env.VITE_DEMO === "1" ||
+  (typeof location !== "undefined" && new URLSearchParams(location.search).get("demo") === "1");
+
+const demoPath = (p: string) => `${import.meta.env.BASE_URL}demo${p}`;
+
+const READ_ONLY = "This is a read-only demo of the example workspace — download Firstlight to run the pipeline for real.";
+function demoBlocked<T>(): Promise<T> {
+  return Promise.reject(new Error(READ_ONLY));
+}
+
 /** A scene as it lives in the scenario YAML — the shape the editor writes back. */
 export interface ScenarioScene {
   id: string;
@@ -147,25 +165,36 @@ export interface Spend {
 }
 
 export const api = {
-  rolls: () => get<{ rolls: Roll[]; spend: Spend | null }>("/api/rolls"),
-  roll: (id: string) => get<Roll>(`/api/rolls/${encodeURIComponent(id)}`),
-  workspace: () => get<Workspace>("/api/workspace"),
+  rolls: () => get<{ rolls: Roll[]; spend: Spend | null }>(DEMO ? demoPath("/rolls.json") : "/api/rolls"),
+  roll: (id: string) => get<Roll>(DEMO ? demoPath(`/rolls/${encodeURIComponent(id)}.json`) : `/api/rolls/${encodeURIComponent(id)}`),
+  workspace: () => get<Workspace>(DEMO ? demoPath("/workspace.json") : "/api/workspace"),
   createRoll: (title: string, duration: number) =>
-    post<{ id: string; compiled: boolean; log: string }>("/api/rolls", { title, duration }),
-  deleteRoll: (id: string) => send<{ ok: true; takesKept: boolean }>("DELETE", `/api/rolls/${encodeURIComponent(id)}`),
-  scenario: (id: string) => get<Scenario>(`/api/rolls/${encodeURIComponent(id)}/scenario`),
+    DEMO
+      ? demoBlocked<{ id: string; compiled: boolean; log: string }>()
+      : post<{ id: string; compiled: boolean; log: string }>("/api/rolls", { title, duration }),
+  deleteRoll: (id: string) =>
+    DEMO
+      ? demoBlocked<{ ok: true; takesKept: boolean }>()
+      : send<{ ok: true; takesKept: boolean }>("DELETE", `/api/rolls/${encodeURIComponent(id)}`),
+  scenario: (id: string) => get<Scenario>(DEMO ? demoPath(`/scenarios/${encodeURIComponent(id)}.json`) : `/api/rolls/${encodeURIComponent(id)}/scenario`),
   saveScenario: (id: string, doc: Scenario) =>
-    send<{ compiled: boolean; log: string }>("PUT", `/api/rolls/${encodeURIComponent(id)}/scenario`, doc),
-  reject: (id: string, file: string) => post<{ ok: true }>(`/api/rolls/${encodeURIComponent(id)}/reject`, { file }),
-  plans: (id: string) => get<{ plans: Plan[]; defects: string[] }>(`/api/rolls/${encodeURIComponent(id)}/plans`),
+    DEMO
+      ? demoBlocked<{ compiled: boolean; log: string }>()
+      : send<{ compiled: boolean; log: string }>("PUT", `/api/rolls/${encodeURIComponent(id)}/scenario`, doc),
+  reject: (id: string, file: string) =>
+    DEMO ? demoBlocked<{ ok: true }>() : post<{ ok: true }>(`/api/rolls/${encodeURIComponent(id)}/reject`, { file }),
+  plans: (id: string) => get<{ plans: Plan[]; defects: string[] }>(DEMO ? demoPath(`/plans/${encodeURIComponent(id)}.json`) : `/api/rolls/${encodeURIComponent(id)}/plans`),
   decide: (id: string, key: string, decision: Decision, defects: string[], comment: string) =>
-    post<{ plans: Record<string, unknown> }>(`/api/rolls/${encodeURIComponent(id)}/acceptance`, { key, decision, defects, comment }),
+    DEMO
+      ? demoBlocked<{ plans: Record<string, unknown> }>()
+      : post<{ plans: Record<string, unknown> }>(`/api/rolls/${encodeURIComponent(id)}/acceptance`, { key, decision, defects, comment }),
   contactSheet: (id: string, clip: string) =>
-    post<{ sheet: string }>(`/api/rolls/${encodeURIComponent(id)}/contact-sheet`, { clip }),
-  run: (script: string, args: string[]) => post<{ id: string }>("/api/jobs", { script, args }),
-  jobs: () => get<Job[]>("/api/jobs"),
+    DEMO ? demoBlocked<{ sheet: string }>() : post<{ sheet: string }>(`/api/rolls/${encodeURIComponent(id)}/contact-sheet`, { clip }),
+  run: (script: string, args: string[]) => (DEMO ? demoBlocked<{ id: string }>() : post<{ id: string }>("/api/jobs", { script, args })),
+  jobs: () => (DEMO ? Promise.resolve<Job[]>([]) : get<Job[]>("/api/jobs")),
   /** Streams a job's output; resolves with the exit code when it finishes. */
   follow(jobId: string, onLine: (line: string) => void): Promise<number> {
+    if (DEMO) return Promise.resolve(-1);
     return new Promise((resolve) => {
       const es = new EventSource(`/api/jobs/${jobId}/log`);
       es.onmessage = (e) => onLine(JSON.parse(e.data));
@@ -181,7 +210,8 @@ export const api = {
   },
 };
 
-export const fileUrl = (...parts: string[]) => "/files/" + parts.map(encodeURIComponent).join("/");
+export const fileUrl = (...parts: string[]) =>
+  (DEMO ? demoPath("/files/") : "/files/") + parts.map(encodeURIComponent).join("/");
 
 export const STAGE_LABEL: Record<Stage, string> = {
   planned: "Planned",
