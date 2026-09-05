@@ -18,6 +18,14 @@ A pipeline that turns a written scenario into a finished training film — keyfr
   <a href="https://kleerohere.github.io/Firstlight/"><img src="https://img.shields.io/badge/live_demo-Harbour_Light_example-e2583f" alt="Live demo" /></a>
 </p>
 
+## See it work
+
+[![How Firstlight works — 2:41, narrated. Click to watch with sound.](docs/demo/how-firstlight-works-preview.gif)](https://github.com/KleeroHere/Firstlight/releases/latest/download/How-Firstlight-works.mp4)
+
+<p align="center"><b>▶ <a href="https://github.com/KleeroHere/Firstlight/releases/latest/download/How-Firstlight-works.mp4">Watch “How Firstlight works” with narration (2:41, 1080p)</a></b> · <a href="https://kleerohere.github.io/Firstlight/">open the live demo</a></p>
+
+Two episodes made end to end by the pipeline — scenario in, graded film out — are in the [Showcase](#showcase) below.
+
 > **Where the name comes from.** *First light* is the moment a new telescope produces its first image — the instrument works. It is also dawn, which makes it family to [Aurora](https://github.com/KleeroHere/Aurora), the offline knowledge base these films are made for. And it is, literally, the *first frame*: the whole engine is built on first-frame-to-last-frame video generation. Aurora is what people see. Firstlight is how the films inside it get made.
 
 ## What it does
@@ -282,7 +290,7 @@ five-second clips shot for that scene. No scene holds a frame, stretches a clip
 or slows one down: the build log records `still: false` for all eight, and the
 assembler trims 0.2 s per scene rather than filling 10.
 
-[![How Firstlight works — animated preview](docs/demo/how-firstlight-works-preview.gif)](https://github.com/KleeroHere/Firstlight/releases/latest/download/How-Firstlight-works.mp4)
+**How Firstlight works** · 2:41 · the narrated walkthrough is at the top of this page and in the [release](https://github.com/KleeroHere/Firstlight/releases/latest/download/How-Firstlight-works.mp4).
 
 **How Firstlight works** · 2:41 · narrated walkthrough: six steps, one command
 each; the scenario is the edit; start frames and their acceptance; motion
