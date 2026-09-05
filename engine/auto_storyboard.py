@@ -84,6 +84,16 @@ def best_ref(char, *keys):
     return ref_path(char, "base")
 
 
+# Which reference sheet a solo shot is built from. `base` first, deliberately:
+# a "dialog" sheet is a picture of the character SPEAKING, and handing it to the
+# image model for a shot whose rule is "mouth closed" fights that rule with a
+# reference image -- which the model believes over the sentence. This series
+# never shows anyone talking on camera (narration is dubbed), so the talking
+# sheet is the wrong default everywhere; it stays on disk for a series that
+# does want it.
+SOLO_REFS = ("base", "dialog")
+
+
 def solo_anim(anim, primary, compiled):
     """The scene's `anim` line, trimmed to one person's part of it.
 
@@ -124,6 +134,7 @@ def build_shots(scene, compiled):
     # solo shots need the reverse of it too, or they come back frozen for the
     # same reason the wide did.
     solo_base = scene.get("anim_solo") or anim
+    note = (" " + scene["motion_note"].strip()) if scene.get("motion_note") else ""
     style = compiled["style"]
     shots = []
 
@@ -133,7 +144,7 @@ def build_shots(scene, compiled):
     shots.append(dict(
         shot="wide", role="wide", cast=cast,
         frame_prompt=f"{frame_rules('wide')} {style} Location: {bg['desc']} {passports}. {img}",
-        motion=apply_guard(wide_anim, len(cast)),
+        motion=apply_guard(wide_anim + note, len(cast)),
         refs=[bg["file"]] + [best_ref(c, "fullbody", "base") for c in cast],
     ))
 
@@ -158,8 +169,8 @@ def build_shots(scene, compiled):
             f"{frame_rules('medium')} {style} "
             f"Behind them, softly out of focus, is unmistakably {bg['name']} and nowhere else."
         ),
-        motion=apply_guard(my_anim, 1),
-        refs=[bg["file"], best_ref(primary, "dialog", "base")],
+        motion=apply_guard(my_anim + note, 1),
+        refs=[bg["file"], best_ref(primary, *SOLO_REFS)],
     ))
 
     # ---- CLOSE: the other one in a two-hander, on hands or face ----
@@ -172,6 +183,8 @@ def build_shots(scene, compiled):
             f"Close shot, in that same place, on the hands of exactly one person: "
             f"{compiled['characters'][other]['name']}, {passport_of(compiled, other)} "
             f"Their own two hands, and the object they are handling, fill the frame, doing part of: {their_anim} "
+            f"This is the same moment as the rest of the scene, which is: {img} Keep that light, that "
+            "weather and that time of day exactly. "
             f"{frame_rules('close')} {style} "
             f"The little of the background that shows is {bg['name']}, thrown well out of focus -- "
             "not another location. The frame edges are quiet: the place simply continues, "
@@ -179,8 +192,8 @@ def build_shots(scene, compiled):
         ),
         motion=apply_guard(
             "Only their own hands move, completing one small part of: " + their_anim
-            + " The motion starts and finishes once; it does not loop or repeat.", 1),
-        refs=[bg["file"], best_ref(other, "dialog", "base")],
+            + " The motion starts and finishes once; it does not loop or repeat." + note, 1),
+        refs=[bg["file"], best_ref(other, *SOLO_REFS)],
     ))
     return shots
 

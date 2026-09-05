@@ -275,8 +275,11 @@ Two Harbour Light episodes, produced end to end by the pipeline described below
 assembler cut. Every start frame and every clip went through an acceptance gate:
 **24 frames judged, 6 rejected and reshot; 24 clips judged, 8 rejected and
 reshot.** Every reject named a cause to change, and every fix went into the
-scenario or `engine/pipeline.config.json` rather than into a one-off command.
-Total model spend for both episodes, reshoots included: **$9.90**.
+scenario or `engine/pipeline.config.json` rather than into a one-off command. A
+second, independent review then found four more defects, listed with everything
+else in [`docs/DEMO-REVIEW.md`](docs/DEMO-REVIEW.md) — they are recorded rather
+than hidden, and the fixes they prompted are in the engine even though the clips
+were not reshot. Total model spend for both episodes: **$10.04**.
 
 Click a poster to watch it in the live demo; the full-quality files are attached
 to the [latest release](https://github.com/KleeroHere/Firstlight/releases/latest).

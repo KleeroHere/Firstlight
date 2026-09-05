@@ -75,6 +75,11 @@ def frame_rules(shot, solo=True):
         parts.append(FRAME["wide"])
     elif solo:
         parts.append(FRAME["solo"])
+    if shot != "wide" and FRAME.get("mouth"):
+        # Repeated after the composition clauses, not folded into them: an open
+        # mouth is the defect that survives being mentioned once, because half
+        # the reference sheets show the character speaking.
+        parts.append(FRAME["mouth"])
     if shot in ("medium", "close") and FRAME.get("oneProp"):
         # A character reference sheet carries that character's usual props. Left
         # unsaid, they turn up in every shot -- the apprentice hauling a rope

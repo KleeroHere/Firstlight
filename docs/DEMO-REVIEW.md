@@ -66,20 +66,55 @@ room, and the sheet shows both arms visibly moving between frames 1 and 45. The
 metric is calibrated for a person-sized gesture; this is the case it does not
 cover.
 
-## Two blemishes carried into the final cut
+## Independent QA pass, and what was closed rather than fixed
 
-Recorded rather than hidden, because the WaveSpeed budget for the pass was spent
-(**$9.90 of $10.00**) by the time they were the only things left.
+A second reviewer ran the same packets through `--apply` (the mechanism worked
+unchanged) and rejected four positions the first pass had let through. All four
+were real, and the finding is recorded here rather than argued with:
 
-1. **Fog signal check, plan 12 (`text_changed`)** — a faint letter-shaped mark
-   in the top-right corner, outside the action. It is in the start frame, so it
-   is present in every frame rather than appearing mid-clip; the fix is
-   regenerating the frame ($0.027) and reshooting ($0.35).
-2. **Handover at the pier, plan 6 (`prop_changed`)** — between roughly frames 45
-   and 100 a second wooden tag is briefly visible on the board beside the one in
-   her hand, resolving before the end. This take is already the second, and it
-   fixed the worse version (the tag doubling in size and staying doubled); the
-   clip now returns exactly to its first frame.
+| Roll | Position | Defect it found | State now |
+|---|---|---|---|
+| Fog signal check | frame 3 | Mouth open mid-word with teeth visible; the window a warm sunset against the grey daylight of plans 1–2 in the same scene. | **Frame corrected. Clip not reshot.** |
+| Fog signal check | frame 8 | A glazed door still standing at the right edge — the same door that swung open in the previous take. In this take it stays shut, which is how it survived the first review. | **Frame corrected. Clip not reshot.** |
+| Handover at the pier | frame 4 | The tag reads `SHIFT` in legible letters. That frame predates the scenario fix and had never been regenerated. | **Frame and end key corrected. Clip not reshot.** |
+| Handover at the pier | clip 6 | A second tag on the board from ~frame 45 to ~100 (`max_area_dev` 7.8 %, over the 6 % flag). | **Closed as a known blemish.** |
+| Fog signal check | clip 12 | The corner mark — confirmed **cosmetic** by the same pass. | Left alone by decision. |
+
+The reshoot was priced at **$1.37** and cancelled by the owner before any clip
+was shot: the episodes were judged good enough, and better is the enemy of good.
+**Nothing is pending.** Every one of the 24 frames and 24 clips per roll is
+`accepted` in `workspace/<roll>/acceptance.json`, four of them with the defect
+named in the record, and `wavespeed_batch.mjs --model auto --dry` reports
+`к съёмке 0` for both rolls. Reopening any of them is a single `--only N` run at
+$0.21–$0.35.
+
+One asymmetry to know about: the three corrected **start frames** are on disk and
+are better than the clips shot from them. The committed Pages demo was built
+before they were corrected, so what it shows still matches the shipped episodes —
+frames and clips from the same take. Rebuilding the demo would put the corrected
+frames beside the older clips until those clips are reshot.
+
+## The fixes that went into the engine anyway
+
+The corrections were cheap and are worth keeping even though three of them were
+never shot:
+
+- `production.frame.noDoors` now covers the **edges** of the frame and reflections
+  in glass, and says to choose an angle that leaves a door out of shot.
+- `production.frame.mouth` is a clause of its own, repeated after the composition
+  rules — an open mouth survives being mentioned once.
+- The **close** shot's prompt now carries the scene's own `img` line, so it knows
+  the weather and the time of day. A close-up had no idea the scene was a grey
+  hazy evening, which is how it came back a sunset.
+- Solo shots are now built from the character's `base` sheet, not `dialog`: a
+  "dialog" sheet is a picture of the character **speaking**, and handing it to the
+  image model for a shot whose rule is "mouth closed" fights the rule with a
+  reference image, which the model believes over the sentence. This series never
+  shows anyone talking on camera — the narration is dubbed — so the talking sheet
+  was the wrong default everywhere.
+- New scenario field `motion_note`: a per-scene constraint appended to every
+  shot's motion, for the thing one particular scene's model keeps getting wrong
+  ("the peg board keeps exactly one wooden tag for the whole shot").
 
 ## What the two gates actually rejected
 

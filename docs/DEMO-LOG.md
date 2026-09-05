@@ -102,6 +102,32 @@ two-pass encode sized to a release asset's cap). The explainer is therefore cut
 by the same assembler, with the same caption plates, the same narration cache
 and the same verify pass as the episodes.
 
+### Independent QA, and the reshoot that was cancelled
+
+A second reviewer took the packets exactly as written — `node
+engine/claude_agent.mjs qa --roll <roll> --packet`, review, `--apply
+verdict.json` — and the round trip needed no changes to work. It rejected four
+positions the first pass had accepted, and all four were right: an open mouth
+and a sunset-vs-daylight tone mismatch on one start frame, a glazed door still
+standing at the edge of another, the word `SHIFT` legible on a prop in a third,
+and a second tag appearing on a board mid-clip.
+
+Three start frames were regenerated (**$0.135**, five Seedream calls) and the
+four clip reshoots were priced at **$1.26** and queued. The owner then called
+it: the episodes are good enough, better is the enemy of good, stop spending.
+Nothing was shot. The four positions are closed as `accepted` with the defect
+named in `acceptance.json`, so nothing sits in a reshoot queue —
+`wavespeed_batch.mjs --model auto --dry` reports `к съёмке 0` for both rolls.
+
+The corrected frames stay on disk ahead of their clips, and the Pages demo was
+**not** rebuilt, so what it shows still matches the shipped episodes. The five
+engine and prompt fixes that came out of the pass were kept — they cost nothing
+and they are what stops the same defects next time. They are listed in
+`docs/DEMO-REVIEW.md`.
+
+Final spend for the whole pass: **$10.035** WaveSpeed, **3 602 characters**
+ElevenLabs.
+
 ### Working with an agent
 
 `engine/claude_agent.mjs` is the integration point. With `ANTHROPIC_API_KEY` set

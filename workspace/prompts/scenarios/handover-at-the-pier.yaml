@@ -58,6 +58,10 @@ scenes:
     motion: anim
     key: edit
     solo_key: closed
+    motion_note: >-
+      The peg board keeps exactly one wooden tag for the whole shot: no second
+      tag appears on it, none is already hanging there, and the tag in her hand
+      is the only one in the picture.
     key_change: >-
       the blank wooden tag now hangs on the next peg along and the peg it came from
       is empty.
@@ -70,9 +74,10 @@ scenes:
         - dialog
     bg: harbour-office
     img: >-
-      Ines at the harbour office desk, a small blank wooden tag held between two
+      Ines at the harbour office desk, a small wooden tag held between two
       fingers above a row of brass pegs on the wall board, the radio set on the
-      desk beside her.
+      desk beside her. The tag is blank: bare wood with a few faint wavy pen
+      strokes on it, no letters and no word of any kind.
     anim: >-
       Ines lifts the blank wooden tag off its peg and hangs it on the next peg along.
     vo: >-

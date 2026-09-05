@@ -159,11 +159,12 @@
     "frame": {
       "comment": "Composition rules for the start frames Seedream is asked for. A start frame that breaks these produces a clip that breaks them worse.",
       "solo": "Three-quarter angle, the person turned toward the object or the person they are dealing with, never square to the camera and never looking into the lens. Their own hands -- or the object in their hands -- are inside the frame and unobstructed, with normal anatomy: two arms, each from its own shoulder, five fingers per hand. Their lips are together and their mouth is completely closed: they are not speaking, not mid-word, not open-mouthed. Exactly one person: no second figure, no other hand, no reflection of another person.",
-      "noDoors": "No door, doorway, hatch, archway, stairwell or lit corridor anywhere in the background: the space behind them is a closed wall, a window with weather outside, or equipment. Nothing in frame suggests somebody could walk in.",
+      "noDoors": "No door, doorway, hatch, archway, stairwell or lit corridor anywhere in the picture, including at the very edges of the frame and reflected in any glass. If the location itself has a door, choose an angle that leaves it out of shot. The space behind and beside them is closed wall, window with weather outside, or equipment. Nothing in frame suggests somebody could walk in.",
       "wide": "Wide establishing shot on the location itself: the whole set readable, the cast placed in it at full or three-quarter length, floor and ceiling line visible.",
       "noText": "No readable text anywhere in the picture: labels, tags, signs, screens, book spines and pages carry no letters and no words at all -- they are blank, or bear only faint illegible pen strokes. Do not write out any word that appears in this prompt.",
       "tone": "Match the tone, exposure and colour temperature of the other frames in this scene exactly — the same time of day, the same light sources at the same strength.",
-      "oneProp": "The only object in their hands is the one this shot's action names. Nothing else is being held: no notebook, no pen, no radio, no tool that belongs to a different scene."
+      "oneProp": "The only object in their hands is the one this shot's action names. Nothing else is being held: no notebook, no pen, no radio, no tool that belongs to a different scene.",
+      "mouth": "Their mouth is shut: lips together, no teeth and no tongue visible, not mid-word, not about to speak. If they are using a telephone or a radio, they are listening, not talking."
     }
   },
   "qa": {
