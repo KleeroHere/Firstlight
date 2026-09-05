@@ -50,7 +50,7 @@
     "loudnormFilter": "loudnorm=I=-16:TP=-1.6:LRA=11",
     "voCharsPerSec": 15.5,
     "elevenlabs": {
-      "voiceId": "PASTE_SERIES_VOICE_ID",
+      "voiceId": "onwK4e9ZLuTAKqWW03F9",
       "modelId": "eleven_multilingual_v2",
       "apiKeyEnv": "ELEVENLABS_API_KEY",
       "comment": "Pin one voice for the whole series and never change it mid-way: every episode must sound like the same narrator. The API key comes only from the environment variable named in apiKeyEnv; it is never written to the repository."

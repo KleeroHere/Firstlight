@@ -72,6 +72,7 @@ function parseArgs(argv) {
     // 5-секундный клип покрывает 8 или 12 с экрана. Бесплатно (ffmpeg).
     else if (v === "--stretch") a.stretch = Number(argv[++i]);
     else if (v === "--out-dir") a.outDir = argv[++i];
+    else if (v === "--ledger") a.ledger = argv[++i];
     else if (v === "--seed") a.seed = Number(argv[++i]);
     else if (v === "--concurrency") a.concurrency = Number(argv[++i]);
     else if (v === "--redo") a.redo = true;
@@ -104,7 +105,7 @@ function decisionFor(plan, seed) {
   return acceptance.plans?.[key]?.decision ?? null;
 }
 
-const LEDGER = join(ROOT, "reports", "wavespeed-spend.json");
+const LEDGER = args.ledger ?? join(ROOT, "reports", "wavespeed-spend.json");
 function ledger() {
   return existsSync(LEDGER) ? JSON.parse(readFileSync(LEDGER, "utf8")) : { spent_usd: 0, runs: [] };
 }
