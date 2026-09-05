@@ -1,4 +1,5 @@
-/* Layout and the fl-* components. Colours and spacing come from the tokens. */
+/* Layout and the fl-* components. Colours and spacing come from the tokens:
+   styles/tokens.css for the structure, styles/firstlight.css for the palette. */
 
 .fl-app {
   min-height: 100vh;
@@ -11,8 +12,8 @@
 .fl-demo-banner {
   margin: 0;
   padding: 8px 28px;
-  background: var(--color-accent, #3182e4);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
   font-size: var(--font-size-sm, 0.8125rem);
   text-align: center;
 }
@@ -22,13 +23,18 @@
   text-decoration: underline;
 }
 
+/* The header is the lantern room at dawn: deep teal with the sun coming up
+   off its right edge. The glow is a gradient, so it costs nothing. */
 .fl-header {
+  position: relative;
   display: flex;
   align-items: center;
   gap: var(--space-md, 16px);
   padding: 14px 28px;
-  background: var(--color-sidebar-bg);
-  color: #fff;
+  background-color: var(--color-header-bg);
+  background-image: var(--fl-sunrise);
+  border-bottom: 1px solid rgba(201, 162, 106, 0.28);
+  color: var(--fl-cream);
 }
 .fl-brand {
   display: inline-flex;
@@ -38,23 +44,21 @@
   text-decoration: none;
 }
 .fl-brand__mark {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   object-fit: contain;
 }
 .fl-brand__name {
-  font-family: "Unbounded", system-ui, sans-serif;
-  font-weight: 700;
+  font-family: var(--font-family-display);
+  font-weight: 600;
   font-size: 20px;
   letter-spacing: 0.01em;
-  background: var(--fl-ribbon);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
+  color: var(--fl-cream);
 }
 .fl-header__tagline {
-  color: rgba(255, 255, 255, 0.6);
+  color: var(--fl-brass);
   font-size: 13px;
+  font-style: italic;
 }
 
 .fl-main {
@@ -74,8 +78,9 @@
   margin-bottom: 20px;
 }
 .fl-h1 {
-  font-family: "Unbounded", system-ui, sans-serif;
+  font-family: var(--font-family-display);
   font-size: 28px;
+  letter-spacing: -0.01em;
   margin: 4px 0;
 }
 .fl-muted {
@@ -91,9 +96,10 @@
   font-size: 13px;
 }
 code {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-family-utility);
   font-size: 0.9em;
   background: var(--color-accent-soft);
+  color: var(--color-accent);
   padding: 1px 5px;
   border-radius: 4px;
 }
@@ -108,17 +114,28 @@ code {
   margin: 0 0 24px;
 }
 .fl-stages__item {
+  position: relative;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: 12px;
+  box-shadow: inset 0 0 0 1px var(--fl-card-inner);
   padding: 12px 14px;
   display: flex;
   flex-direction: column;
 }
+/* the light along the top edge, the way it catches a brass instrument */
+.fl-stages__item::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  border-radius: 11px 11px 0 0;
+  background: linear-gradient(90deg, var(--color-accent-bright) 0%, rgba(224, 78, 20, 0) 72%);
+}
 .fl-stages__count {
-  font-family: "Unbounded", system-ui, sans-serif;
+  font-family: var(--font-family-display);
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 600;
 }
 .fl-stages__label {
   color: var(--color-text-secondary);
@@ -145,7 +162,6 @@ code {
   gap: 16px;
 }
 .fl-roll {
-  border-radius: 14px;
   overflow: hidden;
 }
 .fl-roll__link {
@@ -161,7 +177,10 @@ code {
   margin-bottom: 8px;
 }
 .fl-roll__title {
-  font-size: 18px;
+  font-family: var(--font-family-display);
+  font-weight: 500;
+  font-size: 17px;
+  letter-spacing: -0.005em;
   margin: 0 0 4px;
 }
 .fl-roll__meta {
@@ -172,7 +191,7 @@ code {
 .fl-progress {
   position: relative;
   height: 6px;
-  background: var(--color-border);
+  background: var(--color-divider);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -185,10 +204,10 @@ code {
   border-radius: 3px;
 }
 .fl-progress__keys {
-  background: var(--color-accent-secondary);
+  background: var(--fl-brass);
 }
 .fl-progress__takes {
-  background: var(--color-accent);
+  background: var(--color-accent-bright);
 }
 
 /* chips */
@@ -206,19 +225,19 @@ code {
 }
 .fl-stage--accepted,
 .fl-verdict--pass {
-  background: rgba(31, 157, 106, 0.14);
+  background: var(--color-success-soft);
   color: var(--color-success);
 }
 .fl-verdict--warn {
-  background: rgba(214, 147, 28, 0.16);
+  background: var(--fl-warn-soft);
   color: var(--fl-warn);
 }
 .fl-verdict--fail {
-  background: rgba(217, 83, 79, 0.14);
+  background: var(--color-danger-soft);
   color: var(--color-danger);
 }
 .fl-stage--planned {
-  background: rgba(138, 143, 168, 0.16);
+  background: var(--color-neutral-soft);
   color: var(--color-text-secondary);
 }
 
@@ -237,17 +256,25 @@ code {
   background: var(--color-surface);
   color: var(--color-text-primary);
   cursor: pointer;
+  transition: border-color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
 }
 .fl-button:hover:not(:disabled) {
-  border-color: var(--color-accent);
+  border-color: var(--color-accent-bright);
+  background: var(--color-hover);
 }
 .fl-button:disabled {
-  opacity: 0.6;
+  opacity: 0.55;
   cursor: default;
 }
+/* The one solid orange in the interface: the thing to press. */
 .fl-button--primary {
-  background: var(--fl-ribbon);
-  color: #fff;
+  background: var(--color-accent);
+  color: var(--color-text-on-accent);
+  border-color: transparent;
+  font-weight: 500;
+}
+.fl-button--primary:hover:not(:disabled) {
+  background: var(--color-accent-hover);
   border-color: transparent;
 }
 .fl-button--small {
@@ -277,9 +304,13 @@ code {
   border-bottom: 2px solid transparent;
   margin-bottom: -1px;
 }
+.fl-tab:hover {
+  color: var(--color-text-primary);
+}
 .fl-tab--active {
   color: var(--color-text-primary);
-  border-bottom-color: var(--color-accent);
+  font-weight: 500;
+  border-bottom-color: var(--color-accent-bright);
 }
 
 /* scenes / frames */
@@ -289,7 +320,6 @@ code {
   gap: 16px;
 }
 .fl-scene {
-  border-radius: 14px;
   padding: 16px 18px;
 }
 .fl-scene__head {
@@ -299,7 +329,7 @@ code {
   margin-bottom: 4px;
 }
 .fl-scene__id {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-family-utility);
   font-weight: 700;
   color: var(--color-accent);
 }
@@ -334,7 +364,7 @@ code {
   border: 1px solid var(--color-border);
   border-radius: 10px;
   overflow: hidden;
-  background: var(--color-surface);
+  background: var(--color-surface-raised);
 }
 .fl-frame__img,
 .fl-take__media {
@@ -342,7 +372,7 @@ code {
   width: 100%;
   aspect-ratio: 16 / 9;
   object-fit: cover;
-  background: #000;
+  background: var(--fl-teal-deep);
 }
 .fl-frame__bar,
 .fl-take__name {
@@ -351,8 +381,9 @@ code {
   align-items: center;
   gap: 8px;
   padding: 6px 10px;
+  border-top: 1px solid var(--color-divider);
   font-size: 12px;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-family-utility);
   color: var(--color-text-secondary);
 }
 .fl-checklist {
@@ -373,10 +404,10 @@ code {
   width: 100%;
   max-width: 960px;
   border-radius: 12px;
-  background: #000;
+  border: 1px solid var(--color-border);
+  background: var(--fl-teal-deep);
 }
 .fl-verify {
-  border-radius: 14px;
   padding: 16px 18px;
   max-width: 960px;
 }
@@ -433,7 +464,7 @@ code {
   border: 1px solid var(--color-border);
   border-bottom: 0;
   border-radius: 14px 14px 0 0;
-  box-shadow: 0 -8px 30px rgba(27, 23, 64, 0.12);
+  box-shadow: var(--shadow-lg), inset 0 0 0 1px var(--fl-card-inner);
   z-index: 20;
 }
 .fl-drawer__toggle {
@@ -468,7 +499,7 @@ code {
   background: var(--color-text-muted);
 }
 .fl-job__dot--live {
-  background: var(--color-accent-secondary);
+  background: var(--color-accent-bright);
   animation: fl-pulse 1.2s infinite;
 }
 .fl-job__dot--ok {
@@ -480,10 +511,10 @@ code {
 .fl-job__log {
   margin: 4px 0 8px;
   padding: 10px 12px;
-  background: var(--color-sidebar-bg);
-  color: #dfe3f5;
+  background: var(--fl-teal-deep);
+  color: var(--fl-sea-pale);
   border-radius: 8px;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-family-utility);
   font-size: 12px;
   line-height: 1.45;
   max-height: 260px;
@@ -515,19 +546,22 @@ code {
   gap: 4px;
 }
 .fl-nav__link {
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--fl-sea-pale);
   text-decoration: none;
   font-size: 14px;
   padding: 6px 12px;
   border-radius: 8px;
+  transition: color var(--dur-base) var(--ease-out), background-color var(--dur-base) var(--ease-out);
 }
 .fl-nav__link:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--fl-cream);
+  background: rgba(247, 239, 226, 0.08);
 }
+/* The active section is the lit one: the sun colour, ink on top of it. */
 .fl-nav__link--active {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.14);
+  color: var(--fl-teal-deep);
+  background: var(--fl-sun);
+  font-weight: 500;
 }
 
 /* --- forms ----------------------------------------------------------------- */
@@ -558,7 +592,7 @@ code {
   padding: 8px 10px;
   border: 1px solid var(--color-border);
   border-radius: 8px;
-  background: var(--color-surface);
+  background: var(--color-surface-raised);
   color: var(--color-text-primary);
   width: 100%;
   box-sizing: border-box;
@@ -574,7 +608,7 @@ code {
 }
 .fl-input--id {
   width: 68px;
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-family-utility);
   font-weight: 700;
   color: var(--color-accent);
 }
@@ -586,7 +620,6 @@ code {
 }
 
 .fl-new {
-  border-radius: 14px;
   padding: 16px 18px;
   margin-bottom: 20px;
   display: flex;
@@ -600,8 +633,7 @@ code {
 }
 
 .fl-empty {
-  border-radius: 14px;
-  padding: 20px 22px;
+  padding: 22px 24px;
   max-width: 640px;
 }
 .fl-empty p {
@@ -610,7 +642,8 @@ code {
   line-height: 1.5;
 }
 .fl-h2 {
-  font-family: "Unbounded", system-ui, sans-serif;
+  font-family: var(--font-family-display);
+  font-weight: 500;
   font-size: 18px;
   margin: 0 0 8px;
 }
@@ -629,6 +662,7 @@ code {
   padding: 14px 16px;
   background: var(--color-surface);
   border: 1px solid var(--color-border);
+  box-shadow: inset 0 0 0 1px var(--fl-card-inner);
   border-radius: 14px;
   position: sticky;
   top: 0;
@@ -668,7 +702,6 @@ code {
   font-variant-numeric: tabular-nums;
 }
 .fl-note {
-  border-radius: 14px;
   padding: 18px 20px;
   max-width: 820px;
 }
@@ -694,7 +727,7 @@ code {
   gap: 12px;
 }
 .fl-plans__scene-id {
-  font-family: "JetBrains Mono", ui-monospace, monospace;
+  font-family: var(--font-family-utility);
   font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -702,7 +735,6 @@ code {
   margin: 0;
 }
 .fl-plan {
-  border-radius: 14px;
   padding: 16px 18px;
 }
 .fl-plan__head {
@@ -735,7 +767,8 @@ code {
   aspect-ratio: 16 / 9;
   object-fit: cover;
   border-radius: 10px;
-  background: #000;
+  border: 1px solid var(--color-border);
+  background: var(--fl-teal-deep);
 }
 .fl-keyframe__empty {
   display: flex;
@@ -791,19 +824,19 @@ code {
   letter-spacing: 0.06em;
   padding: 3px 8px;
   border-radius: 999px;
-  background: rgba(138, 143, 168, 0.16);
+  background: var(--color-neutral-soft);
   color: var(--color-text-secondary);
 }
 .fl-decision--accepted {
-  background: rgba(31, 157, 106, 0.14);
+  background: var(--color-success-soft);
   color: var(--color-success);
 }
 .fl-decision--rejected {
-  background: rgba(217, 83, 79, 0.14);
+  background: var(--color-danger-soft);
   color: var(--color-danger);
 }
 .fl-decision--redo {
-  background: rgba(214, 147, 28, 0.16);
+  background: var(--fl-warn-soft);
   color: var(--fl-warn);
 }
 .fl-defects {
@@ -833,5 +866,51 @@ code {
   }
   .fl-plan__keys {
     grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* --- illustrative spots for the empty states -------------------------------- */
+.fl-spot {
+  flex: 0 0 auto;
+  display: block;
+}
+.fl-spot__sky {
+  fill: var(--color-accent-soft);
+}
+.fl-spot__hot {
+  fill: var(--color-accent-bright);
+}
+.fl-spot__line {
+  fill: var(--color-border-strong);
+}
+.fl-spot__ring {
+  fill: none;
+  stroke: var(--color-border-strong);
+  stroke-width: 3;
+}
+
+.fl-emptyline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.fl-empty--illustrated {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.fl-keyframe__empty {
+  flex-direction: column;
+  gap: 8px;
+}
+
+@media (max-width: 720px) {
+  .fl-empty--illustrated {
+    flex-direction: column;
+    gap: 12px;
   }
 }

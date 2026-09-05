@@ -1,58 +1,248 @@
 /*
-  Firstlight's own palette, laid over Aurora's tokens.
+  The Harbour Light palette.
 
-  The components and spacing are Aurora's; only the values change. The colours
-  come from the mark: a ribbon that runs from cyan through blue into violet.
-  Aurora reads as a knot of the same ribbon — the two are meant to sit side by
-  side and be recognised as family without being confused.
+  Every colour here was pulled off the illustrations the demo episodes are
+  drawn from (docs/BRAND.md says which pixel each one came from): the deep
+  teal of a lantern room at dawn, brass fittings, cream paper, and the orange
+  of a harbour storm jacket — the one hot colour in that whole world, so it is
+  the one the interface spends on things you can act on.
+
+  Contrast is not a matter of taste here: build/contrast.py checks every pair
+  the interface actually paints against WCAG AA. Change a value, run it.
 */
-:root,
-[data-palette] {
-  --color-accent: #2f6fe4;
-  --color-accent-hover: #245bc4;
-  --color-accent-secondary: #22c6d8;
-  --color-accent-soft: rgba(47, 111, 228, 0.12);
-  --color-accent-glow: rgba(34, 198, 216, 0.35);
-  --color-focus-ring: rgba(47, 111, 228, 0.45);
-  --color-sidebar-bg: #1b1740;
-  --color-sidebar-accent: #6b3fd6;
-  --color-bg: #f5f6fb;
-  --color-surface: #ffffff;
-  --color-surface-raised: #ffffff;
-  --color-border: #dfe3ef;
-  --color-text-primary: #1b1740;
-  --color-text-secondary: #5a5f7a;
-  --color-text-muted: #8a8fa8;
-  --color-success: #1f9d6a;
-  --color-danger: #d9534f;
-  --fl-warn: #d6931c;
-  --fl-ribbon: linear-gradient(120deg, #22c6d8 0%, #2f6fe4 45%, #6b3fd6 100%);
+:root {
+  /* --- the raw colours ---------------------------------------------------- */
+  --fl-orange: #e04e14;        /* the storm jacket: marks, graphics, the logo */
+  --fl-orange-deep: #c2410c;   /* the same orange, dark enough to carry text  */
+  --fl-orange-darker: #a83809;
+  --fl-orange-bright: #f2703a; /* fills, on dark                              */
+  --fl-orange-light: #f57f43;  /* text and links, on dark                     */
+  --fl-brass: #c9a26a;
+  --fl-brass-deep: #8a6a3c;
+  --fl-sun: #f7c77e;
+  --fl-apricot: #f4cfb0;
+
+  --fl-teal-deep: #0c2422;
+  --fl-teal: #12312e;
+  --fl-teal-raised: #173a36;
+  --fl-teal-mid: #1f5551;
+  --fl-sea: #3e7a72;
+  --fl-sea-pale: #a9c4bb;
+  --fl-indigo: #0b384e;
+
+  --fl-paper: #f7efe2;
+  --fl-paper-raised: #fdf8ee;
+  --fl-paper-edge: #e3d3b8;
+  --fl-cream: #f2e7d6;
+  --fl-ink: #10302d;
+  --fl-ink-soft: #4a625d;
+
+  /* Paper grain. An inline SVG, so it costs no request and works offline —
+     the rule for everything in this repo. */
+  --fl-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' seed='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23g)'/%3E%3C/svg%3E");
+  --fl-grain-strength: 0.05;
+
+  --fl-ribbon: linear-gradient(100deg, #e04e14 0%, #f7c77e 58%, #c9a26a 100%);
+  /* dawn coming up the right-hand edge of a deep-teal bar */
+  --fl-sunrise:
+    radial-gradient(70% 340% at 100% 62%, rgba(224, 78, 20, 0.5) 0%, rgba(224, 78, 20, 0) 62%),
+    radial-gradient(46% 260% at 100% 46%, rgba(247, 199, 126, 0.32) 0%, rgba(247, 199, 126, 0) 66%),
+    linear-gradient(90deg, rgba(31, 85, 81, 0) 46%, rgba(31, 85, 81, 0.55) 100%);
+
+  /* --- light: cream paper ------------------------------------------------- */
+  --color-bg: var(--fl-paper);
+  --color-surface: var(--fl-paper-raised);
+  --color-surface-raised: #fffcf6;
+  --color-border: var(--fl-paper-edge);
+  --color-border-strong: #cbb695;
+  --color-divider: #ece0cc;
+
+  --color-text-primary: var(--fl-ink);        /* 13.4:1 on the surface */
+  --color-text-secondary: var(--fl-ink-soft); /* 6.2:1  */
+  --color-text-muted: #5c736e;                /* 4.8:1  */
+  --color-text-on-accent: var(--fl-paper-raised);
+
+  --color-accent: var(--fl-orange-deep);      /* 4.9:1 under cream, 4.5:1 on paper */
+  --color-accent-hover: var(--fl-orange-darker);
+  --color-accent-bright: var(--fl-orange);    /* graphics and large type only */
+  --color-accent-secondary: var(--fl-brass-deep);
+  --color-accent-soft: rgba(224, 78, 20, 0.13);
+  --color-accent-glow: rgba(224, 78, 20, 0.3);
+  --color-focus-ring: rgba(194, 65, 12, 0.55);
+
+  --color-hover: rgba(224, 78, 20, 0.07);
+  --color-active: rgba(224, 78, 20, 0.16);
+
+  --color-success: #1d6a4b;
+  --color-success-soft: #e2eee7;
+  --color-danger: #a5301c;
+  --color-danger-soft: #f6e3dc;
+  --fl-warn: #8a5a06;
+  --fl-warn-soft: #f6ead2;
+  --color-neutral-soft: #ece2d0;
+
+  --color-header-bg: var(--fl-teal-deep);
+  --color-sidebar-bg: var(--fl-teal-deep);
+  --color-scrollbar-thumb: var(--color-border-strong);
+  --surface-glass-border-tint: var(--fl-brass);
+  --brand-veil: var(--fl-teal-mid);
+
+  --shadow-sm: 0 1px 2px rgba(16, 48, 45, 0.07);
+  --shadow-md: 0 6px 18px rgba(16, 48, 45, 0.09);
+  --shadow-lg: 0 18px 44px rgba(16, 48, 45, 0.16);
+
+  /* the hairline a postcard carries just inside its edge */
+  --fl-card-inner: rgba(201, 162, 106, 0.22);
 }
 
 /*
-  Firstlight has no theme toggle: it follows the OS, via prefers-color-scheme.
-  [data-theme="dark"] / [data-scheme="dark"] are kept for a future explicit
-  switch, and take priority — the media query is guarded to yield to a
-  light override the same way, so the two mechanisms never fight.
+  Firstlight has no theme switch: it follows the OS. [data-theme="dark"] and
+  [data-scheme="dark"] are kept for a future explicit one and take priority —
+  the media query yields to a light override the same way, so the two can
+  never fight.
 */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]):not([data-scheme="light"]) {
-    --color-bg: #12102a;
-    --color-surface: #1b1740;
-    --color-surface-raised: #221d4f;
-    --color-border: #2f2a5e;
-    --color-text-primary: #eef0fa;
-    --color-text-secondary: #b9bdd6;
-    --color-text-muted: #8a8fa8;
+    --color-bg: var(--fl-teal-deep);
+    --color-surface: var(--fl-teal);
+    --color-surface-raised: var(--fl-teal-raised);
+    --color-border: #26514b;
+    --color-border-strong: #35665e;
+    --color-divider: #1d443f;
+
+    --color-text-primary: var(--fl-cream);      /* 11.4:1 on the surface */
+    --color-text-secondary: var(--fl-sea-pale); /* 7.5:1  */
+    --color-text-muted: #8fa9a2;                /* 5.6:1  */
+    --color-text-on-accent: var(--fl-teal-deep);
+
+    --color-accent: var(--fl-orange-light);     /* 4.7:1 on a raised card */
+    --color-accent-hover: #fa9459;
+    --color-accent-bright: var(--fl-orange-bright);
+    --color-accent-secondary: var(--fl-brass);
+    --color-accent-soft: rgba(242, 112, 58, 0.18);
+    --color-accent-glow: rgba(242, 112, 58, 0.32);
+    --color-focus-ring: rgba(245, 127, 67, 0.7);
+
+    --color-hover: rgba(242, 112, 58, 0.1);
+    --color-active: rgba(242, 112, 58, 0.2);
+
+    --color-success: #7ad6a4;
+    --color-success-soft: rgba(122, 214, 164, 0.16);
+    --color-danger: #f28b7d;
+    --color-danger-soft: rgba(242, 139, 125, 0.16);
+    --fl-warn: #e8b45a;
+    --fl-warn-soft: rgba(232, 180, 90, 0.16);
+    --color-neutral-soft: rgba(169, 196, 187, 0.14);
+
+    --fl-grain-strength: 0.08;
+    --fl-card-inner: rgba(201, 162, 106, 0.14);
+
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.34);
+    --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.45);
   }
 }
+
 [data-theme="dark"],
 [data-scheme="dark"] {
-  --color-bg: #12102a;
-  --color-surface: #1b1740;
-  --color-surface-raised: #221d4f;
-  --color-border: #2f2a5e;
-  --color-text-primary: #eef0fa;
-  --color-text-secondary: #b9bdd6;
-  --color-text-muted: #8a8fa8;
+  --color-bg: var(--fl-teal-deep);
+  --color-surface: var(--fl-teal);
+  --color-surface-raised: var(--fl-teal-raised);
+  --color-border: #26514b;
+  --color-border-strong: #35665e;
+  --color-divider: #1d443f;
+
+  --color-text-primary: var(--fl-cream);
+  --color-text-secondary: var(--fl-sea-pale);
+  --color-text-muted: #8fa9a2;
+  --color-text-on-accent: var(--fl-teal-deep);
+
+  --color-accent: var(--fl-orange-light);
+  --color-accent-hover: #fa9459;
+  --color-accent-bright: var(--fl-orange-bright);
+  --color-accent-secondary: var(--fl-brass);
+  --color-accent-soft: rgba(242, 112, 58, 0.18);
+  --color-accent-glow: rgba(242, 112, 58, 0.32);
+  --color-focus-ring: rgba(245, 127, 67, 0.7);
+
+  --color-hover: rgba(242, 112, 58, 0.1);
+  --color-active: rgba(242, 112, 58, 0.2);
+
+  --color-success: #7ad6a4;
+  --color-success-soft: rgba(122, 214, 164, 0.16);
+  --color-danger: #f28b7d;
+  --color-danger-soft: rgba(242, 139, 125, 0.16);
+  --fl-warn: #e8b45a;
+  --fl-warn-soft: rgba(232, 180, 90, 0.16);
+  --color-neutral-soft: rgba(169, 196, 187, 0.14);
+
+  --fl-grain-strength: 0.08;
+  --fl-card-inner: rgba(201, 162, 106, 0.14);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 6px 18px rgba(0, 0, 0, 0.34);
+  --shadow-lg: 0 18px 44px rgba(0, 0, 0, 0.45);
+}
+
+/* --- the paper the whole interface is printed on --------------------------- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: var(--fl-grain);
+  opacity: var(--fl-grain-strength);
+}
+
+.fl-app {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- a card is a postcard: paper, a hairline inside the edge, a little grain */
+.surface-card {
+  position: relative;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--fl-card-inner);
+}
+
+.surface-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background-image: var(--fl-grain);
+  opacity: calc(var(--fl-grain-strength) * 0.9);
+}
+
+.surface-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Cards you can open lift a little, the way a postcard does off a table. */
+.surface-card--liftable {
+  transition:
+    transform var(--dur-base) var(--ease-out),
+    box-shadow var(--dur-base) var(--ease-out),
+    border-color var(--dur-base) var(--ease-out);
+}
+
+.surface-card--liftable:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-accent-bright);
+  box-shadow: var(--shadow-md), inset 0 0 0 1px var(--fl-card-inner);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .surface-card--liftable {
+    transition: none;
+  }
+  .surface-card--liftable:hover {
+    transform: none;
+  }
 }

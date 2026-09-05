@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Spot from "../components/Spot";
 import { api, STAGES, STAGE_LABEL } from "../api";
 import type { Roll, Spend } from "../api";
 import { humanError } from "../utils/humanText";
@@ -114,7 +115,9 @@ export default function RollsPage() {
       )}
 
       {rolls.length === 0 && !creating && (
-        <div className="fl-empty surface-card">
+        <div className="fl-empty fl-empty--illustrated surface-card">
+          <Spot kind="horizon" size={72} />
+          <div>
           <h2 className="fl-h2">Nothing here yet</h2>
           <p>
             A roll is one episode. Press <b>New roll</b> and it starts as a scenario — a title card,
@@ -124,6 +127,7 @@ export default function RollsPage() {
             Scenarios written by hand live in <code>workspace/prompts/scenarios/</code> and appear
             here once compiled. The <Link to="/workspace">Workspace</Link> page says what goes where.
           </p>
+          </div>
         </div>
       )}
 

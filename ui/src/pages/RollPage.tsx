@@ -6,6 +6,7 @@ import { humanError } from "../utils/humanText";
 import { runJob } from "../components/JobsDrawer";
 import ScenarioEditor from "../components/ScenarioEditor";
 import AcceptanceBoard from "../components/AcceptanceBoard";
+import { EmptyLine } from "../components/Spot";
 import { showToast } from "../data/toastBus";
 
 /**
@@ -152,7 +153,7 @@ export default function RollPage() {
                 <span className="fl-scene__id">{s.id}</span>
                 <span className="fl-scene__plate">{s.plate}</span>
               </header>
-              {s.takes.length === 0 && <p className="fl-muted">No takes yet.</p>}
+              {s.takes.length === 0 && <EmptyLine kind="reel">No takes yet.</EmptyLine>}
               <div className="fl-takes">
                 {s.takes.map((t) => (
                   <figure key={t} className="fl-take">
@@ -174,7 +175,9 @@ export default function RollPage() {
 
       {tab === "episode" && (
         <div className="fl-episode">
-          {!roll.output && <p className="fl-muted">Not assembled yet. When every scene has a take, press Assemble.</p>}
+          {!roll.output && (
+            <EmptyLine kind="reel">Not assembled yet. When every scene has a take, press Assemble.</EmptyLine>
+          )}
           {roll.output && (
             <>
               <video src={fileUrl("out", roll.output)} controls className="fl-episode__video" />
@@ -226,7 +229,7 @@ function SceneCard({ roll, scene, onChanged }: { roll: Roll; scene: Scene; onCha
       </p>
       <p className="fl-scene__img">{scene.img}</p>
       {scene.anim && <p className="fl-scene__anim">↳ {scene.anim}</p>}
-      {scene.frames.length === 0 && <p className="fl-muted">No keyframes yet.</p>}
+      {scene.frames.length === 0 && <EmptyLine kind="lantern">No keyframes yet.</EmptyLine>}
       <div className="fl-frames">
         {scene.frames.map((f) => (
           <figure key={f} className="fl-frame">

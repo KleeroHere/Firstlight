@@ -3,6 +3,7 @@ import { api, fileUrl } from "../api";
 import type { Decision, Plan, PlanVariant } from "../api";
 import { humanError } from "../utils/humanText";
 import { showToast } from "../data/toastBus";
+import Spot, { EmptyLine } from "./Spot";
 
 /**
  * The acceptance screen: one plan at a time, its first and last keyframe,
@@ -74,7 +75,7 @@ function PlanCard({ rollId, plan, defects, onChanged }: { rollId: string; plan: 
         <Keyframe rollId={rollId} label="Last" path={plan.key} placeholder={plan.i2v ? "i2v plan — no end key by design" : "no key yet"} />
       </div>
 
-      {plan.variants.length === 0 && <p className="fl-muted">No clip shot yet.</p>}
+      {plan.variants.length === 0 && <EmptyLine kind="reel">No clip shot yet.</EmptyLine>}
       <div className="fl-variants">
         {plan.variants.map((v) => (
           <VariantCard key={v.key} rollId={rollId} variant={v} defects={defects} onChanged={onChanged} />
@@ -90,7 +91,10 @@ function Keyframe({ rollId, label, path, placeholder }: { rollId: string; label:
       {path ? (
         <img src={fileUrl("takes", rollId, ...path.split("/"))} alt="" className="fl-keyframe__img" loading="lazy" />
       ) : (
-        <div className="fl-keyframe__empty">{placeholder ?? "not generated yet"}</div>
+        <div className="fl-keyframe__empty">
+          <Spot kind="lantern" size={30} />
+          <span>{placeholder ?? "not generated yet"}</span>
+        </div>
       )}
       <figcaption className="fl-muted">{label}</figcaption>
     </figure>

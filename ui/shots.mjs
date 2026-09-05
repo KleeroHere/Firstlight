@@ -3,7 +3,7 @@
 //
 //   node shots.mjs            # from ui/, with playwright available
 //
-// Writes ../docs/screenshots/rolls.png and roll.png at README width.
+// Writes the six ../docs/screenshots/*.png the README shows, at README width.
 import { chromium } from "playwright";
 import { mkdirSync } from "node:fs";
 
@@ -26,7 +26,9 @@ await page.locator(".fl-roll").first().waitFor({ timeout: 15000 });
 ok("rolls page renders a card", (await page.locator(".fl-roll").count()) > 0);
 await page.screenshot({ path: `${OUT}/rolls.png` });
 
-await page.locator(".fl-roll__link").first().click();
+// The example roll, by name: the list is ordered by the workspace, and the
+// screenshots are meant to show a roll that has been all the way through.
+await page.goto(URL + "#/roll/fog-signal-check", { waitUntil: "networkidle" });
 await page.locator(".fl-scene").first().waitFor({ timeout: 15000 });
 const scenes = await page.locator(".fl-scene").count();
 ok("roll page shows the scenes", scenes === 3, `scenes: ${scenes}`);
@@ -36,6 +38,11 @@ await page.getByRole("button", { name: "Episode" }).click();
 await page.locator(".fl-verify").waitFor({ timeout: 15000 }).catch(() => {});
 ok("episode tab shows the graded cut", (await page.locator(".fl-verify").count()) === 1);
 await page.screenshot({ path: `${OUT}/episode.png` });
+
+await page.getByRole("button", { name: "Acceptance" }).click();
+await page.locator(".fl-plan").first().waitFor({ timeout: 15000 }).catch(() => {});
+ok("acceptance shows the plan cards", (await page.locator(".fl-plan").count()) > 0);
+await page.screenshot({ path: `${OUT}/acceptance.png` });
 
 // exact: the "Synthetic takes" action button would match a substring search too
 await page.getByRole("button", { name: "Takes", exact: true }).click();
