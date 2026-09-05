@@ -197,8 +197,8 @@ Three ways to see it, in order of how much you want to install:
   rcedit afterward hangs it indefinitely (confirmed by timing both orders;
   rcedit is fine with the plain copy either way, under a second). `build/firstlight.ico`
   is `docs/brand/firstlight.png` rendered at six sizes (`build/make-icon.py`);
-  the same file is `ui/public/favicon.ico`. Every brand raster comes from the
-  SVGs in `docs/brand/` — see [docs/BRAND.md](docs/BRAND.md).
+  the same file is `ui/public/favicon.ico`. The mark itself is generated rather
+  than drawn — see [docs/BRAND.md](docs/BRAND.md) for how, and for the palette.
   The result, `build/dist/Firstlight/Firstlight.exe`, opens a
   browser at <http://localhost:7331> by itself — there is no terminal to read
   a URL from — and reads `engine/` and `workspace/` next to itself, or from

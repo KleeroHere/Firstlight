@@ -8,8 +8,8 @@ An .ico is square, so a mark that is not gets padded onto a transparent
 square canvas first (centered, nothing cropped) rather than squashed. The
 current mark is already square, which leaves square() a no-op.
 
-Run `node build/make-brand.mjs` first — that is what draws the PNG from
-docs/brand/firstlight.svg.
+Run `python build/make-mark.py` first — that is what cuts the PNG out of the
+generated logo.
 
     python build/make-icon.py
 """

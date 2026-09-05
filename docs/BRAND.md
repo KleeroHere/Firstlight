@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="brand/firstlight-wordmark.png" width="420" alt="Firstlight" />
+  <img src="brand/firstlight-wordmark.png" width="460" alt="Firstlight" />
 </p>
 
 # Brand
@@ -110,49 +110,76 @@ rest of the project: it has to work with the network unplugged.
 ## The mark
 
 <p align="center">
-  <img src="brand/firstlight.png" width="180" alt="the Firstlight mark" />
+  <img src="brand/firstlight.png" width="200" alt="the Firstlight mark" />
 </p>
 
-The letter **F**, built out of the harbour: the top arm is the ray, the middle
-arm is the horizon lying on the water, and the stem is the column of light
-standing in it. Deep teal sky with a dawn glow, storm orange for the ray, sun
-for the horizon, cream for the stem, the light broken across the sea below —
-brass hairline inside a dark contour.
+A lighthouse standing in a breaking wave, in a circle: the light and the
+direction to steer by, and the water it is there for. Deep teal ring and
+lower wave, storm orange crest with a cream gap between them, cream ground,
+the lamp the one warm dot at the top.
 
-**Why this one.** Two rounds were drawn. The first four were pictures of the
-harbour (`docs/brand/logo-concepts.png`); the mark chosen out of them, a
-daybreak beam, read well but had no F in it, so a second round was drawn with
-the letter as the structure and the harbour in the detail —
-`docs/brand/logo-concepts-F.png`, sources in `docs/brand/concepts/F*.svg`:
+**Where it came from.** It was generated, not drawn. Three rounds through
+`engine/wavespeed_stills.mjs` (bytedance/seedream-v4, $0.027 an image, all of
+it booked in the WaveSpeed ledger):
 
-| Concept | Verdict |
-| --- | --- |
-| **F as light over the horizon** | Chosen. It is the name assembled out of a letter: ray, horizon, and the light standing in the water. The orange is the ray itself rather than a decoration, and at 16 px the counters stay open and the F is unmistakable. |
-| **F as a lighthouse** | The most literal reading — tower, beam, gallery — and the one that pays for it: the gallery rail and the tower's band are the whole idea and both turn to noise by 32 px. |
-| **F as signal flags** | The prettiest at 512, and the weakest small: the mast runs well above and below the arms, so at 16 px it stops reading as a letter and starts reading as a pole. |
-| **F with the sun as its arm** | The crispest of the four at 16 px, and the one that says the least about the harbour — the lens rings behind it read as scratches at any size a person actually sees. Kept as the runner-up. |
+| Round | What was asked for | Sheet |
+| --- | --- | --- |
+| 1 | eight marks built on the letter **F** | `docs/brand/logo-concepts-F.png` |
+| 2 | eight lighthouses, no letter | `docs/brand/logo-wavespeed-sheet.png` |
+| 3 | eight edits of the one chosen out of round 2 | `docs/brand/logo-final-sheet.png` |
 
-The first round's four are kept in `docs/brand/concepts/0*.svg`.
+The owner chose the lighthouse riding a wave, then asked for three
+corrections — a badge edge you can actually see, the two-colour wave back,
+and the sunrise bands gone — which were made with `seedream-v4/edit` off that
+same image rather than by redrawing:
+`docs/brand/wavespeed-fix/04.png` is the one that ships. Everything before it
+is kept in `docs/brand/concepts/` and the `wavespeed*` folders.
+
+**How the file is finished.** `build/make-mark.py` does two deterministic
+passes over that PNG, so the mark can be rebuilt from the generation at any
+time:
+
+1. **Re-inking.** The model kept drifting the teal towards turquoise. Every
+   pixel is matched against the inks it actually laid down and repainted with
+   the palette colour at the same coverage — so `#12312E` really is `#12312E`,
+   and the anti-aliased edges survive.
+2. **Cutting.** The badge circle is found from the extent of the non-cream
+   pixels, and everything outside it becomes transparent.
 
 **Rules.**
 
-- Clear space around the badge: a quarter of its width.
+- Clear space around the badge: a quarter of its diameter.
 - Never re-colour it, never put it on a busy photograph, never squash it —
-  the badge is square, which is why the `.ico` and the favicon are too.
+  the circle is a circle.
 - Below 24 px use the badge alone, never the wordmark.
-- On teal, the badge works as-is; on paper it works as-is. It needs no
-  variant.
+- On teal, use the transparent PNG; on paper either that or
+  `firstlight-on-cream.png`.
+- There is no SVG of the mark, on purpose. It is a raster, and the sizes that
+  matter are exported from `docs/brand/firstlight.png` at 1024.
 
 ## The wordmark
 
 <p align="center">
-  <img src="brand/firstlight-wordmark.png" width="480" alt="Firstlight wordmark" />
+  <img src="brand/firstlight-wordmark.png" width="520" alt="Firstlight wordmark" />
 </p>
 
-Badge, a gap of a quarter of the badge's width, then *Firstlight* in Unbounded
-600 with slightly tightened tracking, in ink. The badge's own F and the word's
-F are deliberately not the same shape: one is a picture, the other is type. The word is stored as outlines,
-not as text calling for a font, so the SVG renders the same everywhere.
+**Manrope 700**, tracked in a little (−0.028 em). Four faces were set beside
+the mark and compared at both poster and interface size —
+`docs/brand/wordmark-options.png`: Unbounded 600, Manrope 700, Fraunces 600
+and Bricolage Grotesque 700. Manrope wins on the job the wordmark actually
+has to do: the badge is round, warm and busy, so the word has to be the calm
+half of the pair, and Manrope is the only one of the four whose lowercase is
+still unambiguous at 18 px. Unbounded is too loud beside a circle; Fraunces is
+the prettiest and the most opinionated; Bricolage sits between them.
+
+Two lockups, both composed from the mark PNG and the real font by
+`build/make-brand.mjs`:
+
+- **horizontal** — badge, a gap of a quarter of the badge, then the word
+- **stacked** — badge above the word, both centred
+
+All four candidate faces are in `ui/public/fonts/` (SIL Open Font License),
+so nothing is fetched at runtime.
 
 ---
 
@@ -160,14 +187,16 @@ not as text calling for a font, so the SVG renders the same everywhere.
 
 | File | What it is |
 | --- | --- |
-| `docs/brand/firstlight.svg` / `.png` | the mark (PNG 1024, transparent) |
-| `docs/brand/firstlight-wordmark.svg` / `.png` | mark + word (PNG 1600 wide, transparent) |
+| `docs/brand/firstlight.png` | the mark, 1024, transparent outside the circle |
+| `docs/brand/firstlight-on-cream.png` | the same on paper |
+| `docs/brand/firstlight-wordmark.png` | mark beside the word |
+| `docs/brand/firstlight-wordmark-stacked.png` | mark above the word |
 | `docs/brand/social-preview.png` | 1280×640, the GitHub social card |
-| `docs/brand/logo-concepts-F.png` | the F concepts at 512 / 128 / 32 / 16 |
-| `docs/brand/logo-concepts.png` | the first round, same treatment |
-| `docs/brand/concepts/*.svg` | both rounds, as drawn |
-| `docs/brand/cards/*.svg` | the episode card artwork |
 | `docs/brand/palette.png` | the palette strip above |
+| `docs/brand/wavespeed-fix/04.png` | the generation the mark is cut from |
+| `docs/brand/logo-*-sheet.png`, `logo-concepts*.png` | the three rounds, as shown to the owner |
+| `docs/brand/concepts/`, `wavespeed*/` | everything that was tried and not chosen |
+| `docs/brand/cards/*.svg` | the episode card artwork |
 | `ui/public/firstlight.png` | the same mark at 256, for the interface header |
 | `ui/public/favicon.ico`, `build/firstlight.ico` | six sizes, 16–256 |
 | `workspace/brand/title-bg.png` | 1920×1080 title card background |
@@ -177,8 +206,8 @@ not as text calling for a font, so the SVG renders the same everywhere.
 ### Regenerating them
 
 ```bash
-node build/make-brand.mjs     # every raster, from the SVGs (Chromium renders them)
-python build/make-wordmark.py # the wordmark SVG, from the mark + Unbounded outlines
+python build/make-mark.py     # re-ink and cut the mark out of the generation
+node build/make-brand.mjs     # the lockups, the social card, the strip, the cards
 python build/make-icon.py     # the two .ico files, from the mark PNG
 python build/contrast.py      # the palette check
 ```
