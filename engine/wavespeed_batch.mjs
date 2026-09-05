@@ -27,6 +27,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { basename, dirname, join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { ROOT, loadConfig } from "./lib.mjs";
+import { guardPlans, negativePrompt } from "./guard.mjs";
 
 const API = "https://api.wavespeed.ai/api/v3";
 // Движки WaveSpeed. Цены — за клип 5 с / 10 с (720p), см. docs/ARCHITECTURE.md.
@@ -35,9 +36,17 @@ const MODELS = {
   "lite":      { path: "bytedance/seedance-v1-lite-i2v-720p",        price: { 5: 0.16, 10: 0.32 }, extra: { camera_fixed: true } },
   "pro":       { path: "bytedance/seedance-v1-pro-i2v-720p",         price: { 5: 0.30, 10: 0.60 }, extra: { camera_fixed: true } },
   "pro15fast": { path: "bytedance/seedance-v1.5-pro/image-to-video-fast", price: { 5: 0.10, 10: 0.20 }, extra: { camera_fixed: true, resolution: "720p", generate_audio: false } },
-  "kling-std": { path: "kwaivgi/kling-v2.5-turbo-std/image-to-video", price: { 5: 0.21, 10: 0.42 }, extra: { negative_prompt: "extra person, extra hand, disembodied hand, face morphing, changing clothes, text, watermark, camera zoom, camera pan" } },
-  "kling-pro": { path: "kwaivgi/kling-v2.5-turbo-pro/image-to-video", price: { 5: 0.35, 10: 0.70 }, extra: { negative_prompt: "extra person, extra hand, disembodied hand, face morphing, changing clothes, text, watermark, camera zoom, camera pan" } },
-  "kling26-std": { path: "kwaivgi/kling-v2.6-std/image-to-video", price: { 5: 0.21, 10: 0.42 }, extra: { negative_prompt: "extra person, extra hand, disembodied hand, face morphing, changing clothes, text, watermark, camera zoom, camera pan" } },
+  "kling-std": { path: "kwaivgi/kling-v2.5-turbo-std/image-to-video", price: { 5: 0.21, 10: 0.42 }, seed: false, extra: { negative_prompt: "extra person, extra hand, disembodied hand, face morphing, changing clothes, text, watermark, camera zoom, camera pan" } },
+  "kling-pro": { path: "kwaivgi/kling-v2.5-turbo-pro/image-to-video", price: { 5: 0.35, 10: 0.70 }, seed: false, extra: { negative_prompt: "extra person, extra hand, disembodied hand, face morphing, changing clothes, text, watermark, camera zoom, camera pan" } },
+  // Kling 2.6. Pro is the only one of the pair that takes an end frame — the
+  // field is `end_image` (NOT `last_image`, which the API silently drops), and
+  // it is also the only one that accepts `sound`, which we always turn off:
+  // narration is dubbed, a model-invented soundtrack would fight it.
+  "kling26-pro": { path: "kwaivgi/kling-v2.6-pro/image-to-video", price: { 5: 0.35, 10: 0.70 }, end: "end_image", seed: false, extra: { negative_prompt: negativePrompt, sound: false } },
+  "kling26-std": { path: "kwaivgi/kling-v2.6-std/image-to-video", price: { 5: 0.21, 10: 0.42 }, seed: false, extra: { negative_prompt: negativePrompt } },
+  // Kling 2.1 Pro start/end-frame: the older dedicated FLF endpoint, kept as a
+  // fallback for a shot 2.6 Pro will not close cleanly.
+  "kling21-flf": { path: "kwaivgi/kling-v2.1-i2v-pro/start-end-frame", price: { 5: 0.45, 10: 0.90 }, end: "end_image", needsEnd: true, seed: false, extra: { negative_prompt: negativePrompt } },
   "wan27": { path: "alibaba/wan-2.7/image-to-video", price: { 5: 0.50, 10: 1.00 }, extra: { resolution: "720p", negative_prompt: "extra person, extra hand, disembodied hand, face morphing, changing clothes, text, watermark, camera zoom, camera pan" } },
   // Hailuo умеет только 6 и 10 с: 5-секундный план едет как 6 с.
   "hailuo-fast": { path: "minimax/hailuo-2.3/fast", price: { 6: 0.19, 10: 0.32 }, durations: { 5: 6, 10: 10 }, extra: { enable_prompt_expansion: false } },
@@ -45,6 +54,12 @@ const MODELS = {
 let MODEL = MODELS.lite.path;
 let PRICE = MODELS.lite.price;
 let EXTRA = MODELS.lite.extra;
+// Name of the end-frame field this model takes, or null when it is i2v-only.
+let END_FIELD = null;
+// Some endpoints (every Kling 2.x here) have no seed at all: sending one is
+// silently dropped, so a "--seed" re-roll would return the same clip. We say so
+// instead of pretending.
+let HAS_SEED = true;
 
 function loadEnv() {
   const p = join(ROOT, "engine", ".env.local");
@@ -83,16 +98,38 @@ function parseArgs(argv) {
   return a;
 }
 const args = parseArgs(process.argv);
-if (args.model) {
-  if (!MODELS[args.model]) throw new Error(`Неизвестная модель ${args.model}; есть: ${Object.keys(MODELS).join(", ")}`);
+if (args.model && args.model !== "auto") {
+  if (!MODELS[args.model]) throw new Error(`Неизвестная модель ${args.model}; есть: auto, ${Object.keys(MODELS).join(", ")}`);
   ({ path: MODEL, price: PRICE, extra: EXTRA } = MODELS[args.model]);
+  END_FIELD = MODELS[args.model].end ?? null;
+  HAS_SEED = MODELS[args.model].seed !== false;
 }
+// `--model auto` (the default for a roll storyboarded by auto_storyboard.py):
+// every plan carries its own `model`, because the wide of a scene needs an end
+// frame (Kling 2.6 Pro) while its solo shots do not (Kling 2.6 Std, same
+// generation, 60% of the price). One command shoots the whole roll correctly
+// instead of two commands with two --only lists.
+function modelFor(p) {
+  const name = args.model === "auto" || !args.model ? (p.model ?? (args.model === "auto" ? "kling26-std" : null)) : args.model;
+  if (!name) return { name: "lite", ...MODELS.lite, end: null, seed: true };
+  const m = MODELS[name];
+  if (!m) throw new Error(`план ${p.plan}: неизвестная модель ${name}; есть: ${Object.keys(MODELS).join(", ")}`);
+  return { name, path: m.path, price: m.price, extra: m.extra, end: m.end ?? null, seed: m.seed !== false };
+}
+
 const cfg = loadConfig();
 const takesDir = join(ROOT, cfg.paths.takes, args.id);
 const outDir = join(takesDir, args.outDir);
 const planFile = join(ROOT, "workspace", "plans", `${args.id}.json`);
 if (!existsSync(planFile)) throw new Error(`Нет план-листа ${planFile}`);
 const spec = JSON.parse(readFileSync(planFile, "utf8"));
+// GUARD: no motion prompt leaves this script without the head-count /
+// closed-door / locked-camera clauses, and none goes out carrying a phrase
+// that is known to produce a defect ("breathes", "walks off", "turns to
+// camera" — see engine/pipeline.config.json production.guard.banned and
+// docs/PRODUCTION-RULES.md). A plan that cannot be fixed by prepending the
+// guard stops the whole run before it spends anything.
+spec.plans = guardPlans(spec.plans, { strict: true });
 let plans = spec.plans;
 if (args.only) plans = plans.filter((p) => args.only.includes(p.plan));
 
@@ -120,9 +157,10 @@ function bookRun(entry) {
 
 const durationFor = (p) => {
   const d = p.frames <= 81 ? 5 : 10;
-  const map = args.model && MODELS[args.model].durations;
+  const map = MODELS[modelFor(p).name]?.durations;
   return map ? map[d] : d;
 };
+const priceFor = (p) => modelFor(p).price[durationFor(p)];
 
 async function api(path, init = {}) {
   const r = await fetch(`${API}${path}`, {
@@ -192,27 +230,32 @@ async function genClip(p) {
   if (decision === "accepted" && !args.redo) { console.log(`план ${p.plan}: принят приёмкой, пропускаю`); return null; }
   const forceRedo = args.redo || decision === "rejected" || decision === "redo";
   if (existsSync(out) && !forceRedo) { console.log(`план ${p.plan}: клип уже есть`); return null; }
+  const M = modelFor(p);
   const masterPath = await resolveMaster(p);
   const keyPath = join(takesDir, "keys", `plan${p.plan}_key.png`);
   // Ключи делают движение жёстким, но модель держит персонажей и без них —
   // по умолчанию i2v. Ключ подключается только если в плане стоит
   // "use_key": true (или флаг --use-keys на весь прогон).
-  const useKey = !p.i2v && !args.noKey && (p.use_key || args.useKeys) && existsSync(keyPath);
+  const wantsKey = !p.i2v && !args.noKey && (p.use_key || args.useKeys) && existsSync(keyPath);
+  if (wantsKey && !M.end) {
+    throw new Error(`план ${p.plan}: модели ${M.path} нельзя передать конечный кадр — сними план через --model kling26-pro (или kling21-flf), либо помечай его "i2v": true`);
+  }
+  const useKey = wantsKey && !!M.end;
   const duration = durationFor(p);
-  const label = `план ${p.plan} (${duration} с, ${useKey ? "ключ" : "i2v"}${basename(masterPath).endsWith("_last.png") ? ", цепочка" : ""})`;
+  const label = `план ${p.plan} (${M.name}, ${duration} с, ${useKey ? "ключ" : "i2v"}${basename(masterPath).endsWith("_last.png") ? ", цепочка" : ""})`;
 
   const image = await upload(masterPath);
   const body = {
     image,
     prompt: p.motion,
     duration,
-    seed: args.seed + p.plan,
-    ...EXTRA,
+    ...(M.seed ? { seed: args.seed + p.plan } : {}),
+    ...M.extra,
   };
-  if (useKey) body.last_image = await upload(keyPath);
+  if (useKey) body[M.end] = await upload(keyPath);
 
   const t0 = Date.now();
-  const sub = await api(`/${MODEL}`, {
+  const sub = await api(`/${M.path}`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
@@ -243,16 +286,22 @@ async function genClip(p) {
   } else {
     writeFileSync(out, vid);
   }
-  const usd = PRICE[duration];
-  const spent = bookRun({ date: new Date().toISOString().slice(0, 10), id: args.id, plan: p.plan, model: args.model ?? "lite", mode: useKey ? "flf" : "i2v", duration, usd, out: args.outDir });
+  const usd = M.price[duration];
+  const spent = bookRun({ date: new Date().toISOString().slice(0, 10), id: args.id, plan: p.plan, model: M.name, mode: useKey ? "flf" : "i2v", duration, usd, out: args.outDir, project: "firstlight" });
   console.log(`${label} ... ${Math.round((Date.now() - t0) / 1000)} с, $${usd.toFixed(2)} (всего по книге $${spent.toFixed(2)})`);
   return out;
 }
 
 // ---- смета и предполёт ----
-const todo = plans.filter((p) => args.redo || !existsSync(join(outDir, `plan${p.plan}.mp4`)));
-const est = todo.reduce((s, p) => s + PRICE[durationFor(p)], 0);
-console.log(`${args.id}: планов ${plans.length}, к съёмке ${todo.length}, смета $${est.toFixed(2)}, выход → ${args.outDir}`);
+// Что снимать: чего ещё нет — и то, что приёмка ЗАВЕРНУЛА. Второе легко
+// потерять: клип отклонённого плана лежит на диске, и наивная проверка
+// «файл есть — значит снято» тихо превращает пересдачу в пустой прогон
+// («к съёмке 0»), хотя решение о браке уже записано в acceptance.json.
+const needsRedo = (p) => ["rejected", "redo"].includes(decisionFor(p.plan, args.seed));
+const todo = plans.filter((p) => args.redo || needsRedo(p) || !existsSync(join(outDir, `plan${p.plan}.mp4`)));
+const est = todo.reduce((s, p) => s + priceFor(p), 0);
+const byModel = todo.reduce((acc, p) => { const n = modelFor(p).name; acc[n] = (acc[n] ?? 0) + 1; return acc; }, {});
+console.log(`${args.id}: планов ${plans.length}, к съёмке ${todo.length} (${Object.entries(byModel).map(([k, v]) => `${k}×${v}`).join(", ")}), смета $${est.toFixed(2)}, выход → ${args.outDir}`);
 if (args.dry) process.exit(0);
 if (!KEY) { console.error("Нет WAVESPEED_API_KEY"); process.exit(2); }
 const bal = await balance();

@@ -71,7 +71,7 @@ ok(a && a.channels === 2, `каналы: ${a?.channels}`);
 const abr = a ? Number(a.bit_rate) : 0;
 ok(abr >= 96_000 && abr <= 320_000,
   `битрейт аудио ${(abr / 1000).toFixed(0)} кбит/с`,
-  abr >= 60_000 ? `битрейт аудио ${(abr / 1000).toFixed(0)} кбит/с — ниже номинала 192к (тихая/пустая дорожка сжалась; с настоящим войсовером поднимется)` : undefined);
+  abr >= 60_000 ? `битрейт аудио ${(abr / 1000).toFixed(0)} кбит/с — ниже номинала 192к (либо дорожка тихая и сжалась, либо сборка шла под лимит размера: --target-mb ставит звук в 96к)` : undefined);
 
 // faststart: атом moov раньше mdat
 const head = readFileSync(file).subarray(0, 64 * 1024);
@@ -124,7 +124,10 @@ if (log) {
   group("Плашки (по кадрам из середины сцен)");
   const p = { x: 32, y: 32, w: 900, h: 110 }; // зона плашки с запасом
   for (const s of log.scenes) {
-    if (s.kind !== "scene") continue;
+    // `clip` scenes (an existing file: screen recording, rendered diagram,
+    // an insert from a finished episode) carry a caption plate exactly as a
+    // shot scene does -- and an explainer roll is made entirely of them.
+    if (s.kind !== "scene" && s.kind !== "clip") continue;
     const mid = (s.t[0] + s.t[1]) / 2;
     const out = runMerged("ffmpeg", ["-hide_banner", "-loglevel", "info",
       "-ss", mid.toFixed(2), "-i", file,

@@ -24,6 +24,7 @@ import { basename, join } from "node:path";
 import { spawnSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { ROOT, loadConfig } from "./lib.mjs";
+import { guardPlans } from "./guard.mjs";
 
 function parseArgs(argv) {
   const a = { host: "http://127.0.0.1:8188", seed: 7, anisora: true, concat: true, nag: true, gguf: false, width: 1280, height: 720,
@@ -350,6 +351,11 @@ if (args.nag) {
   }
 }
 
+// GUARD: identical to wavespeed_batch.mjs — the same clauses go to the local
+// ComfyUI graph as to the cloud API, so a plan cannot behave differently
+// depending on which motion backend happens to be shooting it today. See
+// engine/guard.mjs and docs/PRODUCTION-RULES.md.
+spec.plans = guardPlans(spec.plans, { strict: true });
 const plans = spec.plans.filter((p) => !args.only || args.only.includes(p.plan));
 for (const p of plans) {
   // Падение ComfyUI посреди плана не должно ронять весь батч: ждём сервер

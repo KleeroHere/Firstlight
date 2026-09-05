@@ -26,7 +26,7 @@
 // как в assemble_video.mjs; те же generic-рендеры карточек, без зашитого
 // названия серии (см. pipeline.config.json → series).
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import {
   ROOT, loadConfig, loadScenario, ffprobeJson, ensureDir, textFile, fpath, sanitizeName, sceneDuration,
@@ -44,6 +44,12 @@ function parseArgs(argv) {
     else if (v === "--push") a.push = Number(argv[++i]);
     else if (v === "--insert-sec") a.insertSec = Number(argv[++i]);
     else if (v === "--placeholder-vo") a.placeholderVo = true;
+    // A release asset often has a hard size cap (GitHub, a wiki, an intranet).
+    // --target-mb re-encodes the finished picture in two passes at the exact
+    // bitrate that lands under that cap, instead of the caller guessing a CRF,
+    // measuring, and guessing again.
+    else if (v === "--target-mb") a.targetMb = Number(argv[++i]);
+    else if (v === "--audio-kbps") a.audioKbps = Number(argv[++i]);
     else throw new Error(`Неизвестный аргумент: ${v}`);
   }
   if (!a.id) throw new Error("Нужен --id");
@@ -125,6 +131,32 @@ function renderMemo(sc, outFile) {
   encodeSegment(outFile, ["-f", "lavfi", "-i", "nullsrc=s=16x16"], filter, dur);
 }
 
+
+// ---------- сцена-вставка готовым видео (kind: "clip") ----------
+// Для роликов, у которых картинка не снимается моделью, а уже существует:
+// запись экрана интерфейса, покадрово отрисованная схема, врезка из готового
+// эпизода. Тот же тайминг, те же плашки, тот же войсовер — отличается только
+// источник кадров. Стоп-кадры запрещены и здесь: если исходник короче сцены,
+// это ошибка сборки, а не повод задержать последний кадр.
+function renderClip(sc, outFile) {
+  const dur = sceneDuration(sc);
+  const src = join(ROOT, sc.file);
+  if (!existsSync(src)) throw new Error(`Сцена ${sc.id}: нет файла ${sc.file}`);
+  const S = vdur(src);
+  const at = Number(sc.at ?? 0);
+  const avail = S - at;
+  if (avail < dur - 0.05) {
+    throw new Error(`Сцена ${sc.id}: источник даёт ${avail.toFixed(2)} с при сцене ${dur} с — ` +
+      `удлини ${sc.file} или укороти сцену; держать кадр нельзя`);
+  }
+  const cap = sc.plate ? `,${caption(sc.plate, 0)}` : "";
+  const chain = `[0:v]trim=start=${at.toFixed(3)}:duration=${dur.toFixed(3)},setpts=PTS-STARTPTS,${norm()}${cap},${fades(dur)}[v]`;
+  encodeSegment(outFile, ["-i", src], chain, dur);
+  buildLog.scenes.push({ id: sc.id, kind: "clip", t: sc.t, plate: sc.plate ?? null,
+    source: sc.file, sourceDuration: Number(S.toFixed(2)), at, target: dur,
+    screen: Number(dur.toFixed(2)), still: false });
+}
+
 // ---------- сцена из план-листа ----------
 function sceneClips(sc) {
   const all = plans.filter((p) => p.scene === sc.id).map((p) => ({ ...p, file: join(takesDir, "_flf", `plan${p.plan}.mp4`) })).filter((p) => existsSync(p.file));
@@ -147,6 +179,29 @@ let insertCursor = 0;
 // на две части, между ними врезка, а вторая часть начинается на длину
 // врезки позже — монтажная склейка прячет скачок времени, экран не растёт.
 const MAX_SHOT = 6.5;
+
+// Монтаж сцены, снятой по ролям (auto_storyboard.py пишет role: wide/medium/
+// close): общий → средний → крупный → возврат на хвост ТОГО ЖЕ общего плана.
+// Возврат к установочному кадру — обязательная часть грамматики сцены, но
+// отдельного клипа он не стоит: хвост уже снятого общего плана и есть возврат.
+const RETURN_SEC = 1.8;
+function montageItems(masters) {
+  const wide = masters.find((p) => p.role === "wide");
+  const rest = masters.filter((p) => p !== wide);
+  if (!wide || !rest.length) return null;
+  const S = vdur(wide.file);
+  const tail = Math.min(RETURN_SEC, Math.max(1.2, S * 0.35));
+  const head = S - tail;
+  if (head < 1.5) return null; // общий слишком короток, чтобы делить
+  const order = { medium: 0, close: 1 };
+  rest.sort((a, b) => (order[a.role] ?? 9) - (order[b.role] ?? 9) || a.plan - b.plan);
+  return [
+    { kind: "master", file: wide.file, plan: wide.plan, start: 0, src: head },
+    ...rest.map((p) => ({ kind: "master", file: p.file, plan: p.plan, start: 0, src: vdur(p.file) })),
+    { kind: "master", file: wide.file, plan: wide.plan, start: head, src: tail, ret: true },
+  ];
+}
+
 function layout(sc, masters, local) {
   const D = sceneDuration(sc);
   if (!masters.length) return null;
@@ -154,8 +209,10 @@ function layout(sc, masters, local) {
   const notes = [];
   const hasInserts = !!pickInserts(local, 0);
   // 1. куски мастеров (+ обязательные врезки внутри длинных клипов)
-  let items = [];
-  for (const p of masters) {
+  let items = montageItems(masters);
+  if (items) notes.push(`монтаж по ролям: общий → средний → крупный → возврат ${items.at(-1).src.toFixed(1)} с`);
+  else items = [];
+  for (const p of items.length ? [] : masters) {
     const S = vdur(p.file);
     if (hasInserts && S > MAX_SHOT) {
       const a = S / 2 - args.insertSec / 2;
@@ -299,8 +356,9 @@ for (const sc of sn.scenes) {
   if (kind === "title") renderTitle(sc, segFile);
   else if (kind === "divider") renderDivider(sc, segFile);
   else if (kind === "memo") renderMemo(sc, segFile);
+  else if (kind === "clip") renderClip(sc, segFile);
   else made = renderScene(sc, join(buildDir, `seg_${sc.id}`));
-  if (kind !== "scene") buildLog.scenes.push({ id: sc.id, kind, t: sc.t, plate: sc.plate, source: "rendered" });
+  if (kind !== "scene" && kind !== "clip") buildLog.scenes.push({ id: sc.id, kind, t: sc.t, plate: sc.plate, source: "rendered" });
   segments.push(...made);
   const vo = await makeVo(sc);
   if (vo) {
@@ -317,14 +375,37 @@ ff(["-f", "concat", "-safe", "0", "-i", listFile, "-c", "copy", concatFile]);
 
 const totalDur = sn.scenes.at(-1).t[1];
 const outName = args.out ?? join(outDir, `${sanitizeName(sn.title)}.mp4`);
-const inputs = ["-i", concatFile]; let fc = ""; const mixIn = [];
+// ---------- необязательный ужим под размер (--target-mb) ----------
+// Две прохода x264 по готовой картинке: считаем битрейт из остатка бюджета
+// после звука, а не подбираем CRF вслепую. Картинка при этом одна и та же —
+// сегменты уже склеены, так что ужимается ровно то, что увидит зритель.
+let pictureFile = concatFile;
+const audioKbps = args.audioKbps ?? (args.targetMb ? 96 : null);
+if (args.targetMb) {
+  const dur = Number(ffprobeJson(concatFile).format.duration);
+  const budgetBits = args.targetMb * 1024 * 1024 * 8;
+  const audioBits = (audioKbps * 1000) * dur;
+  // 2% запас на контейнер и заголовки
+  const vBitrate = Math.max(300, Math.floor(((budgetBits - audioBits) * 0.98) / dur / 1000));
+  console.log(`ужим под ${args.targetMb} МБ: ${dur.toFixed(1)} с → видео ${vBitrate} кбит/с + звук ${audioKbps} кбит/с`);
+  const passLog = join(buildDir, "x264-2pass");
+  const shared = ["-c:v", "libx264", "-profile:v", "high", "-level:v", "4.1", "-pix_fmt", "yuv420p",
+    "-b:v", `${vBitrate}k`, "-maxrate", `${Math.round(vBitrate * 1.5)}k`, "-bufsize", `${vBitrate * 3}k`,
+    "-preset", "slow", "-r", String(FPS), "-passlogfile", passLog];
+  ff(["-i", concatFile, ...shared, "-pass", "1", "-an", "-f", "mp4", process.platform === "win32" ? "NUL" : "/dev/null"]);
+  pictureFile = join(buildDir, "video_sized.mp4");
+  ff(["-i", concatFile, ...shared, "-pass", "2", "-an", pictureFile]);
+}
+
+const inputs = ["-i", pictureFile]; let fc = ""; const mixIn = [];
 voClips.forEach((c, i) => {
   inputs.push("-i", c.file); const ms = Math.round(c.at * 1000);
   fc += `[${i + 1}:a]aresample=48000,aformat=channel_layouts=stereo,atrim=duration=${(sceneDuration(sn.scenes.find((s) => s.id === c.scene)) - c.voAt).toFixed(2)},adelay=${ms}|${ms}[a${i}];`;
   mixIn.push(`[a${i}]`);
 });
 fc += mixIn.length ? `${mixIn.join("")}amix=inputs=${mixIn.length}:duration=longest:normalize=0,${cfg.audio.loudnormFilter},aresample=48000,apad[aout]` : `anullsrc=r=48000:cl=stereo[aout]`;
-ff([...inputs, "-filter_complex", fc, "-map", "0:v", "-map", "[aout]", "-c:v", "copy", ...cfg.encode.audioArgs, "-t", totalDur.toFixed(3), "-movflags", "+faststart", outName]);
+const audioArgs = audioKbps ? ["-c:a", "aac", "-b:a", `${audioKbps}k`, "-ar", "48000", "-ac", "2"] : cfg.encode.audioArgs;
+ff([...inputs, "-filter_complex", fc, "-map", "0:v", "-map", "[aout]", "-c:v", "copy", ...audioArgs, "-t", totalDur.toFixed(3), "-movflags", "+faststart", outName]);
 
 buildLog.output = outName; buildLog.totalDuration = totalDur; buildLog.durationTarget = sn.duration_target;
 buildLog.vo = voClips.map(({ file, ...r }) => r);
@@ -332,5 +413,10 @@ const realVo = (m) => m === "elevenlabs" || m === "cached";
 buildLog.voMode = voClips.every((c) => realVo(c.mode)) ? "elevenlabs" : voClips.some((c) => realVo(c.mode)) ? "mixed" : "placeholder";
 writeFileSync(join(buildDir, "build-log.json"), JSON.stringify(buildLog, null, 2), "utf8");
 writeFileSync(outName.replace(/\.mp4$/, ".build-log.json"), JSON.stringify(buildLog, null, 2), "utf8");
-console.log(`\nСобрано (from-plans): ${outName}\nХронометраж: ${totalDur} с, сегментов: ${segments.length}, ${((Date.now() - t0) / 1000).toFixed(1)} с сборки`);
+const sizeMb = statSync(outName).size / 1024 / 1024;
+buildLog.sizeMb = Number(sizeMb.toFixed(2));
+if (args.targetMb) buildLog.targetMb = args.targetMb;
+writeFileSync(outName.replace(/[.]mp4$/, ".build-log.json"), JSON.stringify(buildLog, null, 2), "utf8");
+console.log(`\nСобрано (from-plans): ${outName}\nХронометраж: ${totalDur} с, сегментов: ${segments.length}, ${sizeMb.toFixed(1)} МБ, ${((Date.now() - t0) / 1000).toFixed(1)} с сборки`);
+if (args.targetMb && sizeMb > args.targetMb) console.warn(`WARN ${sizeMb.toFixed(1)} MB against a ${args.targetMb} MB target`);
 for (const s of buildLog.scenes.filter((x) => x.kind === "scene")) console.log(`  ${s.id}: ${s.target} с → ${s.screen} с; ${s.notes.join("; ")}; ${s.layout.map((l) => `${l.kind}${l.plan ? " p" + l.plan : l.id ? " " + l.id : ""} ${l.len}`).join(" | ")}`);

@@ -30,7 +30,14 @@ import tempfile
 import numpy as np
 from PIL import Image, ImageDraw
 
+from guard import QA
+
 W = 320
+# Thresholds live in engine/pipeline.config.json (`qa.thresholds`), not here:
+# the acceptance screen, engine/claude_agent.mjs and this script must all flag
+# the same clip, and a number that lives in one script is a number the other
+# two do not know about. See docs/QA-CHECKLIST.md.
+T = QA
 
 
 def ffprobe_duration(path):
@@ -106,32 +113,50 @@ def metrics(clip, k0=None, k1=None):
         m["k0_match"] = round(1 - diff(load_img(k0), fr[0]), 4)
     if k1 and os.path.exists(k1):
         m["k1_match"] = round(1 - diff(load_img(k1), fr[-1]), 4)
+    m["duration"] = round(dur, 2) if dur else None
     flags = []
-    if m["jump_max"] > 0.12:
+    if m["jump_max"] > T["jumpMax"]:
         flags.append(f"jerk/cut at frame {m['jump_at']} ({m['jump_max']})")
-    if m["color_drift"] > 6:
+    if m["color_drift"] > T["colorDrift"]:
         flags.append(f"colour drifted ({m['color_drift']})")
-    if m["max_area_dev"] > 0.06:
-        flags.append(f"large change mid-clip, frame {m['max_area_at']} ({m['max_area_dev']:.0%} of frame) — extra person/hand?")
-    if m.get("k0_match", 1) < 0.9:
+    if m["max_area_dev"] > T["maxAreaDev"]:
+        flags.append(f"large change mid-clip, frame {m['max_area_at']} ({m['max_area_dev']:.0%} of frame) - extra person/hand?")
+    # The still-frame defect, which every other metric scores as perfect: a
+    # clip whose busiest frame barely differs from its own median never moved.
+    # It is the single most common reason a finished episode looks dead, so it
+    # is a flag in its own right, not an absence of one.
+    if m["max_area_dev"] < T["minAreaDev"]:
+        flags.append(f"STILL: nothing moves ({m['max_area_dev']:.1%} of frame at most, floor is {T['minAreaDev']:.0%}) - reshoot with an explicit action")
+    if m["duration"] is not None and m["duration"] < T["minDurationSec"]:
+        flags.append(f"clip is only {m['duration']}s, shorter than the {T['minDurationSec']}s floor")
+    if m.get("k0_match", 1) < T["k0Match"]:
         flags.append(f"start doesn't match the master ({m['k0_match']})")
-    if m.get("k1_match", 1) < 0.85:
+    if m.get("k1_match", 1) < T["k1Match"]:
         flags.append(f"finish doesn't match the end key ({m['k1_match']})")
     m["flags"] = flags
     return m, fr
 
 
-def sheet(fr, out, n=6):
+def sheet(fr, out, n=12, cols=4):
+    """Contact sheet: n frames evenly across the clip, in a grid.
+
+    Twelve frames in 4x3 is the acceptance default — six was enough to see a
+    passer-by but not enough to see a hand that appears for half a second.
+    """
     idx = np.linspace(0, len(fr) - 1, min(n, len(fr))).round().astype(int)
+    cols = min(cols, len(idx))
+    rows = (len(idx) + cols - 1) // cols
     h = fr[0].shape[0]
-    im = Image.new("RGB", (W * len(idx) + 4 * (len(idx) - 1), h + 22), "white")
+    cell_h = h + 22
+    im = Image.new("RGB", (W * cols + 4 * (cols - 1), cell_h * rows + 4 * (rows - 1)), "white")
     d = ImageDraw.Draw(im)
     for j, i in enumerate(idx):
-        x = j * (W + 4)
-        im.paste(Image.fromarray(fr[i].astype(np.uint8)), (x, 22))
-        d.text((x + 4, 4), f"#{i + 1}", fill="black")
+        x = (j % cols) * (W + 4)
+        y = (j // cols) * (cell_h + 4)
+        im.paste(Image.fromarray(fr[i].astype(np.uint8)), (x, y + 22))
+        d.text((x + 4, y + 4), f"#{i + 1}", fill="black")
     os.makedirs(os.path.dirname(os.path.abspath(out)) or ".", exist_ok=True)
-    im.save(out, quality=88)
+    im.save(out, quality=90)
 
 
 def main():

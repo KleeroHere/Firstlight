@@ -142,6 +142,21 @@ def build_sheet(series, sn):
                 lines.append(f"- Войсовер: «{sc['vo']}»")
             lines.append("")
             continue
+        if kind == "clip":
+            # Сцена, картинка которой уже существует файлом: запись экрана,
+            # отрисованная схема, врезка из готового эпизода. Генерировать
+            # нечего — лист только фиксирует источник и войсовер.
+            lines.append(f"## {sc['id']} · Готовая вставка ({fmt_t(sc['t'])}) — "
+                         f"`{sc.get('file', '?')}`")
+            lines.append("")
+            if sc.get("plate"):
+                lines.append(f"- Плашка: **{sc['plate']}**")
+            if sc.get("at"):
+                lines.append(f"- Смещение в источнике: {sc['at']} с")
+            if sc.get("vo"):
+                lines.append(f"- Войсовер: «{sc['vo']}»")
+            lines.append("")
+            continue
         if kind == "memo":
             lines.append(f"## {sc['id']} · Финальная памятка "
                          f"({fmt_t(sc['t'])}) — программный рендер")

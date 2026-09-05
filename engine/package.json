@@ -1,0 +1,10 @@
+{
+  "name": "firstlight-engine",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Optional dependencies for the engine. Every script here runs on bare Node with ffmpeg and nothing else — this file exists for ONE opt-in feature: engine/claude_agent.mjs calling the Claude API directly instead of writing an agent packet. Skip `npm install` and the pipeline still works end to end; claude_agent.mjs just writes packets for a reviewer (human or agent session) rather than calling the API itself.",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.72.0"
+  }
+}

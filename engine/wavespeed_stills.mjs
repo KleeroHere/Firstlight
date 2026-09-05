@@ -82,17 +82,23 @@ function bookRun(path, entry) {
 }
 
 console.log(`${args.tag}: ${args.edit ? "seedream-v4/edit" : "seedream-v4"} ${args.size}, $${PRICE.toFixed(3)} -> ${args.out}`);
+if (!/^\d+\*\d+$/.test(args.size)) throw new Error(`--size must look like 2560*1440, got "${args.size}"`);
 if (args.dry) process.exit(0);
 if (!KEY) { console.error("No WAVESPEED_API_KEY in the environment"); process.exit(2); }
 
 const body = { prompt: args.prompt, enable_base64_output: false, enable_sync_mode: false };
 let path;
+// `size` goes with BOTH modes. Seedream's edit endpoint does not inherit the
+// aspect ratio of the images it is given: omit `size` and a 16:9 background
+// plus a portrait character sheet came back portrait — which is how this
+// series once shot a 1792x2240 "master" that the assembler then pillarboxed
+// into a 1920x1080 frame. Always say the shape you want.
+body.size = args.size;
 if (args.edit) {
   path = "/bytedance/seedream-v4/edit";
   body.images = await Promise.all(args.edit.map((p) => upload(p)));
 } else {
   path = "/bytedance/seedream-v4";
-  body.size = args.size;
 }
 
 const t0 = Date.now();

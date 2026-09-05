@@ -29,9 +29,23 @@ firstlight.log
 # Keys and hosts live in the environment, never here.
 .env
 .env.*
+!.env.example
 # ...except this one: it holds no secret, just the flag that switches a build
 # to demo mode (VITE_DEMO=1) — see ui/vite.config.ts and .github/workflows/pages.yml.
 !ui/.env.demo
 engine/.env.local
 reports/
 __pycache__/
+
+# Explainer source clips are generated, like every other take in this repo:
+# rebuild them with the three scripts beside them (see docs/demo/motion/manifest.json).
+# The finished explainer, "docs/demo/How Firstlight works.mp4", IS committed —
+# it is a deliverable, not an intermediate.
+docs/demo/motion/*.mp4
+docs/demo/motion/*.webm
+
+# Review packets: the verdicts, the checklist and the item list are the record
+# and are committed. The contact sheets inside them are copies of
+# reports/qa-<roll>/, which is generated — the committed montages of the same
+# frames are docs/demo/review/.
+workspace/*/_review/*/sheets/

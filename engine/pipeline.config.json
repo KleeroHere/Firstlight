@@ -47,14 +47,15 @@
     "lineSpacing": 22
   },
   "audio": {
-    "loudnormFilter": "loudnorm=I=-16:TP=-1.6:LRA=11",
+    "loudnormFilter": "loudnorm=I=-16:TP=-2:LRA=11",
     "voCharsPerSec": 15.5,
     "elevenlabs": {
       "voiceId": "onwK4e9ZLuTAKqWW03F9",
       "modelId": "eleven_multilingual_v2",
       "apiKeyEnv": "ELEVENLABS_API_KEY",
       "comment": "Pin one voice for the whole series and never change it mid-way: every episode must sound like the same narrator. The API key comes only from the environment variable named in apiKeyEnv; it is never written to the repository."
-    }
+    },
+    "loudnormComment": "TP is a target loudnorm aims at, not a ceiling it guarantees: a single pass overshoots by a couple of tenths of a dB. Asking for -2 lands the measured true peak around -1.8, safely under the -1.5 dBTP that verify_video.mjs fails on. Do not raise it to -1.6 again."
   },
   "paths": {
     "compiled": "workspace/prompts/compiled",
@@ -117,6 +118,66 @@
         "comfy-pod": "",
         "comfy-local": "http://127.0.0.1:8188"
       }
+    }
+  },
+  "production": {
+    "comment": "Shooting rules, written down once here instead of living in an operator's head. engine/guard.mjs and engine/guard.py read this block, so every motion prompt the pipeline sends (wavespeed_batch.mjs, flf_batch.mjs) and every start frame it asks for (auto_storyboard.py) carry the same clauses. Prose version with the reasoning: docs/PRODUCTION-RULES.md.",
+    "guard": {
+      "comment": "Prepended to every motion prompt. {who} is filled from counts by the shot's own cast size — the scene's cast is irrelevant, a solo insert out of a two-hander is a one-person shot.",
+      "counts": {
+        "1": "one person is",
+        "2": "two people are",
+        "3": "three people are",
+        "4": "four people are"
+      },
+      "template": "Exactly {who} in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut.",
+      "banned": [
+        "breathe",
+        "breathes",
+        "breathing",
+        "walks off",
+        "walks away",
+        "walks out",
+        "steps out of frame",
+        "leaves the frame",
+        "turns to camera",
+        "turns to the camera",
+        "looks at camera",
+        "looks at the camera",
+        "looks into the lens",
+        "camera pans",
+        "camera zooms",
+        "camera pushes",
+        "zoom in",
+        "pan across",
+        "cut to"
+      ],
+      "bannedComment": "Motion verbs that produced the defects this pipeline keeps re-shooting: idle 'breathing' reads as a freeze frame, anything 'off frame' invents a passer-by, anything 'to camera' breaks the fourth wall the series never breaks, camera verbs fight camera_fixed.",
+      "negativePrompt": "extra person, extra hand, disembodied hand, third arm, duplicated character, face morphing, changing clothes, changing hair, object appearing from nowhere, floating object, readable text, letters, watermark, subtitles, camera zoom, camera pan, camera shake, freeze frame, still image, looping stutter, motion blur, photorealism, extra fingers",
+      "actionSuffix": "One clear action with one object; it starts and finishes once inside the clip, at an even, unhurried speed. Everything else in the frame holds still."
+    },
+    "frame": {
+      "comment": "Composition rules for the start frames Seedream is asked for. A start frame that breaks these produces a clip that breaks them worse.",
+      "solo": "Three-quarter angle, the person turned toward the object or the person they are dealing with, never square to the camera and never looking into the lens. Their own hands -- or the object in their hands -- are inside the frame and unobstructed, with normal anatomy: two arms, each from its own shoulder, five fingers per hand. Their lips are together and their mouth is completely closed: they are not speaking, not mid-word, not open-mouthed. Exactly one person: no second figure, no other hand, no reflection of another person.",
+      "noDoors": "No door, doorway, hatch, archway, stairwell or lit corridor anywhere in the background: the space behind them is a closed wall, a window with weather outside, or equipment. Nothing in frame suggests somebody could walk in.",
+      "wide": "Wide establishing shot on the location itself: the whole set readable, the cast placed in it at full or three-quarter length, floor and ceiling line visible.",
+      "noText": "No readable text anywhere in the picture: labels, tags, signs, screens, book spines and pages carry no letters and no words at all -- they are blank, or bear only faint illegible pen strokes. Do not write out any word that appears in this prompt.",
+      "tone": "Match the tone, exposure and colour temperature of the other frames in this scene exactly — the same time of day, the same light sources at the same strength.",
+      "oneProp": "The only object in their hands is the one this shot's action names. Nothing else is being held: no notebook, no pen, no radio, no tool that belongs to a different scene."
+    }
+  },
+  "qa": {
+    "comment": "Thresholds engine/qa_clip.py flags on. Not verdicts — the acceptance screen (or engine/claude_agent.mjs) decides; these only say what to look at. Tuned on 40+ reshoots of this series.",
+    "thresholds": {
+      "jumpMax": 0.12,
+      "colorDrift": 6,
+      "maxAreaDev": 0.06,
+      "minAreaDev": 0.02,
+      "minAreaDevComment": "Floor, not a ceiling: a clip whose busiest frame differs from its own median by less than this share of the picture did not move — that is the still-frame defect, and it is a reject even though every other metric is perfect.",
+      "k0Match": 0.9,
+      "k1Match": 0.85,
+      "minDurationSec": 4.0,
+      "sharpDropRatio": 0.6
     }
   }
 }
