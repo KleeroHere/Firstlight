@@ -1,11 +1,13 @@
 <p align="center">
-  <img src="docs/brand/firstlight.png" width="150" alt="Firstlight" />
+  <img src="docs/brand/firstlight-wordmark.png" width="440" alt="Firstlight" />
 </p>
-
-<h1 align="center">Firstlight</h1>
 
 <p align="center"><b>The first frame, and everything after it.</b><br/>
 A pipeline that turns a written scenario into a finished training film — keyframes, motion, narration, captions, cut and acceptance — with no editing by hand.</p>
+
+<p align="center">
+  <img src="docs/brand/palette.png" width="720" alt="the Harbour Light palette" />
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Node_22-engine_%2B_server-3c873a?logo=node.js&logoColor=white" alt="Node" />
@@ -33,11 +35,14 @@ There is no timeline and no editor. The scenario is the edit.
 | Every roll and how far it has got | One roll: keyframes with their checklist |
 | --- | --- |
 | ![Rolls](docs/screenshots/rolls.png) | ![Roll](docs/screenshots/roll.png) |
+| **Plan-level acceptance** | **The episode, and its report** |
+| ![Acceptance](docs/screenshots/acceptance.png) | ![Episode](docs/screenshots/episode.png) |
 | **The scenario, edited in place** | **What is in the workspace** |
 | ![Scenario](docs/screenshots/scenario.png) | ![Workspace](docs/screenshots/workspace.png) |
 
-*Screenshots above are from before the Acceptance tab (see below) existed —
-new ones showing plan-level review are coming; nothing here is a mockup.*
+*Real screens against the example series, not mockups. The interface follows
+your OS light/dark setting; it is drawn in the same palette as the films —
+see [docs/BRAND.md](docs/BRAND.md).*
 
 ## Why it is built this way
 
@@ -187,12 +192,13 @@ Three ways to see it, in order of how much you want to install:
   uses Node's own [single-executable-application](https://nodejs.org/api/single-executable-applications.html)
   support to bundle `ui/server/server.mjs` (esbuild to CommonJS, since that is
   what an SEA entry point has to be) into a copy of the Node binary
-  (`postject`), with the ribbon mark set as its icon first — `rcedit`, and
+  (`postject`), with the app icon set on it first — `rcedit`, and
   strictly *before* postject touches the binary: handing postject's output to
   rcedit afterward hangs it indefinitely (confirmed by timing both orders;
   rcedit is fine with the plain copy either way, under a second). `build/firstlight.ico`
-  is `docs/brand/firstlight.png` padded onto a transparent square and rendered at
-  six sizes (`build/make-icon.py`); the same file is `ui/public/favicon.ico`.
+  is `docs/brand/firstlight.png` rendered at six sizes (`build/make-icon.py`);
+  the same file is `ui/public/favicon.ico`. Every brand raster comes from the
+  SVGs in `docs/brand/` — see [docs/BRAND.md](docs/BRAND.md).
   The result, `build/dist/Firstlight/Firstlight.exe`, opens a
   browser at <http://localhost:7331> by itself — there is no terminal to read
   a URL from — and reads `engine/` and `workspace/` next to itself, or from
