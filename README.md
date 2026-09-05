@@ -187,7 +187,13 @@ Three ways to see it, in order of how much you want to install:
   uses Node's own [single-executable-application](https://nodejs.org/api/single-executable-applications.html)
   support to bundle `ui/server/server.mjs` (esbuild to CommonJS, since that is
   what an SEA entry point has to be) into a copy of the Node binary
-  (`postject`). The result, `build/dist/Firstlight/Firstlight.exe`, opens a
+  (`postject`), with the ribbon mark set as its icon first — `rcedit`, and
+  strictly *before* postject touches the binary: handing postject's output to
+  rcedit afterward hangs it indefinitely (confirmed by timing both orders;
+  rcedit is fine with the plain copy either way, under a second). `build/firstlight.ico`
+  is `docs/brand/firstlight.png` padded onto a transparent square and rendered at
+  six sizes (`build/make-icon.py`); the same file is `ui/public/favicon.ico`.
+  The result, `build/dist/Firstlight/Firstlight.exe`, opens a
   browser at <http://localhost:7331> by itself — there is no terminal to read
   a URL from — and reads `engine/` and `workspace/` next to itself, or from
   `--workspace <path>`. `engine/`'s own scripts (keyframes, motion, narration)

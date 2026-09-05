@@ -22,7 +22,7 @@
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, copyFileSync } from "node:fs";
 import { join, dirname, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "build", "out");
@@ -80,10 +80,25 @@ log("writing the SEA preparation blob...");
 run(process.execPath, ["--experimental-sea-config", seaConfigPath]);
 if (!existsSync(blobPath)) throw new Error("sea-prep.blob was not produced.");
 
-// --- 4. copy the Node binary and inject the blob ---------------------------
+// --- 4. copy the Node binary, set its icon, then inject the blob -----------
 const exePath = join(OUT, EXE_NAME);
 log(`copying the Node binary (${process.execPath}) as the base for the .exe...`);
 copyFileSync(process.execPath, exePath);
+
+// rcedit has to run before postject, not after: postject leaves the PE's
+// Authenticode signature in a state its own "corrupted signature" warning
+// already admits is off, and rcedit (a fuller PE resource editor, not just an
+// appender) hangs indefinitely trying to parse that — confirmed by timing
+// both orders directly. On the plain copy, before postject touches it, it
+// takes under a second.
+const iconPath = join(ROOT, "build", "firstlight.ico");
+if (existsSync(iconPath)) {
+  log("setting the icon and product name (rcedit)...");
+  const { rcedit } = await import(pathToFileURL(join(ROOT, "ui", "node_modules", "rcedit", "lib", "index.js")));
+  await rcedit(exePath, { icon: iconPath, "version-string": { ProductName: "Firstlight" } });
+} else {
+  log(`no icon at ${iconPath} (see build/make-icon.py) — building without one.`);
+}
 
 // The sentinel postject looks for is a fuse baked into the Node binary at
 // build time; its value has changed shape across Node versions (the official
