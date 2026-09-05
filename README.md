@@ -35,6 +35,9 @@ There is no timeline and no editor. The scenario is the edit.
 | **The scenario, edited in place** | **What is in the workspace** |
 | ![Scenario](docs/screenshots/scenario.png) | ![Workspace](docs/screenshots/workspace.png) |
 
+*Screenshots above are from before the Acceptance tab (see below) existed —
+new ones showing plan-level review are coming; nothing here is a mockup.*
+
 ## Why it is built this way
 
 Three facts about the production shaped everything else:
@@ -48,16 +51,23 @@ Three facts about the production shaped everything else:
 ```mermaid
 flowchart LR
     S["scenario.yaml<br/>+ series.yaml"] -->|build_prompts| C["compiled JSON<br/>+ prompt sheets"]
-    C -->|gemini_shots / flf_keys| K["keyframes<br/>first · last per shot"]
+    C -->|"gemini · klein · manual"| K["keyframes<br/>first · last per shot"]
     K -->|keys_sheet| A["acceptance sheet<br/>checklist per frame"]
-    A -->|flf_batch on ComfyUI| T["takes<br/>one clip per scene"]
+    A -->|"comfy-pod · comfy-local · wavespeed"| T["takes<br/>plan&lt;N&gt;_s&lt;seed&gt;.mp4"]
+    T -->|Acceptance UI| ACC["acceptance.json"]
+    ACC -->|redo only rejected| T
     T -->|tts_all| V["narration<br/>cached per line"]
     T -->|assemble_video| E["episode.mp4<br/>+ build-log.json"]
     V --> E
     E -->|verify_video| R["verify.json<br/>pass · warn · fail"]
     R --> UI["interface"]
     A --> UI
+    ACC --> UI
 ```
+
+Keyframes and motion each have three interchangeable backends — see
+**[Backends](#backends)** below and [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+for the full diagram and trade-off table.
 
 ### Stages and their scripts
 
@@ -65,16 +75,75 @@ flowchart LR
 | --- | --- | --- |
 | Compile | `build_prompts.py` | YAML scenarios → prompt sheets (`sheets/*.md`) and compiled JSON, one per roll. Validates cast against the series, warns about a line that will not fit its scene. |
 | Plan | `make_plans.py`, `preflight_plans.py`, `check_plan_counts.py`, `check_scene_cast.py` | Shot plans per scene; checks that every scene has the right number of shots and that nobody appears who is not in the cast. |
-| Keyframes | `gemini_shots.mjs`, `gemini_frames.mjs`, `flf_keys.mjs` | First and last frame per shot through the Gemini image API, references attached. `--only s2,s3` regenerates by name; nothing else is touched. |
+| Keyframes | `gemini_shots.mjs`, `gemini_frames.mjs`, `flf_keys.mjs`, `klein_keys.py`, `ingest_manual_shots.mjs` | First and last frame per shot. Three backends — Gemini image-edit (paid), a local Flux.2 Klein 9B via ComfyUI (free), or a human-drawn frame intake. `--only s2,s3` regenerates by name; nothing else is touched. |
 | Review | `keys_sheet.mjs`, `flf_verify.mjs`, `keys_delta.py`, `align_keys.py` | The acceptance sheet; a measure of how much a shot's two keys differ (a frozen shot is caught here, before it is animated). |
-| Motion | `flf_batch.mjs`, `comfy_batch.mjs`, `comfy_frames.mjs`, `flf_night.mjs`, `flf_trim.mjs`, `krupno.mjs` | Batches keyframe pairs through a ComfyUI workflow on a RunPod GPU, polls the queue, downloads clips, trims, and adds close-up "detail" shots. `pod_exec.mjs` runs commands on the pod when SSH is not available. |
+| Motion | `flf_batch.mjs`, `wavespeed_batch.mjs`, `comfy_batch.mjs`, `comfy_frames.mjs`, `flf_night.mjs`, `flf_trim.mjs`, `krupno.mjs` | Batches keyframe pairs through a Wan 2.2 FLF2V ComfyUI workflow — on a rented pod, or locally with `--gguf` — or through the WaveSpeed API (Kling / Seedance / Wan) with `wavespeed_batch.mjs`. Both read `workspace/<id>/acceptance.json` first: an accepted plan is left alone, a rejected or redo one is reshot without `--redo`. `pod_exec.mjs` runs commands on the pod when SSH is not available. |
 | Intake | `sort_downloads.mjs`, `collect_shots.mjs`, `ingest_manual_shots.mjs`, `shot_kits.mjs` | Files a folder of downloads into the right scenes; assembles the kit of references a human needs to redo a shot by hand. |
 | Narration | `tts_all.mjs`, `verify_vo_fit.mjs`, `retime_scenes.mjs` | One ElevenLabs call per line, cached — a re-cut costs nothing; checks every line fits its scene at the narrator's reading speed. |
-| Cut | `assemble_video.mjs`, `replace_plates.mjs`, `make_synthetic_takes.mjs` | Renders the graphic cards, overlays captions, places narration, normalises loudness, encodes H.264 High 4.1 with faststart. `make_synthetic_takes` fakes the takes so the cut can be tested without a GPU. |
+| Cut | `assemble_video.mjs`, `assemble_from_plans.mjs`, `replace_plates.mjs`, `make_synthetic_takes.mjs` | Renders the graphic cards, overlays captions, places narration, normalises loudness, encodes H.264 High 4.1 with faststart. `assemble_from_plans.mjs` is the alternate cut — a scene built from its own plan-list clips, close-ups inserted from that same scene only. `make_synthetic_takes` fakes the takes so the cut can be tested without a GPU. |
 | Grade | `verify_video.mjs`, `verify_clips.mjs` | The written standard as a script; the result printed for a person and written as JSON for the interface. |
 | Night | `run_night.mjs`, `night_batch.mjs`, `spend.mjs` | One process for the night: shoot what has keys, cut what has takes, grade what has a cut, write the morning summary. Money spent is tracked per stage. |
 
 `engine/lib.mjs` holds the handful of things every script shares: config, paths, `ffprobe`, running a command. `engine/paths.py` is the same for the Python side. Everything reads `engine/pipeline.config.json`.
+
+## Backends
+
+Two stages — keyframes and motion — have more than one implementation, switched
+in one place, `pipeline.config.json` → `backends`:
+
+```jsonc
+"backends": {
+  "keys":   { "default": "gemini",    "options": { "gemini": "…", "klein": "…", "manual": "…" } },
+  "motion": { "default": "comfy-pod", "options": { "comfy-pod": "…", "comfy-local": "…", "wavespeed": "…" } }
+}
+```
+
+| Stage | Backend | Cost | Notes |
+| --- | --- | --- | --- |
+| Keys | `gemini` (default) | ≈$0.067 / key (1K) | `gemini_shots.mjs` / `flf_keys.mjs`. Image-edit API, up to 5 reference sheets held at once — best identity lock. |
+| Keys | `klein` | free (local GPU) | `klein_keys.py`. Flux.2 Klein 9B distilled on ComfyUI, ≈16 s/key at 1280×720 on an RTX 4080 — weaker multi-reference consistency, no image-edit. |
+| Keys | `manual` | free (human time) | `ingest_manual_shots.mjs`. A person generates in the same web UI Gemini uses; the script only intakes, resizes, and rebuilds the acceptance sheet. |
+| Motion | `comfy-pod` (default) | RunPod, ≈$0.5–0.7/h | `flf_batch.mjs --host <pod>`. Wan 2.2 14B FLF2V, lightx2v 4-step + NAG by default. |
+| Motion | `comfy-local` | free (owned GPU) | Same script, `--gguf --quant Q5_K_M` for 16 GB VRAM, or `--full --steps 20 --cfg 3.5 --shift 8` for a full non-distilled pass. |
+| Motion | `wavespeed` | per clip, see **Cost & time** | `wavespeed_batch.mjs --model <name>`. Kling, Seedance or Wan through one cloud API — no GPU to manage, billed per clip. |
+
+Full trade-off table (speed, where the negative prompt stops working at
+cfg = 1, and why) is in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Acceptance
+
+Below the scene-level checklist is a second, finer-grained acceptance screen,
+one level down: **plan**, not scene. A plan is one shot in the plan-list
+(`engine/make_plans.py`) — its first and last keyframe, and every clip shot
+for it, including seed variants (`plan3.mp4`, `plan3_s12.mp4`, …). For each
+clip the screen renders a **contact sheet** on demand (`engine/contact_sheet.mjs`,
+six frames tiled by ffmpeg, cached beside the clip), and shows a defect
+checklist — extra person, extra hand, object moved, cut jump, face drift,
+blur — a comment field, and **Accept / Reject / Redo with a comment**.
+
+The decision is written to `workspace/<roll>/acceptance.json`, keyed by the
+clip it judges. `flf_batch.mjs` and `wavespeed_batch.mjs` both read this file
+before shooting a plan: `accepted` is left alone (even a missing clip file
+needs `--redo` to reshoot it on purpose), `rejected` and `redo` are reshot on
+the very next run, no flag needed. The engine only ever reads this file —
+every write comes from the interface, the same one-way relationship
+`_rejected/` already has with keyframes. The rolls list and the roll header
+show how many plans are accepted, in the reshoot queue, awaiting a first
+review, or not shot yet — plus total spend, broken down by backend.
+
+## Cost & time
+
+Honest numbers, not a promise — they move with prices and hardware.
+
+| Item | Cost / time |
+| --- | --- |
+| Gemini key (1K, image-edit) | ≈$0.067 |
+| Kling 2.6 Std, 5 s clip (`--model kling26-std`) | ≈$0.21 |
+| Kling Pro (2.5 Turbo), 5 s clip (`--model kling-pro`) | ≈$0.35 |
+| RunPod GPU rent | ≈$0.5–0.7 / h |
+| Wan 2.2 14B FLF2V, 720p, 81 frames, lightx2v 4-step — RTX 4080 16 GB | ≈12 min |
+| Same, full pass (`--full`, 20 steps, no distillation) — RTX 4080 16 GB | ≈55 min |
+| Flux.2 Klein key, 1280×720 — RTX 4080 16 GB | ≈16 s |
 
 ## The interface
 
@@ -131,9 +200,11 @@ cd ui && npm run dev        # interface on :1421, proxying /api to the server
 
 Three things turn the example into a production, all of them configuration:
 
-- **Keyframes** — `GEMINI_API_KEY` in the environment, reference sheets in `workspace/refs/<character>/` named as in `series.yaml`.
-- **Motion** — a ComfyUI host with the Wan 2.2 first-last-frame workflow (`engine/wan22_i2v_nag.api.json` is the one used in production): `--host https://<pod>-8188.proxy.runpod.net`, `POD_ID` for `pod_exec`.
+- **Keyframes** — `GEMINI_API_KEY` in the environment, reference sheets in `workspace/refs/<character>/` named as in `series.yaml`. No key, or no budget left in `reports/gemini-spend.json`? `klein_keys.py` runs the same job on a local ComfyUI, free.
+- **Motion** — a ComfyUI host with the Wan 2.2 first-last-frame workflow (`engine/wan22_i2v_nag.api.json` is the one used in production): `--host https://<pod>-8188.proxy.runpod.net`, `POD_ID` for `pod_exec`. No pod? The same `flf_batch.mjs --gguf` runs locally on 16 GB VRAM, or `wavespeed_batch.mjs` shoots through a billed cloud API with no GPU at all.
 - **Narration** — `ELEVENLABS_API_KEY`, and one `voiceId` in `pipeline.config.json`, pinned for the life of the series.
+
+See **[Backends](#backends)** for the full picture and `pipeline.config.json` → `backends` for the switch itself.
 
 ## Honest notes
 
