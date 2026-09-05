@@ -13,6 +13,7 @@ A pipeline that turns a written scenario into a finished training film — keyfr
   <img src="https://img.shields.io/badge/ffmpeg-cut_%2B_grade-007808" alt="ffmpeg" />
   <img src="https://img.shields.io/badge/React_19-interface-61DAFB?logo=react&logoColor=black" alt="React" />
   <img src="https://img.shields.io/badge/license-MIT-8957e5" alt="MIT" />
+  <a href="https://kleerohere.github.io/Firstlight/"><img src="https://img.shields.io/badge/live_demo-Harbour_Light_example-e2583f" alt="Live demo" /></a>
 </p>
 
 > **Where the name comes from.** *First light* is the moment a new telescope produces its first image — the instrument works. It is also dawn, which makes it family to [Aurora](https://github.com/KleeroHere/Aurora), the offline knowledge base these films are made for. And it is, literally, the *first frame*: the whole engine is built on first-frame-to-last-frame video generation. Aurora is what people see. Firstlight is how the films inside it get made.
@@ -159,6 +160,40 @@ Deleting a roll removes its scenario and the compiled copy, never the frames and
 ui/server/server.mjs   lists rolls, serves frames and clips, runs scripts as jobs (SSE log)
 ui/src/                React, two screens and a drawer; Aurora's tokens with Firstlight's palette
 ```
+
+## Download / Run
+
+Three ways to see it, in order of how much you want to install:
+
+- **[Live demo](https://kleerohere.github.io/Firstlight/)** — the Harbour Light
+  example, static, read-only, no server behind it: every roll, its keyframes
+  and takes, the plan-level acceptance screen, spend by backend. It is the
+  same interface reading a JSON snapshot instead of the workspace — see
+  [ui/scripts/build-demo-data.mjs](ui/scripts/build-demo-data.mjs) and
+  `DEMO` in [ui/src/api.ts](ui/src/api.ts). Anything that writes (new roll,
+  accept/reject, running a script) says so and does nothing; append `?demo=1`
+  to any normal build of the interface to preview the same mode locally.
+- **`Firstlight.exe`** (Windows, portable, no Node install required to run
+  it) — the interface and its server as one file, `engine/` and the example
+  `workspace/` beside it. Not published as a download in this repository (it
+  bundles a full copy of the Node runtime, ~90 MB, and this project has no
+  release process yet) — build it yourself:
+
+  ```bash
+  build\build-exe.cmd            # or: node build/build-exe.mjs
+  ```
+
+  This installs `ui/`'s dependencies if needed, builds the interface, then
+  uses Node's own [single-executable-application](https://nodejs.org/api/single-executable-applications.html)
+  support to bundle `ui/server/server.mjs` (esbuild to CommonJS, since that is
+  what an SEA entry point has to be) into a copy of the Node binary
+  (`postject`). The result, `build/dist/Firstlight/Firstlight.exe`, opens a
+  browser at <http://localhost:7331> by itself — there is no terminal to read
+  a URL from — and reads `engine/` and `workspace/` next to itself, or from
+  `--workspace <path>`. `engine/`'s own scripts (keyframes, motion, narration)
+  still need a system Node and Python on PATH when the interface starts one as
+  a job; only the server and the interface run from the .exe alone.
+- **From source** — see **Quick start** below.
 
 ## Quick start — the example series
 
