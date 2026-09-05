@@ -95,5 +95,28 @@
     "minSec": 3,
     "zoomStart": 1.28,
     "zoomDrift": 0.1
+  },
+  "backends": {
+    "comment": "The single adapter switch for the two stages that have more than one implementation. It documents the default and the choices for the UI and for docs/ARCHITECTURE.md; the engine scripts underneath still take their own CLI flags (--host, --model, ...), so switching a roll to another backend never needs a code change — only a different command, or a different default here.",
+    "keys": {
+      "default": "gemini",
+      "options": {
+        "gemini": "gemini_shots.mjs / flf_keys.mjs — Gemini image-edit API, paid per key, best identity lock via reference sheets",
+        "klein": "klein_keys.py — local ComfyUI, Flux.2 Klein 9B distilled, free, weaker multi-reference consistency",
+        "manual": "ingest_manual_shots.mjs — a human generates the frame in a web UI, the script only intakes and resizes it"
+      }
+    },
+    "motion": {
+      "default": "comfy-pod",
+      "options": {
+        "comfy-pod": "flf_batch.mjs --host <runpod-url> — Wan 2.2 FLF2V on a rented GPU, lightx2v 4-step + NAG by default, --full for a slower/cleaner pass",
+        "comfy-local": "flf_batch.mjs --gguf --quant Q5_K_M — the same script and graph, on a local GPU with 16 GB VRAM",
+        "wavespeed": "wavespeed_batch.mjs --model <name> — cloud API (Kling, Seedance, Wan), billed per clip, no GPU to manage"
+      },
+      "hosts": {
+        "comfy-pod": "",
+        "comfy-local": "http://127.0.0.1:8188"
+      }
+    }
   }
 }
