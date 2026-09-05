@@ -29,8 +29,25 @@
   --fl-ribbon: linear-gradient(120deg, #22c6d8 0%, #2f6fe4 45%, #6b3fd6 100%);
 }
 
+/*
+  Firstlight has no theme toggle: it follows the OS, via prefers-color-scheme.
+  [data-theme="dark"] / [data-scheme="dark"] are kept for a future explicit
+  switch, and take priority — the media query is guarded to yield to a
+  light override the same way, so the two mechanisms never fight.
+*/
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]):not([data-scheme="light"]) {
+    --color-bg: #12102a;
+    --color-surface: #1b1740;
+    --color-surface-raised: #221d4f;
+    --color-border: #2f2a5e;
+    --color-text-primary: #eef0fa;
+    --color-text-secondary: #b9bdd6;
+    --color-text-muted: #8a8fa8;
+  }
+}
 [data-theme="dark"],
-:root[data-scheme="dark"] {
+[data-scheme="dark"] {
   --color-bg: #12102a;
   --color-surface: #1b1740;
   --color-surface-raised: #221d4f;
