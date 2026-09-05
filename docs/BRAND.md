@@ -113,27 +113,32 @@ rest of the project: it has to work with the network unplugged.
   <img src="brand/firstlight.png" width="180" alt="the Firstlight mark" />
 </p>
 
-A round badge: the sun halved by the horizon, the fan of light it throws, and
-the light broken across the water below. Deep teal sky, cream rays, the storm
-orange for the sun and its reflections, a brass hairline inside a dark
-contour — the harbour of the example series, reduced to seven shapes.
+The letter **F**, built out of the harbour: the top arm is the ray, the middle
+arm is the horizon lying on the water, and the stem is the column of light
+standing in it. Deep teal sky with a dawn glow, storm orange for the ray, sun
+for the horizon, cream for the stem, the light broken across the sea below —
+brass hairline inside a dark contour.
 
-**Why this one.** Four concepts were drawn and rendered side by side at 512,
-128 and 32 pixels — `docs/brand/logo-concepts.png`, sources in
-`docs/brand/concepts/`:
+**Why this one.** Two rounds were drawn. The first four were pictures of the
+harbour (`docs/brand/logo-concepts.png`); the mark chosen out of them, a
+daybreak beam, read well but had no F in it, so a second round was drawn with
+the letter as the structure and the harbour in the detail —
+`docs/brand/logo-concepts-F.png`, sources in `docs/brand/concepts/F*.svg`:
 
 | Concept | Verdict |
 | --- | --- |
-| **Daybreak beam** | Chosen. It is the name, literally — first light, on the water. It is the only one where the orange is the subject rather than a detail, and at 32 px it still reads as a lit half-disc with a fan over it. |
-| **Fresnel lens** | The most legible of the four at 16 px, and the one that says the least: concentric rings read as a target or a record before they read as a lantern. |
-| **Lantern window** | Handsome large. The muntins are the whole idea and they are the first thing to disappear below 64 px. |
-| **First frame** | The best *concept* — a frame of film with a sunrise held in it, which is exactly what the tool does — but a 16:9 frame wastes a square icon, and its sprockets mush at small sizes. Kept as the runner-up. |
+| **F as light over the horizon** | Chosen. It is the name assembled out of a letter: ray, horizon, and the light standing in the water. The orange is the ray itself rather than a decoration, and at 16 px the counters stay open and the F is unmistakable. |
+| **F as a lighthouse** | The most literal reading — tower, beam, gallery — and the one that pays for it: the gallery rail and the tower's band are the whole idea and both turn to noise by 32 px. |
+| **F as signal flags** | The prettiest at 512, and the weakest small: the mast runs well above and below the arms, so at 16 px it stops reading as a letter and starts reading as a pole. |
+| **F with the sun as its arm** | The crispest of the four at 16 px, and the one that says the least about the harbour — the lens rings behind it read as scratches at any size a person actually sees. Kept as the runner-up. |
+
+The first round's four are kept in `docs/brand/concepts/0*.svg`.
 
 **Rules.**
 
-- Clear space around the badge: a quarter of its diameter.
+- Clear space around the badge: a quarter of its width.
 - Never re-colour it, never put it on a busy photograph, never squash it —
-  it is square, and `.ico` and favicon are square for that reason.
+  the badge is square, which is why the `.ico` and the favicon are too.
 - Below 24 px use the badge alone, never the wordmark.
 - On teal, the badge works as-is; on paper it works as-is. It needs no
   variant.
@@ -145,7 +150,8 @@ contour — the harbour of the example series, reduced to seven shapes.
 </p>
 
 Badge, a gap of a quarter of the badge's width, then *Firstlight* in Unbounded
-600 with slightly tightened tracking, in ink. The word is stored as outlines,
+600 with slightly tightened tracking, in ink. The badge's own F and the word's
+F are deliberately not the same shape: one is a picture, the other is type. The word is stored as outlines,
 not as text calling for a font, so the SVG renders the same everywhere.
 
 ---
@@ -157,8 +163,9 @@ not as text calling for a font, so the SVG renders the same everywhere.
 | `docs/brand/firstlight.svg` / `.png` | the mark (PNG 1024, transparent) |
 | `docs/brand/firstlight-wordmark.svg` / `.png` | mark + word (PNG 1600 wide, transparent) |
 | `docs/brand/social-preview.png` | 1280×640, the GitHub social card |
-| `docs/brand/logo-concepts.png` | the four concepts at three sizes |
-| `docs/brand/concepts/*.svg` | those concepts, as drawn |
+| `docs/brand/logo-concepts-F.png` | the F concepts at 512 / 128 / 32 / 16 |
+| `docs/brand/logo-concepts.png` | the first round, same treatment |
+| `docs/brand/concepts/*.svg` | both rounds, as drawn |
 | `docs/brand/cards/*.svg` | the episode card artwork |
 | `docs/brand/palette.png` | the palette strip above |
 | `ui/public/firstlight.png` | the same mark at 256, for the interface header |

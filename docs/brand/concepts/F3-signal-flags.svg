@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Firstlight — F as signal flags on a mast">
+  <title>Firstlight — F as signal flags on a mast</title>
+  <defs>
+    <linearGradient id="f3-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C2422"/>
+      <stop offset=".62" stop-color="#1F5551"/>
+      <stop offset=".84" stop-color="#E7C9A6"/>
+    </linearGradient>
+    <clipPath id="f3-badge"><rect x="16" y="16" width="480" height="480" rx="116"/></clipPath>
+    <filter id="f3-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="11"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#f3-badge)">
+    <rect width="512" height="512" fill="url(#f3-sky)"/>
+    <path d="M0 414 H512 V512 H0 Z" fill="#12312E"/>
+    <!-- the flags: the two arms, flying to starboard -->
+    <path d="M208 100 H400 L356 138 L400 176 H208 Z" fill="#E04E14"/>
+    <path d="M208 230 H352 L314 262 L352 294 H208 Z" fill="#F7C77E"/>
+    <!-- the mast: the stem, with its truck -->
+    <rect x="146" y="66" width="68" height="376" fill="#F7EFE2"/>
+    <circle cx="180" cy="60" r="26" fill="#C9A26A"/>
+    <rect width="512" height="512" filter="url(#f3-grain)" opacity=".07"/>
+  </g>
+  <rect x="42" y="42" width="428" height="428" rx="92" fill="none" stroke="#C9A26A" stroke-width="6" opacity=".5"/>
+  <rect x="16" y="16" width="480" height="480" rx="116" fill="none" stroke="#0C2422" stroke-width="16"/>
+</svg>

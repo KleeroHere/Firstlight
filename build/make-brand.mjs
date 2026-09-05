@@ -12,7 +12,8 @@
 //   ui/public/firstlight.png             256   the same mark, for the interface
 //   docs/brand/firstlight-wordmark.png   1600  mark + word, transparent
 //   docs/brand/social-preview.png        1280x640  GitHub social card
-//   docs/brand/logo-concepts.png         the four concepts at 512/128/32
+//   docs/brand/logo-concepts-F.png       the F concepts at 512/128/32/16
+//   docs/brand/logo-concepts.png         the first round, same treatment
 //   docs/brand/palette.png               the palette strip for the docs
 //   workspace/brand/title-bg.png         1920x1080 episode card backgrounds
 //   workspace/brand/divider-bg.png
@@ -87,14 +88,10 @@ await shoot(svg("docs/brand/firstlight.svg", 256), {
   );
 }
 
-// --- 3. the concept contact sheet ------------------------------------------
-{
-  const concepts = [
-    ["01-daybreak-beam", "Daybreak beam", "the sun on the horizon, and the fan it throws"],
-    ["02-fresnel-lens", "Fresnel lens", "the rings of the lantern, lit at the core"],
-    ["03-lantern-window", "Lantern window", "the pane you watch the first light through"],
-    ["04-first-frame", "First frame", "a frame of film with the sunrise held in it"],
-  ];
+// --- 3. the concept contact sheets ------------------------------------------
+// Both rounds, kept: the owner asked for a mark with an F in it after the
+// first four were drawn, and the earlier sheet is still the record of why.
+async function contactSheet(out, title, lead, concepts) {
   const col = concepts
     .map(([file, name, note]) => {
       const s = (n) => svg(`docs/brand/concepts/${file}.svg`, n);
@@ -102,7 +99,9 @@ await shoot(svg("docs/brand/firstlight.svg", 256), {
         <div class="row">${s(512)}
           <div class="small">${s(128)}<div class="cap">128</div></div>
           <div class="small">${s(32)}<div class="cap">32</div></div>
-          <div class="small dark">${s(32)}<div class="cap">32 on teal</div></div>
+          <div class="small">${s(16)}<div class="cap">16</div></div>
+          <div class="small dark">${s(32)}<div class="cap">32</div></div>
+          <div class="small dark">${s(16)}<div class="cap">16</div></div>
         </div>
         <h2>${name}</h2><p>${note}</p>
       </section>`;
@@ -112,9 +111,9 @@ await shoot(svg("docs/brand/firstlight.svg", 256), {
     `<style>
       body{background:#F7EFE2;font-family:Onest,system-ui,sans-serif;color:#10302D;padding:56px 64px;}
       h1{font-family:Unbounded,system-ui;font-size:38px;margin:0 0 6px;}
-      .lead{margin:0 0 44px;color:#4A625D;font-size:18px;}
+      .lead{margin:0 0 44px;color:#4A625D;font-size:18px;max-width:900px;line-height:1.45;}
       section{display:flex;flex-direction:column;gap:14px;margin-bottom:52px;}
-      .row{display:flex;align-items:flex-end;gap:40px;}
+      .row{display:flex;align-items:flex-end;gap:36px;}
       .small{display:flex;flex-direction:column;align-items:center;gap:8px;}
       .small.dark{background:#0C2422;padding:14px 18px;border-radius:12px;}
       .small.dark .cap{color:#A9C4BB;}
@@ -122,12 +121,36 @@ await shoot(svg("docs/brand/firstlight.svg", 256), {
       h2{font-family:Unbounded,system-ui;font-size:24px;margin:0;}
       p{margin:0;color:#4A625D;font-size:17px;}
      </style>
-     <h1>Firstlight — logo concepts</h1>
-     <p class="lead">Four marks in the Harbour Light palette. Each shown at 512, 128 and 32 pixels: the last one is the test that matters.</p>
+     <h1>${title}</h1>
+     <p class="lead">${lead}</p>
      ${col}`,
-    { width: 1280, height: 800, out: "docs/brand/logo-concepts.png", transparent: false, fullPage: true },
+    { width: 1280, height: 800, out, transparent: false, fullPage: true },
   );
 }
+
+await contactSheet(
+  "docs/brand/logo-concepts-F.png",
+  "Firstlight — logo concepts, with an F",
+  "Four marks built on the letter F, with the harbour in the detail. Shown at 512, 128, 32 and 16 pixels, on paper and on teal: the F has to survive the last two.",
+  [
+    ["F1-beacon", "F as a lighthouse", "the stem is the tower, the arms are the beam and the gallery"],
+    ["F2-horizon", "F as light over the horizon", "the top arm is the ray, the middle arm is the horizon, the stem stands in the water"],
+    ["F3-signal-flags", "F as signal flags", "the stem is the mast, the arms are two flags flying to starboard"],
+    ["F4-lens", "F with the sun as its arm", "the top arm ends in the sun, with the rings of the lens behind it"],
+  ],
+);
+
+await contactSheet(
+  "docs/brand/logo-concepts.png",
+  "Firstlight — logo concepts, first round",
+  "The first four marks: pictures of the harbour rather than letterforms. Kept as the record of what was tried before the F.",
+  [
+    ["01-daybreak-beam", "Daybreak beam", "the sun on the horizon, and the fan it throws"],
+    ["02-fresnel-lens", "Fresnel lens", "the rings of the lantern, lit at the core"],
+    ["03-lantern-window", "Lantern window", "the pane you watch the first light through"],
+    ["04-first-frame", "First frame", "a frame of film with the sunrise held in it"],
+  ],
+);
 
 // --- 4. the social preview --------------------------------------------------
 // The same dawn the episodes open on: the title card, cropped to 2:1, with a

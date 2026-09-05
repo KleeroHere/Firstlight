@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Firstlight — F as a lighthouse">
+  <title>Firstlight — F as a lighthouse</title>
+  <defs>
+    <clipPath id="f1-badge"><rect x="16" y="16" width="480" height="480" rx="116"/></clipPath>
+    <filter id="f1-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#f1-badge)">
+    <rect width="512" height="512" fill="#12312E"/>
+    <!-- the beam spilling past the arm, out of the frame -->
+    <path d="M384 104 L496 78 L496 198 L384 172 Z" fill="#E04E14" opacity=".3"/>
+    <!-- the top arm is the beam itself -->
+    <rect x="148" y="104" width="236" height="68" fill="#E04E14"/>
+    <rect x="216" y="104" width="168" height="20" fill="#F7C77E" opacity=".7"/>
+    <!-- the middle arm is the gallery the keeper walks -->
+    <rect x="148" y="232" width="188" height="64" fill="#C9A26A"/>
+    <g fill="#12312E">
+      <rect x="238" y="244" width="14" height="40"/>
+      <rect x="282" y="244" width="14" height="40"/>
+    </g>
+    <!-- the tower is the stem -->
+    <path d="M150 104 H214 L224 408 H140 Z" fill="#F7EFE2"/>
+    <rect x="146" y="330" width="76" height="36" fill="#1F5551"/>
+    <!-- the lantern, where the tower meets the beam -->
+    <rect x="150" y="104" width="64" height="68" fill="#F7C77E"/>
+    <rect width="512" height="512" filter="url(#f1-grain)" opacity=".07"/>
+  </g>
+  <rect x="42" y="42" width="428" height="428" rx="92" fill="none" stroke="#C9A26A" stroke-width="6" opacity=".5"/>
+  <rect x="16" y="16" width="480" height="480" rx="116" fill="none" stroke="#0C2422" stroke-width="16"/>
+</svg>

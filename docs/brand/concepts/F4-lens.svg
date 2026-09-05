@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Firstlight — F with the sun as its top arm">
+  <title>Firstlight — F with the sun as its top arm</title>
+  <defs>
+    <clipPath id="f4-badge"><rect x="16" y="16" width="480" height="480" rx="116"/></clipPath>
+    <filter id="f4-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="5"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#f4-badge)">
+    <rect width="512" height="512" fill="#12312E"/>
+    <!-- the rings of the lens, struck from the sun -->
+    <g fill="none" stroke="#C9A26A" opacity=".26">
+      <circle cx="342" cy="138" r="78" stroke-width="14"/>
+      <circle cx="342" cy="138" r="126" stroke-width="14"/>
+      <circle cx="342" cy="138" r="174" stroke-width="14"/>
+    </g>
+    <!-- the top arm ends in the sun -->
+    <path d="M148 104 H342 a34 34 0 0 1 0 68 H148 Z" fill="#E04E14"/>
+    <circle cx="342" cy="138" r="40" fill="#F7C77E"/>
+    <!-- the middle arm: the rail of the gallery -->
+    <rect x="148" y="232" width="188" height="64" fill="#C9A26A"/>
+    <!-- the stem -->
+    <rect x="148" y="104" width="68" height="304" fill="#F7EFE2"/>
+    <rect width="512" height="512" filter="url(#f4-grain)" opacity=".07"/>
+  </g>
+  <rect x="42" y="42" width="428" height="428" rx="92" fill="none" stroke="#C9A26A" stroke-width="6" opacity=".5"/>
+  <rect x="16" y="16" width="480" height="480" rx="116" fill="none" stroke="#0C2422" stroke-width="16"/>
+</svg>
