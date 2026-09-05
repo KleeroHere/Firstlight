@@ -1,0 +1,101 @@
+name: CI
+
+# Mirrors KleeroHere/Aurora's ci.yml (one test job, one deploy-demo job) —
+# Firstlight has no test suite of its own yet (no vitest), so `test` here
+# type-checks and builds the interface and sanity-checks the engine
+# (node --check on every script, py_compile on every module) instead.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install UI dependencies
+        run: npm ci
+        working-directory: ui
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+        working-directory: ui
+
+      - name: Production build
+        run: npx vite build
+        working-directory: ui
+
+      - name: node --check every engine and server script
+        run: |
+          set -e
+          for f in $(find engine ui/server -name '*.mjs'); do
+            echo "checking $f"
+            node --check "$f"
+          done
+
+      - name: py_compile every engine module
+        run: |
+          set -e
+          for f in engine/*.py; do
+            echo "checking $f"
+            python -m py_compile "$f"
+          done
+
+  # The live demo: the Harbour Light example, static, read-only — see DEMO in
+  # ui/src/api.ts and ui/scripts/build-demo-data.mjs. Project pages are served
+  # from /Firstlight/, hence --base below.
+  deploy-demo:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ui/package-lock.json
+
+      - run: npm ci
+        working-directory: ui
+
+      # Tries to enable Pages for the repo if it is not already, so the first
+      # deploy needs no trip to Settings. Note from the action's own README:
+      # `enablement: true` "requires a token other than GITHUB_TOKEN" — a
+      # classic PAT (repo scope) or a GitHub App token with
+      # administration:write — so this step still needs Pages enabled once by
+      # hand, or such a token in place of the default, if it turns out the
+      # default GITHUB_TOKEN cannot create the Pages site itself.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - run: npx vite build --mode demo --base=/Firstlight/
+        working-directory: ui
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ui/dist
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
