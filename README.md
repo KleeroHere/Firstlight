@@ -282,16 +282,15 @@ five-second clips shot for that scene. No scene holds a frame, stretches a clip
 or slows one down: the build log records `still: false` for all eight, and the
 assembler trims 0.2 s per scene rather than filling 10.
 
-[![How Firstlight works](docs/demo/posters/How-Firstlight-works.jpg)](https://github.com/KleeroHere/Firstlight/releases/latest)
+[![How Firstlight works — animated preview](docs/demo/how-firstlight-works-preview.gif)](https://github.com/KleeroHere/Firstlight/releases/latest/download/How-Firstlight-works.mp4)
 
-**How Firstlight works** · 2:41 · a narrated walkthrough, and itself a roll of
-the series: a scenario whose scenes are `kind: clip` — a Playwright screen
-recording of the real interface, the pipeline diagram drawing itself frame by
-frame, inserts from both finished episodes, an animated cost panel — cut by the
-same `assemble_from_plans.mjs`, with the same caption plates, the same narration
-voice and the same `verify_video.mjs` pass as the episodes. Grades 24 pass /
-1 warn / 0 fail (the warning is the audio bitrate, held down deliberately by
-`--target-mb 24`). Sources in [`docs/demo/`](docs/demo/).
+**How Firstlight works** · 2:41 · narrated walkthrough: six steps, one command
+each; the scenario is the edit; start frames and their acceptance; motion
+backends (cloud GPU, local, API); QA agents and metrics — reject, redo, accept;
+cut, narration, verify; what it cost. The picture above is a silent preview —
+**[watch the full film with narration](https://github.com/KleeroHere/Firstlight/releases/latest/download/How-Firstlight-works.mp4)**
+(release asset, 1080p) or open it from the [live demo](https://kleerohere.github.io/Firstlight/).
+Source, narration script and the cut list are in [`docs/demo/`](docs/demo/).
 
 What was accepted and on what evidence — contact sheets, metrics and the two
 blemishes that were kept rather than hidden — is in
