@@ -6,22 +6,22 @@
       "key": "scenarios",
       "path": "workspace/prompts/scenarios",
       "what": "One YAML per episode. This is the source of truth — everything else is made from it.",
-      "files": 3,
-      "bytes": 8127
+      "files": 4,
+      "bytes": 17572
     },
     {
       "key": "series",
       "path": "workspace/prompts",
       "what": "series.yaml: the style, the cast and their reference sheets, the backgrounds.",
-      "files": 13,
-      "bytes": 59609
+      "files": 16,
+      "bytes": 87972
     },
     {
       "key": "compiled",
       "path": "workspace/prompts/compiled",
       "what": "What the scenarios compile into. Every later stage reads these, not the YAML.",
-      "files": 3,
-      "bytes": 15685
+      "files": 4,
+      "bytes": 24385
     },
     {
       "key": "refs",
@@ -41,22 +41,22 @@
       "key": "takes",
       "path": "workspace/takes",
       "what": "Per roll: keyframes, generated clips, and _rejected/ for what was turned down.",
-      "files": 58,
-      "bytes": 89872918
+      "files": 170,
+      "bytes": 412822969
     },
     {
       "key": "build",
       "path": "workspace/build",
       "what": "Intermediate segments while an episode is being cut.",
-      "files": 43,
-      "bytes": 89158693
+      "files": 124,
+      "bytes": 342287872
     },
     {
       "key": "out",
       "path": "workspace/out",
       "what": "Finished episodes, each with its build log and its grade.",
       "files": 7,
-      "bytes": 54360565
+      "bytes": 66395164
     }
   ]
 }

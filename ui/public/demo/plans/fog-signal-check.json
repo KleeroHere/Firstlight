@@ -6,57 +6,335 @@
       "i2v": false,
       "cycle": false,
       "closeup": false,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. She finishes the line and looks up at the window.",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the handset to her ear, listens, and sets it back down on its cradle.",
       "frames": 81,
-      "master": "plan1_master.png",
-      "key": "keys/plan1_key.png",
+      "master": "plan1_master.jpg",
+      "key": "keys/plan1_key.jpg",
+      "keyMode": "closed",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s1 wide. Ines alone, cardigan/glasses/pencil match the sheet, hands on handset and log, mouth closed, pigeonholes blank, no door. Grey hazy evening is the scene reference tone. — confidence 0.9"
+      },
       "variants": [
         {
           "file": "_flf/plan1.mp4",
           "key": "plan1",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA pass confirms: 6-frame contact sheet shows Ines alone the whole clip, cardigan/glasses/pencil consistent with refs, no camera-look, no readable board text. The 9% mid-clip area flag (frame 9) is her head turning up to the window as scripted, not an extra person or hand. jump 0.011, drift 0.058, k0 0.991/k1 0.991."
+          "comment": "s1 wide, closed loop. Ines lifts the handset, listens, sets it back; arrives on the first frame again. jump 0.006, drift 0.002, area 3.4%. One person throughout, no door, mouth closed. — confidence 0.9"
         }
       ]
     },
     {
       "plan": 2,
-      "scene": "s2",
-      "i2v": false,
+      "scene": "s1",
+      "i2v": true,
       "cycle": false,
       "closeup": false,
-      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Mara pulls the lever down once, holds it, lets it back up.",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the handset to her ear, listens, and sets it back down on its cradle.",
       "frames": 81,
-      "master": "plan2_master.png",
-      "key": "keys/plan2_key.png",
+      "master": "plan2_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "medium",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s1 medium. Three-quarter, waist-up, both hands in frame, mouth closed, no opening behind her. Tone matched to plan1. — confidence 0.9"
+      },
       "variants": [
         {
           "file": "_flf/plan2.mp4",
           "key": "plan2",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA pass confirms: Mara and Tomas both static except the lever hand; one clean down-hold-up cycle, Tomas's notebook never changes hands, no extra hands. jump 0.005, drift 0.022, k0 0.991/k1 0.991."
+          "comment": "s1 medium. The whole down-and-onto-the-cradle motion happens once, finishing at frame 121. area 5.4% is the handset travelling, not a second hand — the sheet shows two hands in every frame. — confidence 0.85"
         }
       ]
     },
     {
       "plan": 3,
-      "scene": "s3",
-      "i2v": false,
+      "scene": "s1",
+      "i2v": true,
       "cycle": false,
-      "closeup": false,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. He lowers the radio and gives a small thumbs-up towards the tower.",
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Ines lifts the handset to her ear, listens, and sets it back down on its cradle. The motion starts and finishes once; it does not loop or repeat.",
       "frames": 81,
-      "master": "plan3_master.png",
-      "key": "keys/plan3_key.png",
+      "master": "plan3_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "close",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s1 close. Lips slightly parted but not open-mouthed; hand on the set, hand on the handset, same room. Tone was a warm sunset and is now graded to plan1. Accepted with the mouth noted rather than spending a reshoot on a two-frame detail. — confidence 0.6"
+      },
       "variants": [
         {
           "file": "_flf/plan3.mp4",
           "key": "plan3",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA pass confirms: Tomas alone on the pier, radio lowers smoothly into a thumbs-up that lands on the last frame and matches the end key; notebook stays in pocket throughout. jump 0.003, drift 0.024, k0 0.992/k1 0.992."
+          "comment": "s1 close. Same action read closer; the 12% at frame 97 is the handset crossing the frame on its way down. Slight camera settle between first and last frame, below the drift threshold. — confidence 0.8"
+        }
+      ]
+    },
+    {
+      "plan": 4,
+      "scene": "s2",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara pulls the lever down, holds it, and lets it rise back; Tomas marks two short strokes and one long stroke in his open notebook.",
+      "frames": 81,
+      "master": "plan4_master.jpg",
+      "key": "keys/plan4_key.jpg",
+      "keyMode": "closed",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s2 wide. Mara at the panel with the lever, Tomas beside her with the notebook, lantern room reads correctly, no readable text. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan4.mp4",
+          "key": "plan4",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s2 wide, closed loop. Mara pulls the lever down, holds, lets it rise; Tomas's notebook never changes hands. jump 0.005, drift 0.002. — confidence 0.9"
+        }
+      ]
+    },
+    {
+      "plan": 5,
+      "scene": "s2",
+      "i2v": true,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara pulls the lever down, holds it, and lets it rise back.",
+      "frames": 81,
+      "master": "plan5_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "medium",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s2 medium. Mara alone, both hands on the lever, mouth closed. Graded to plan4. — confidence 0.85"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan5.mp4",
+          "key": "plan5",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s2 medium. Both hands stay on the lever through one down-hold-up cycle. Softer than its neighbours (sharp 602) but the frame itself is soft, not the motion. — confidence 0.75"
+        }
+      ]
+    },
+    {
+      "plan": 6,
+      "scene": "s2",
+      "i2v": true,
+      "cycle": false,
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas marks two short strokes and one long stroke in his open notebook. The motion starts and finishes once; it does not loop or repeat.",
+      "frames": 81,
+      "master": "plan6_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "close",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "Reshot after the prompt was changed to name the location before the character. Now unmistakably the lantern room: the lens, the brass rail and the glazing are behind him, hands and notebook in frame, mouth closed. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan6.mp4",
+          "key": "plan6",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s2 close. Tomas's hand marks strokes in the notebook, one pass, lantern room behind. No extra hands. — confidence 0.85"
+        }
+      ]
+    },
+    {
+      "plan": 7,
+      "scene": "s3",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas draws the pencil across the ruled column from left to right, writing one short line, then lifts the pencil clear of the page and lays it down flat across the open page.",
+      "frames": 81,
+      "master": "plan7_master.jpg",
+      "key": "keys/plan7_key.jpg",
+      "keyMode": "edit",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s3 wide. Tomas at the chart table, lantern room, logbook and pencil in frame, mouth closed. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan7.mp4",
+          "key": "plan7",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s3 wide, reshot with a stronger written action (draw the pencil across the column, lift it clear, lay it down). The still flag is gone and the writing hand travels along the page across the clip, but this is still the quietest shot in the roll — a wide of one person writing. Accepted: it plays 3.2s at the head and 1.8s at the tail of the scene, with a medium and a close between them. — confidence 0.7"
+        }
+      ]
+    },
+    {
+      "plan": 8,
+      "scene": "s3",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas draws the pencil across the ruled column from left to right, writing one short line, then lifts the pencil clear of the page and lays it down flat across the open page.",
+      "frames": 81,
+      "master": "plan8_master.jpg",
+      "key": "keys/plan8_key.jpg",
+      "keyMode": "closed",
+      "role": "medium",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s3 medium. Three-quarter, both hands on the book, no opening behind him. Graded to plan7. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan8.mp4",
+          "key": "plan8",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s3 medium, reshot first-to-last-frame against its own start frame. The door that opened behind his shoulder is gone and the pencil stays in his hand for the whole clip; drift 0.002 because the shot has to arrive back where it began. — confidence 0.9"
+        }
+      ]
+    },
+    {
+      "plan": 9,
+      "scene": "s3",
+      "i2v": true,
+      "cycle": false,
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas writes the count into the column and lays the pencil down flat across the page. The motion starts and finishes once; it does not loop or repeat.",
+      "frames": 81,
+      "master": "plan9_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "close",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "Reshot; lantern room, chart table, pencil in hand, no pier. Tone graded to plan7. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan9.mp4",
+          "key": "plan9",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s3 close. Hands and pencil, one writing pass, lantern room behind, nothing enters the frame. — confidence 0.85"
+        }
+      ]
+    },
+    {
+      "plan": 10,
+      "scene": "s4",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas raises the radio, presses the side key with his thumb, and lowers it again.",
+      "frames": 81,
+      "master": "plan10_master.jpg",
+      "key": "keys/plan10_key.jpg",
+      "keyMode": "closed",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s4 wide. Tomas on the pier with the radio, hand on the bollard, lighthouse lit behind, no door. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan10.mp4",
+          "key": "plan10",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s4 wide, closed loop. Radio raised, thumb on the side key, lowered again; ends on its first frame. drift 0.002. — confidence 0.9"
+        }
+      ]
+    },
+    {
+      "plan": 11,
+      "scene": "s4",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas lowers the radio from beside his face all the way down to his hip, holds it there for a moment, then lifts it back up beside his face.",
+      "frames": 81,
+      "master": "plan11_master.jpg",
+      "key": "keys/plan11_key.jpg",
+      "keyMode": "closed",
+      "role": "medium",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s4 medium. Three-quarter, radio in hand, notebook in pocket for continuity, mouth closed. — confidence 0.85"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan11.mp4",
+          "key": "plan11",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s4 medium, third take. Shot i2v on Std with the reversed action (radio down to the hip, held, back up beside the face) after the closed-key take came back frozen. Real travel — 2.7% of frame — he stays in shot throughout, and the walk-out of the first take does not recur. — confidence 0.85"
+        }
+      ]
+    },
+    {
+      "plan": 12,
+      "scene": "s4",
+      "i2v": false,
+      "cycle": false,
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas raises the radio, presses the side key with his thumb, and lowers it again. The motion starts and finishes once; it does not loop or repeat.",
+      "frames": 81,
+      "master": "plan12_master.jpg",
+      "key": "keys/plan12_key.jpg",
+      "keyMode": "closed",
+      "role": "close",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s4 close. Both hands on the radio, pier behind, correct. A faint letter-like mark at the top right corner is the only blemish and it is outside the safe area. — confidence 0.75"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan12.mp4",
+          "key": "plan12",
+          "decision": "accepted",
+          "defects": [
+            "text_changed"
+          ],
+          "comment": "s4 close, reshot first-to-last-frame. The prop no longer morphs: the desk set stays a desk set and he lifts its handheld mic off it and puts it back, once. Known blemish carried from the start frame: a faint letter-shaped mark in the top right corner, outside the action, present in every frame rather than appearing mid-clip. No budget left to regenerate the frame; recorded rather than hidden. — cause: start-frame — confidence 0.75"
         }
       ]
     }

@@ -1,7 +1,7 @@
 {
   "id": "handover-at-the-pier",
   "title": "Handover at the pier",
-  "durationTarget": 60,
+  "durationTarget": 80,
   "scenes": [
     {
       "id": "s0",
@@ -15,7 +15,7 @@
       "bg": null,
       "img": "",
       "anim": "",
-      "vo": "End of shift: the watch changes hands. Three steps.",
+      "vo": "A shift ends when the keys change hands. Four things, in order.",
       "frames": [],
       "takes": [],
       "rejected": 0
@@ -23,21 +23,23 @@
     {
       "id": "s1",
       "kind": "scene",
-      "plate": "Step 1. Confirm the last boat",
+      "plate": "Step 1. Keys, hand to hand",
       "t": [
         6,
-        20
+        21
       ],
       "chars": [
+        "mara",
         "tomas"
       ],
-      "bg": "pier",
-      "img": "Tomas out on the pier at dusk, confirming the last boat in over the radio before the watch changes.",
-      "anim": "He lowers the radio and notes the time in his pocket notebook.",
-      "vo": "Before anything else, the last boat gets confirmed. The apprentice calls it in from the pier, radio to his mouth, and writes the time down before he walks back.",
+      "bg": "lantern-room",
+      "img": "Mara stands beside the great lens holding a small ring of brass keys out over an open palm; Tomas stands facing her with one hand held open and level, waiting for them.",
+      "anim": "Mara lowers the ring of keys onto the open palm and takes her hand back; Tomas closes his fingers around the keys and lowers his hand.",
+      "vo": "A shift ends when the keys are in somebody else's hand and both people have watched it happen. The keeper gives them over; the apprentice closes his fingers. Nothing is signed, and it already counts.",
       "frames": [
-        "plan1_master.png",
-        "plan2_master.png"
+        "plan1_master.jpg",
+        "plan2_master.jpg",
+        "plan3_master.jpg"
       ],
       "takes": [
         "s1_take1.mp4"
@@ -47,24 +49,22 @@
     {
       "id": "s2",
       "kind": "scene",
-      "plate": "Step 2. Pass the log and the keys",
+      "plate": "Step 2. The board ashore agrees",
       "t": [
-        20,
-        38
+        21,
+        36
       ],
       "chars": [
-        "mara",
-        "tomas"
+        "ines"
       ],
-      "bg": "lantern-room",
-      "img": "Mara and Tomas in the lantern room at the signal panel, a small paper logbook (a handwritten notebook, not a piece of wood) and the brass keys changing hands between them.",
-      "anim": "Mara hands over the paper logbook and the keys; Tomas takes them with both hands.",
-      "vo": "Then the logbook itself changes hands. The keeper passes the notebook and the keys to the apprentice, so the next watch starts from the same page, not a guess.",
+      "bg": "harbour-office",
+      "img": "Ines at the harbour office desk, a small blank wooden tag held between two fingers above a row of brass pegs on the wall board, the radio set on the desk beside her.",
+      "anim": "Ines lifts the blank wooden tag off its peg and hangs it on the next peg along.",
+      "vo": "Ashore, the clerk hears it on the radio and moves one wooden tag across the board. That tag is the harbour's entire answer to the question of who is on the light tonight.",
       "frames": [
-        "plan3_master.png",
-        "plan4_master.png",
-        "plan5_master.png",
-        "plan8_master.png"
+        "plan4_master.jpg",
+        "plan5_master.jpg",
+        "plan6_master.jpg"
       ],
       "takes": [
         "s2_take1.mp4"
@@ -74,21 +74,23 @@
     {
       "id": "s3",
       "kind": "scene",
-      "plate": "Step 3. Log it in the office too",
+      "plate": "Step 3. Cast off the last line",
       "t": [
-        38,
-        52
+        36,
+        51
       ],
       "chars": [
-        "ines"
+        "mara",
+        "tomas"
       ],
-      "bg": "harbour-office",
-      "img": "Ines at the harbour office desk, marking the new watch's name in the log and switching on the desk lamp as evening comes on.",
-      "anim": "She writes the name, then reaches over and turns on the lamp.",
-      "vo": "The office logs the change too - a name, a time, the lamp switched on for the night. Three logs, one line each, and they all agree.",
+      "bg": "pier",
+      "img": "Mara crouches over a thick mooring rope looped around an iron bollard on the stone pier; Tomas stands a step behind her holding a coil of the same rope against his chest with both hands.",
+      "anim": "Mara lifts the loop of rope off the bollard and lowers it onto the stones; Tomas draws the slack coil in against his chest.",
+      "vo": "Then the last boat goes. The keeper casts off the line herself, the way she has every evening for thirty years, and the pier belongs to one person again.",
       "frames": [
-        "plan6_master.png",
-        "plan7_master.png"
+        "plan7_master.jpg",
+        "plan8_master.jpg",
+        "plan9_master.jpg"
       ],
       "takes": [
         "s3_take1.mp4"
@@ -97,17 +99,42 @@
     },
     {
       "id": "s4",
-      "kind": "memo",
-      "plate": "Handover: three logs, one line",
+      "kind": "scene",
+      "plate": "Step 4. One lift of the lantern",
       "t": [
-        52,
-        60
+        51,
+        66
+      ],
+      "chars": [
+        "tomas"
+      ],
+      "bg": "pier",
+      "img": "Tomas alone on the stone pier at dusk, a storm lantern held out at shoulder height in one hand, the lit lighthouse above and behind him, dark water beyond the stones.",
+      "anim": "Tomas raises the storm lantern to shoulder height, holds it steady, and lowers it again.",
+      "vo": "One lift of the lantern says the same thing every night: seen you, you are clear. Then the apprentice turns back up the steps, and the light is his until morning.",
+      "frames": [
+        "plan10_master.jpg",
+        "plan11_master.jpg",
+        "plan12_master.jpg"
+      ],
+      "takes": [
+        "s4_take1.mp4"
+      ],
+      "rejected": 0
+    },
+    {
+      "id": "s5",
+      "kind": "memo",
+      "plate": "Handover: four things",
+      "t": [
+        66,
+        80
       ],
       "chars": [],
       "bg": null,
       "img": "",
       "anim": "",
-      "vo": "Pier, lantern room, office - one same watch, three lines that agree.",
+      "vo": "Keys, tag, line, lantern. Four small things that decide who is answerable at three in the morning.",
       "frames": [],
       "takes": [],
       "rejected": 0
@@ -117,7 +144,8 @@
   "buildLog": {
     "id": "handover-at-the-pier",
     "title": "Handover at the pier",
-    "createdAt": "2026-09-05T12:20:28.022Z",
+    "version": "from-plans",
+    "createdAt": "2026-09-05T16:51:03.104Z",
     "scenes": [
       {
         "id": "s0",
@@ -134,104 +162,236 @@
         "kind": "scene",
         "t": [
           6,
-          20
+          21
         ],
-        "plate": "Step 1. Confirm the last boat",
-        "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s1_take1.mp4",
-        "sourceDuration": 10.083333,
-        "motion": "anim",
-        "beats": 2,
-        "clipSec": 10.083333,
-        "detailSec": 3.917
+        "plate": "Step 1. Keys, hand to hand",
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 1,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 2,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 3,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 1,
+            "len": 1.61,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
       },
       {
         "id": "s2",
         "kind": "scene",
         "t": [
-          20,
-          38
+          21,
+          36
         ],
-        "plate": "Step 2. Pass the log and the keys",
-        "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s2_take1.mp4",
-        "sourceDuration": 20.208008,
-        "frozenTail": 0,
-        "motion": "anim",
-        "beats": 1
+        "plate": "Step 2. The board ashore agrees",
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 4,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 5,
+            "len": 5.08,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 6,
+            "len": 5.08,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 4,
+            "len": 1.53,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
       },
       {
         "id": "s3",
         "kind": "scene",
         "t": [
-          38,
-          52
+          36,
+          51
         ],
-        "plate": "Step 3. Log it in the office too",
-        "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s3_take1.mp4",
-        "sourceDuration": 10.083333,
-        "motion": "anim",
-        "beats": 2,
-        "clipSec": 10.083333,
-        "detailSec": 3.917
+        "plate": "Step 3. Cast off the last line",
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 7,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 8,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 9,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 7,
+            "len": 1.61,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
       },
       {
         "id": "s4",
+        "kind": "scene",
+        "t": [
+          51,
+          66
+        ],
+        "plate": "Step 4. One lift of the lantern",
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 10,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 11,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 12,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 10,
+            "len": 1.61,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
+      },
+      {
+        "id": "s5",
         "kind": "memo",
         "t": [
-          52,
-          60
+          66,
+          80
         ],
-        "plate": "Handover: three logs, one line",
+        "plate": "Handover: four things",
         "source": "rendered"
       }
     ],
     "output": "C:\\Firstlight\\workspace\\out\\Handover at the pier.mp4",
-    "totalDuration": 60,
-    "durationTarget": 60,
+    "totalDuration": 80,
+    "durationTarget": 80,
     "vo": [
       {
         "scene": "s0",
-        "at": 1,
-        "voAt": 1,
+        "at": 0.6,
+        "voAt": 0.6,
         "mode": "cached",
-        "duration": 4.086712
+        "duration": 5.06195
       },
       {
         "scene": "s1",
-        "at": 6.5,
-        "voAt": 0.5,
+        "at": 6.2,
+        "voAt": 0.2,
         "mode": "cached",
-        "duration": 11.192018
+        "duration": 14.721451
       },
       {
         "scene": "s2",
-        "at": 20.5,
-        "voAt": 0.5,
+        "at": 21.2,
+        "voAt": 0.2,
         "mode": "cached",
-        "duration": 11.517098
+        "duration": 12.910295
       },
       {
         "scene": "s3",
-        "at": 38.5,
-        "voAt": 0.5,
+        "at": 36.2,
+        "voAt": 0.2,
         "mode": "cached",
-        "duration": 10.866939
+        "duration": 11.238458
       },
       {
         "scene": "s4",
-        "at": 53,
+        "at": 51.2,
+        "voAt": 0.2,
+        "mode": "cached",
+        "duration": 10.541859
+      },
+      {
+        "scene": "s5",
+        "at": 67,
         "voAt": 1,
         "mode": "cached",
-        "duration": 5.990748
+        "duration": 8.684263
       }
     ],
-    "voMode": "elevenlabs"
+    "voMode": "elevenlabs",
+    "sizeMb": 31.71
   },
   "verify": {
     "file": "workspace/out/Handover at the pier.mp4",
-    "checkedAt": "2026-09-05T12:20:43.643Z",
+    "checkedAt": "2026-09-05T16:51:23.508Z",
     "verdict": "pass",
     "counts": {
-      "pass": 21,
+      "pass": 22,
       "warn": 0,
       "fail": 0
     },
@@ -289,7 +449,7 @@
       {
         "section": "Формат",
         "verdict": "pass",
-        "message": "битрейт аудио 142 кбит/с"
+        "message": "битрейт аудио 154 кбит/с"
       },
       {
         "section": "Формат",
@@ -299,12 +459,12 @@
       {
         "section": "Хронометраж",
         "verdict": "pass",
-        "message": "длительность 60.0 с в границах стандарта 60–180 с"
+        "message": "длительность 80.0 с в границах стандарта 60–180 с"
       },
       {
         "section": "Хронометраж",
         "verdict": "pass",
-        "message": "в пределах ±10% цели сценария (60 с)"
+        "message": "в пределах ±10% цели сценария (80 с)"
       },
       {
         "section": "Хронометраж",
@@ -319,34 +479,39 @@
       {
         "section": "Громкость",
         "verdict": "pass",
-        "message": "integrated -15.9 LUFS (цель −16 ±1)"
+        "message": "integrated -16.0 LUFS (цель −16 ±1)"
       },
       {
         "section": "Громкость",
         "verdict": "pass",
-        "message": "true peak -1.6 dBTP (порог −1.5)"
+        "message": "true peak -1.9 dBTP (порог −1.5)"
       },
       {
         "section": "Плашки (по кадрам из середины сцен)",
         "verdict": "pass",
-        "message": "s1: плашка в кадре (перепад яркости 198)"
+        "message": "s1: плашка в кадре (перепад яркости 196)"
       },
       {
         "section": "Плашки (по кадрам из середины сцен)",
         "verdict": "pass",
-        "message": "s2: плашка в кадре (перепад яркости 171)"
+        "message": "s2: плашка в кадре (перепад яркости 181)"
       },
       {
         "section": "Плашки (по кадрам из середины сцен)",
         "verdict": "pass",
-        "message": "s3: плашка в кадре (перепад яркости 184)"
+        "message": "s3: плашка в кадре (перепад яркости 178)"
+      },
+      {
+        "section": "Плашки (по кадрам из середины сцен)",
+        "verdict": "pass",
+        "message": "s4: плашка в кадре (перепад яркости 199)"
       }
     ]
   },
   "priemka": false,
   "acceptance": {
-    "total": 8,
-    "accepted": 8,
+    "total": 12,
+    "accepted": 12,
     "rejected": 0,
     "pending": 0,
     "unshot": 0,
@@ -359,6 +524,9 @@
       "blur"
     ]
   },
-  "updatedAt": 1788610843643,
+  "frameAcceptance": {
+    "accepted": 12
+  },
+  "updatedAt": 1788627083508,
   "stage": "assembled"
 }

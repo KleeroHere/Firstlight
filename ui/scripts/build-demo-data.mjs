@@ -30,16 +30,51 @@ import { fileURLToPath } from "node:url";
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 const OUT = join(ROOT, "ui", "public", "demo");
 
-const list = (dir, pred = () => true) => (existsSync(dir) ? readdirSync(dir).filter(pred) : []);
+// Files only. `takes/<roll>/keys/_raw/` (ungraded originals kept by
+// color_match.py) and `_flf/_raw/` are directories, and cpSync on a
+// directory without `recursive` throws ERR_FS_EISDIR — which is how a
+// perfectly good demo build started failing the moment grading was added.
+const list = (dir, pred = () => true) =>
+  existsSync(dir)
+    ? readdirSync(dir).filter((f) => statSync(join(dir, f)).isFile()).filter(pred)
+    : [];
 const readJson = (p) => JSON.parse(readFileSync(p, "utf8"));
 function writeJson(p, data) {
   mkdirSync(dirname(p), { recursive: true });
   writeFileSync(p, JSON.stringify(data, null, 2));
 }
+// The demo is a browsable snapshot, not a production archive. Copying the
+// originals put 308 MB into the repository: 2560x1440 PNG start frames and
+// 1080p clips, for a page whose largest viewport is a browser window. So
+// pictures go in as 1280-wide JPEG and video is transcoded to 720p, unless
+// --full is passed. `ffmpeg` does both; it is already required by the engine.
+const FULL = process.argv.includes("--full");
+const IMG_RE = /\.(png|jpe?g)$/i;
+const VID_RE = /\.mp4$/i;
+
+function ff(args) {
+  execFileSync("ffmpeg", ["-y", "-loglevel", "error", ...args]);
+}
+
 function copy(from, to) {
   mkdirSync(dirname(to), { recursive: true });
+  if (!FULL && IMG_RE.test(from)) {
+    const out = to.replace(IMG_RE, ".jpg");
+    ff(["-i", from, "-vf", "scale='min(1280,iw)':-2", "-q:v", "5", out]);
+    return out;
+  }
+  if (!FULL && VID_RE.test(from)) {
+    ff(["-i", from, "-vf", "scale='min(1280,iw)':-2", "-c:v", "libx264", "-crf", "26",
+        "-preset", "medium", "-pix_fmt", "yuv420p", "-movflags", "+faststart",
+        "-c:a", "aac", "-b:a", "96k", to]);
+    return to;
+  }
   cpSync(from, to);
+  return to;
 }
+// A picture referenced in JSON must be referenced under the name it was
+// written as, not the name it had on disk.
+const web = (name) => (FULL ? name : name.replace(IMG_RE, ".jpg"));
 function dirSize(dir) {
   if (!existsSync(dir)) return { files: 0, bytes: 0 };
   let files = 0;
@@ -119,17 +154,25 @@ function buildRealRoll(id, title) {
   const keysDir = join(takesDir, "keys");
   const planSpec = readJson(join(ROOT, "workspace", "plans", `${id}.json`));
   const acceptancePath = join(ROOT, "workspace", id, "acceptance.json");
-  const acceptance = existsSync(acceptancePath) ? readJson(acceptancePath).plans ?? {} : {};
+  const accFile = existsSync(acceptancePath) ? readJson(acceptancePath) : {};
+  const acceptance = accFile.plans ?? {};
+  // Two gates per roll since 05.09: `frames` judges the start frame before a
+  // clip exists, `plans` judges the clip. The demo shows both, because "this
+  // frame was rejected and why" is half the story of how the roll got here.
+  const frameAcceptance = accFile.frames ?? {};
 
   const scenes = compiled.scenes.map((sc) => {
     const s = sceneShape(sc);
-    s.frames = planSpec.plans.filter((p) => p.scene === s.id).map((p) => p.master).filter(Boolean);
+    s.frames = planSpec.plans.filter((p) => p.scene === s.id).map((p) => p.master).filter(Boolean).map(web);
     s.takes = list(takesDir, (f) => f.startsWith(`${s.id}_take`) && /\.(mp4|png|jpg)$/i.test(f)).sort();
     s.rejected = 0;
     return s;
   });
   for (const f of s_takeFiles(takesDir)) copy(join(takesDir, f), join(OUT, "files", "takes", id, f));
-  for (const f of list(flfDir)) copy(join(flfDir, f), join(OUT, "files", "takes", id, "_flf", f));
+  // Clips only. `_flf/` also holds the ffmpeg concat lists (`s1_list.txt`),
+  // which are absolute paths on whoever's machine built the roll — no use in a
+  // browser and not something to publish.
+  for (const f of list(flfDir, (f) => VID_RE.test(f))) copy(join(flfDir, f), join(OUT, "files", "takes", id, "_flf", f));
   for (const f of list(keysDir)) copy(join(keysDir, f), join(OUT, "files", "takes", id, "keys", f));
 
   const outMp4 = `${title}.mp4`;
@@ -150,12 +193,20 @@ function buildRealRoll(id, title) {
       closeup: p.shot === "close",
       motion: p.motion,
       frames: p.frames,
-      master: p.master ?? null,
-      key: p.use_key ? `keys/plan${p.plan}_key.png` : null,
+      master: p.master ? web(p.master) : null,
+      key: p.use_key ? web(`keys/plan${p.plan}_key.png`) : null,
+      keyMode: p.key_mode ?? null,
+      role: p.role ?? p.shot ?? null,
+      model: p.model ?? null,
+      frame: frameAcceptance[key]
+        ? { decision: frameAcceptance[key].decision, defects: frameAcceptance[key].defects ?? [], comment: frameAcceptance[key].comment ?? "" }
+        : null,
       variants,
     };
   });
   writeJson(join(OUT, "plans", `${id}.json`), { plans, defects: DEFECTS });
+  const frameCounts = Object.values(frameAcceptance).reduce(
+    (a, v) => ({ ...a, [v.decision]: (a[v.decision] ?? 0) + 1 }), {});
 
   const verify = readJson(join(ROOT, "workspace", "out", `${title}.verify.json`));
   const buildLog = readJson(join(ROOT, "workspace", "out", `${title}.build-log.json`));
@@ -170,6 +221,7 @@ function buildRealRoll(id, title) {
     verify,
     priemka: false,
     acceptance: summarizeAcceptance(plans),
+    frameAcceptance: frameCounts,
     updatedAt: Date.parse(verify.checkedAt),
     stage: "assembled",
   };

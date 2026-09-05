@@ -3,20 +3,28 @@
     {
       "plan": 1,
       "scene": "s1",
-      "i2v": true,
+      "i2v": false,
       "cycle": false,
       "closeup": false,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. He lowers the radio and notes the time in his pocket notebook.",
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lowers the ring of keys onto the open palm and takes her hand back; Tomas closes his fingers around the keys and lowers his hand.",
       "frames": 81,
-      "master": "plan1_master.png",
-      "key": null,
+      "master": "plan1_master.jpg",
+      "key": "keys/plan1_key.jpg",
+      "keyMode": "edit",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s1 wide. Mara holding the key ring over Tomas's open palm in the lantern room; both casts match their sheets, mouths closed, no door. — confidence 0.9"
+      },
       "variants": [
         {
           "file": "_flf/plan1.mp4",
           "key": "plan1",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA pass confirms: Tomas alone on the pier the whole clip, radio lowers and he pulls the notebook from his jacket pocket, matching motion. Jacket/hair/notebook consistent with refs, no camera-look, no readable text. jump 0.016, drift 0.036, k0 0.991."
+          "comment": "s1 wide, closed loop. The handover really happens: Mara's palm lowers and Tomas's fingers close over the keys between frames 1 and 45. The 1.9% still-flag is the metric's blind spot for a key-ring-sized object across a whole room, not a frozen shot — the arms move visibly. Both people present throughout, no door. — confidence 0.75"
         }
       ]
     },
@@ -26,137 +34,307 @@
       "i2v": true,
       "cycle": false,
       "closeup": false,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. He already holds a pen clipped to the notebook's wire spiral; he pulls both out of his pocket together, one motion, and writes the time. No object appears from nowhere and no object vanishes. Their mouth stays closed unless they are the one speaking.",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lowers the ring of keys onto the open palm and takes her hand back.",
       "frames": 81,
-      "master": "plan2_master.png",
+      "master": "plan2_master.jpg",
       "key": null,
+      "keyMode": null,
+      "role": "medium",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s1 medium. Mara alone, keys in her hand, three-quarter, mouth closed. Graded to plan1. — confidence 0.85"
+      },
       "variants": [
         {
           "file": "_flf/plan2.mp4",
           "key": "plan2",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA re-review after reshoot (this plan was rejected on its first pass here for prop-appears: a pen materializing mid-clip with no retrieval beat). Fresh contact sheet (13:52 take): the pen is visible clipped to the notebook from the moment both come out of his pocket (~frame 21-25) and stays in view through to writing at frame 73+ — reads as one retrieval, not an object popping into an idle hand. Fresh metrics agree: same span still shows as the largest area change (expected, something newly visible either way), but nothing else flags. Accepted."
+          "comment": "s1 medium. Mara alone, one clean lowering of the keys, mouth closed, no extra hands. — confidence 0.85"
         }
       ]
     },
     {
       "plan": 3,
-      "scene": "s2",
-      "i2v": false,
+      "scene": "s1",
+      "i2v": true,
       "cycle": false,
-      "closeup": false,
-      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Mara hands over the paper logbook and the keys; Tomas takes them with both hands.",
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas closes his fingers around the keys and lowers his hand. The motion starts and finishes once; it does not loop or repeat.",
       "frames": 81,
-      "master": "plan3_master.png",
-      "key": "keys/plan3_key.png",
+      "master": "plan3_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "close",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "Reshot; back inside the lantern room, keys in both hands, and the red door that was behind his hands is gone. — confidence 0.9"
+      },
       "variants": [
         {
           "file": "_flf/plan3.mp4",
           "key": "plan3",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA pass confirms: wide two-shot, Mara and Tomas static through the handoff, matches the FLF end key well (k0/k1 ~0.99, jump 0.006 — the lowest in this roll). QA metric flagged colour drift (6.74); not visible to the eye across the 6 sampled frames, most likely the rotating beacon lamp behind them, not a defect."
+          "comment": "s1 close. Tomas's own two hands close around the key ring, lantern room behind, nothing enters the frame. — confidence 0.85"
         }
       ]
     },
     {
       "plan": 4,
       "scene": "s2",
-      "i2v": true,
+      "i2v": false,
       "cycle": false,
       "closeup": false,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Mara hands over the paper logbook and the keys. Their mouth stays closed unless they are the one speaking.",
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the wooden tag off its peg and hangs it on the next peg along.",
       "frames": 81,
-      "master": "plan4_master.png",
-      "key": null,
+      "master": "plan4_master.jpg",
+      "key": "keys/plan4_key.jpg",
+      "keyMode": "edit",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s2 wide. Ines at the peg board, tag between two fingers, radio on the desk. The tag carries faint marks but no legible word. — confidence 0.7"
+      },
       "variants": [
         {
           "file": "_flf/plan4.mp4",
           "key": "plan4",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independently re-reviewed after the producer's reshoot (original take was rejected here for extra-hand: a second, dark-sleeved hand not matching Tomas's orange jacket entered the frame). Fresh contact sheet and now-current metrics agree: Mara alone the whole clip, both hands her own, cradling the book/keys throughout, no flags, no extra person. Confirmed clean."
+          "comment": "s2 wide, shot on the retry after the first submission was refused by the provider's content filter (same prompt, same frames — the refusal was not reproducible). Ines carries the tag along the pegs, hangs it, lowers both hands; one person, both hands hers, the tag stays one object and stays blank. k0 0.991, k1 0.992. The 7% at frame 78 is her forearm crossing the board. — confidence 0.9"
         }
       ]
     },
     {
       "plan": 5,
       "scene": "s2",
-      "i2v": true,
+      "i2v": false,
       "cycle": false,
-      "closeup": true,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Only their own hands (or face) move, doing one small, calm motion related to: Tomas takes them with both hands. Nothing loops; the motion starts and finishes once.",
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Ines lifts the blank wooden tag off its peg and hangs it on the next peg along.",
       "frames": 81,
-      "master": "plan5_master.png",
-      "key": null,
+      "master": "plan5_master.jpg",
+      "key": "keys/plan5_key.jpg",
+      "keyMode": "closed",
+      "role": "medium",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "Reshot after the scenario stopped calling it a 'shift tag'. The tag is blank — no letters anywhere in frame. Three-quarter, mouth closed. — confidence 0.9"
+      },
       "variants": [
         {
           "file": "_flf/plan5.mp4",
           "key": "plan5",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independently re-reviewed after the producer's reshoot (original take was rejected here for the same extra-hand root cause as plan4). Fresh contact sheet and now-current metrics agree: Tomas alone, both his own hands doing one small calm motion at his jacket zipper/collar, nothing loops, no second person, no camera movement. Confirmed clean."
+          "comment": "s2 medium, reshot first-to-last-frame. One hand carries the tag along the pegs, the other rests on the desk — two arms, both hers, and the tag stays one small object for the whole clip. The size-morphing of the first take is gone. — confidence 0.85"
         }
       ]
     },
     {
       "plan": 6,
-      "scene": "s3",
-      "i2v": true,
+      "scene": "s2",
+      "i2v": false,
       "cycle": false,
-      "closeup": false,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. She writes the name, then reaches over and turns on the lamp.",
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Ines lifts the blank wooden tag off its peg and hangs it on the next peg along. The motion starts and finishes once; it does not loop or repeat.",
       "frames": 81,
-      "master": "plan6_master.png",
-      "key": null,
+      "master": "plan6_master.jpg",
+      "key": "keys/plan6_key.jpg",
+      "keyMode": "closed",
+      "role": "close",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s2 close. Both hands hanging the tag on the peg, harbour office behind, tag blank. — confidence 0.85"
+      },
       "variants": [
         {
           "file": "_flf/plan6.mp4",
           "key": "plan6",
           "decision": "accepted",
-          "defects": [],
-          "comment": "Independent QA pass confirms: Ines alone at the desk; she writes, then reaches to the lamp and resumes writing, matching motion exactly. Cardigan/glasses/pencil-behind-ear consistent with refs, no camera-look, board text stays illegible. jump 0.009, drift 0.018, k0 0.991."
+          "defects": [
+            "prop_changed"
+          ],
+          "comment": "s2 close, reshot first-to-last-frame. Much improved: the tag no longer grows, the clip returns exactly to its first frame (drift 0.002), and the end state is clean. Remaining blemish: between roughly frames 45 and 100 a second tag is briefly visible hanging on the board beside the one in her hand, and it resolves by the end. Accepted rather than reshot because the WaveSpeed budget for this pass was exhausted; recorded here so it is not discovered as a surprise. — cause: start-frame — confidence 0.6"
         }
       ]
     },
     {
       "plan": 7,
       "scene": "s3",
-      "i2v": true,
+      "i2v": false,
       "cycle": false,
       "closeup": false,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. She writes the name, then reaches over and turns on the lamp. Their mouth stays closed unless they are the one speaking.",
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lifts the loop of rope off the bollard and lowers it onto the stones; Tomas draws the slack coil in against his chest.",
       "frames": 81,
-      "master": "plan7_master.png",
-      "key": null,
+      "master": "plan7_master.jpg",
+      "key": "keys/plan7_key.jpg",
+      "keyMode": "edit",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s3 wide. Mara crouched at the bollard with the rope, Tomas a step behind holding the coil, last boat at the steps. Correct. — confidence 0.9"
+      },
       "variants": [
         {
           "file": "_flf/plan7.mp4",
           "key": "plan7",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA pass confirms: closer coverage of the same beat as plan6 — writes, reaches to the lamp, resumes writing, mouth closed throughout (no dialogue in this shot). Consistent identity, no extra hands. jump 0.014, drift 0.051, k0 0.991."
+          "comment": "s3 wide, edit key. Mara lifts the rope loop off the bollard and lowers it; Tomas holds his coil. Two people throughout, one action, arrives at the end key. — confidence 0.85"
         }
       ]
     },
     {
       "plan": 8,
-      "scene": "s2",
+      "scene": "s3",
       "i2v": true,
       "cycle": false,
-      "closeup": true,
-      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Tomas tucks the paper logbook and the keys into his jacket pocket, a small settled motion, then goes still. Nothing loops; the motion starts and finishes once.",
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Mara lifts the loop of rope off the bollard and lowers it onto the stones.",
       "frames": 81,
-      "master": "plan8_master.png",
+      "master": "plan8_master.jpg",
       "key": null,
+      "keyMode": null,
+      "role": "medium",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s3 medium. Mara alone, both hands on the bollard and rope, mouth closed. — confidence 0.9"
+      },
       "variants": [
         {
           "file": "_flf/plan8.mp4",
           "key": "plan8",
           "decision": "accepted",
           "defects": [],
-          "comment": "Independent QA pass: new plan, added to cover the 2.8s freeze-frame pad flagged in the assembled episode's verify.json for scene s2. Contact sheet shows Tomas alone throughout, tucking the logbook page and keys into his jacket pocket and settling still — a single, non-looping closing beat, no extra hands, identity/jacket consistent with refs, no camera-look. Note: reports/qa-handover-at-the-pier/metrics.json has not been regenerated to include plan8 yet (only 7 entries) — this accept is from the visual contact sheet only; re-run engine/qa_clip.py for this roll and re-check the numeric flags once it has plan8's row."
+          "comment": "s3 medium. Mara alone at the bollard, both hands on the rope, one lift. — confidence 0.85"
+        }
+      ]
+    },
+    {
+      "plan": 9,
+      "scene": "s3",
+      "i2v": true,
+      "cycle": false,
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas draws the slack coil in against his chest. The motion starts and finishes once; it does not loop or repeat.",
+      "frames": 81,
+      "master": "plan9_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "close",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "Reshot with the one-prop clause. The rope is the only thing in his hands; the pen from his character sheet is gone. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan9.mp4",
+          "key": "plan9",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s3 close. Tomas's hands draw the coil in; the rope is the only object in frame. — confidence 0.85"
+        }
+      ]
+    },
+    {
+      "plan": 10,
+      "scene": "s4",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas lowers the storm lantern from shoulder height down to his side, holds it there, then swings his arm back up and holds the lantern out at shoulder height again.",
+      "frames": 81,
+      "master": "plan10_master.jpg",
+      "key": "keys/plan10_key.jpg",
+      "keyMode": "closed",
+      "role": "wide",
+      "model": "kling26-pro",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s4 wide. Tomas alone raising the storm lantern, lighthouse lit above, no door, mouth closed. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan10.mp4",
+          "key": "plan10",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s4 wide, reshot with the reversed gesture (anim_wide): the lantern comes down to his side, rests, and swings back up to shoulder height. Real, legible travel across the frame, closed loop, nobody enters, no door. — confidence 0.9"
+        }
+      ]
+    },
+    {
+      "plan": 11,
+      "scene": "s4",
+      "i2v": true,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Tomas raises the storm lantern to shoulder height, holds it steady, and lowers it again.",
+      "frames": 81,
+      "master": "plan11_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "medium",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "s4 medium. Three-quarter, lantern in one hand, keys visible at the pocket — nice continuity from s1. Mouth closed. — confidence 0.9"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan11.mp4",
+          "key": "plan11",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s4 medium. One lift-and-lower of the lantern, arm from its own shoulder, mouth closed, nobody enters. Frame is dark after the scene grade but not soft in motion. — confidence 0.75"
+        }
+      ]
+    },
+    {
+      "plan": 12,
+      "scene": "s4",
+      "i2v": true,
+      "cycle": false,
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every hand visible in the frame belongs to a person visible in the frame; every door, hatch and opening in the background stays closed; mouths stay closed; the camera is static and locked off — no zoom, no pan, no dolly, no cut. Only their own hands move, completing one small part of: Tomas raises the storm lantern to shoulder height, holds it steady, and lowers it again. The motion starts and finishes once; it does not loop or repeat.",
+      "frames": 81,
+      "master": "plan12_master.jpg",
+      "key": null,
+      "keyMode": null,
+      "role": "close",
+      "model": "kling26-std",
+      "frame": {
+        "decision": "accepted",
+        "defects": [],
+        "comment": "Reshot; mouth closed, the raised arm now reads from its own shoulder, lantern held clear of the face. — confidence 0.85"
+      },
+      "variants": [
+        {
+          "file": "_flf/plan12.mp4",
+          "key": "plan12",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "s4 close. Hands and lantern, one settled motion. The softest clip of the roll (sharp 399) because the graded frame is dark; no defect in the movement itself. — confidence 0.7"
         }
       ]
     }

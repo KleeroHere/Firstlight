@@ -1,7 +1,7 @@
 {
   "id": "fog-signal-check",
   "title": "Fog signal check",
-  "durationTarget": 72,
+  "durationTarget": 80,
   "scenes": [
     {
       "id": "s0",
@@ -15,7 +15,7 @@
       "bg": null,
       "img": "",
       "anim": "",
-      "vo": "Fog in the forecast: the signal is checked. Three steps.",
+      "vo": "Fog in the forecast. Before dark, the signal gets checked.",
       "frames": [],
       "takes": [],
       "rejected": 0
@@ -23,20 +23,22 @@
     {
       "id": "s1",
       "kind": "scene",
-      "plate": "Step 1. Read the forecast, write the time",
+      "plate": "Step 1. Hear the forecast out",
       "t": [
         6,
-        22
+        21
       ],
       "chars": [
         "ines"
       ],
       "bg": "harbour-office",
-      "img": "Ines at the desk of the harbour office, one hand on the radio set, the other writing a line into an open logbook; the window shows a grey, hazy evening over the pier. Medium shot.",
-      "anim": "She finishes the line and looks up at the window.",
-      "vo": "The clerk reads the evening forecast off the radio and writes the time into the log. Fog after nine — that is the trigger.",
+      "img": "Ines at the harbour office desk, the radio handset held to her ear in one hand, an open logbook and a pencil in front of her, the window behind her showing a grey hazy evening over the pier.",
+      "anim": "Ines lifts the handset to her ear, listens, and sets it back down on its cradle.",
+      "vo": "The evening forecast comes in over the harbour set. Fog after nine. That one line is the trigger for everything that follows, so the clerk hears it out to the end before she writes anything down.",
       "frames": [
-        "plan1_master.png"
+        "plan1_master.jpg",
+        "plan2_master.jpg",
+        "plan3_master.jpg"
       ],
       "takes": [
         "s1_take1.mp4"
@@ -48,19 +50,21 @@
       "kind": "scene",
       "plate": "Step 2. Test the horn — two short, one long",
       "t": [
-        22,
-        40
+        21,
+        36
       ],
       "chars": [
         "mara",
         "tomas"
       ],
       "bg": "lantern-room",
-      "img": "Mara stands at the signal panel in the lantern room with one hand on a large lever; Tomas is beside her, notebook open, watching the panel. Wide shot, the lens behind them catching the last light.",
-      "anim": "Mara pulls the lever down once, holds it, lets it back up.",
-      "vo": "The keeper tests the horn from the panel: two short blasts, one long. The apprentice counts them and writes what he heard, not what he expected.",
+      "img": "Mara stands at the signal panel in the lantern room with one hand closed around a long brass lever; Tomas is beside her with his notebook open in both hands, watching the panel.",
+      "anim": "Mara pulls the lever down, holds it, and lets it rise back; Tomas marks two short strokes and one long stroke in his open notebook.",
+      "vo": "The keeper tests the horn from the panel. Two short blasts, then one long. The apprentice counts what he hears, not what he expects to hear — that difference is the whole point of a test.",
       "frames": [
-        "plan2_master.png"
+        "plan4_master.jpg",
+        "plan5_master.jpg",
+        "plan6_master.jpg"
       ],
       "takes": [
         "s2_take1.mp4"
@@ -70,20 +74,22 @@
     {
       "id": "s3",
       "kind": "scene",
-      "plate": "Step 3. Confirm with the harbour by radio",
+      "plate": "Step 3. Write the count, not the memory",
       "t": [
-        40,
-        56
+        36,
+        51
       ],
       "chars": [
         "tomas"
       ],
-      "bg": "pier",
-      "img": "Tomas on the pier at dusk, a handheld radio at his mouth, looking back up at the lighthouse; the lamp above has just come on. Medium shot.",
-      "anim": "He lowers the radio and gives a small thumbs-up towards the tower.",
-      "vo": "Then somebody outside confirms it was heard. The apprentice calls the office from the pier; the clerk answers and logs the time. Now the check is done.",
+      "bg": "lantern-room",
+      "img": "Tomas at the chart table of the lantern room, an open logbook under his hands and a pencil poised over a ruled column, the great lens standing behind him.",
+      "anim": "Tomas draws the pencil across the ruled column from left to right, writing one short line, then lifts the pencil clear of the page and lays it down flat across the open page.",
+      "vo": "Then it goes into the book. The time, the count, and who heard it. A log nobody can argue with later is worth more than anyone's memory of a quiet evening.",
       "frames": [
-        "plan3_master.png"
+        "plan7_master.jpg",
+        "plan8_master.jpg",
+        "plan9_master.jpg"
       ],
       "takes": [
         "s3_take1.mp4"
@@ -92,17 +98,42 @@
     },
     {
       "id": "s4",
-      "kind": "memo",
-      "plate": "Fog signal: three steps",
+      "kind": "scene",
+      "plate": "Step 4. Have it confirmed from outside",
       "t": [
-        56,
-        72
+        51,
+        66
+      ],
+      "chars": [
+        "tomas"
+      ],
+      "bg": "pier",
+      "img": "Tomas on the stone pier at dusk, a handheld radio raised in one hand, his other hand resting on an iron bollard, the lighthouse lit behind him.",
+      "anim": "Tomas raises the radio, presses the side key with his thumb, and lowers it again.",
+      "vo": "Last, somebody outside has to say they heard it. The apprentice calls the office from the pier, the clerk logs the time, and the check is finished.",
+      "frames": [
+        "plan10_master.jpg",
+        "plan11_master.jpg",
+        "plan12_master.jpg"
+      ],
+      "takes": [
+        "s4_take1.mp4"
+      ],
+      "rejected": 0
+    },
+    {
+      "id": "s5",
+      "kind": "memo",
+      "plate": "Fog signal: four lines",
+      "t": [
+        66,
+        80
       ],
       "chars": [],
       "bg": null,
       "img": "",
       "anim": "",
-      "vo": "Forecast. Horn. Radio. Three lines in the log, and the night can come in.",
+      "vo": "Forecast. Horn. Book. Confirmation. Four lines, and a coast that knows where it is.",
       "frames": [],
       "takes": [],
       "rejected": 0
@@ -112,7 +143,8 @@
   "buildLog": {
     "id": "fog-signal-check",
     "title": "Fog signal check",
-    "createdAt": "2026-09-05T11:57:37.050Z",
+    "version": "from-plans",
+    "createdAt": "2026-09-05T16:50:48.263Z",
     "scenes": [
       {
         "id": "s0",
@@ -129,105 +161,236 @@
         "kind": "scene",
         "t": [
           6,
-          22
+          21
         ],
-        "plate": "Step 1. Read the forecast, write the time",
-        "source": "C:\\Firstlight\\workspace\\takes\\fog-signal-check\\s1_take1.mp4",
-        "sourceDuration": 5.083333,
-        "motion": "anim",
-        "beats": 2,
-        "clipSec": 5.083333,
-        "detailSec": 10.917
+        "plate": "Step 1. Hear the forecast out",
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 1,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 2,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 3,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 1,
+            "len": 1.61,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
       },
       {
         "id": "s2",
         "kind": "scene",
         "t": [
-          22,
-          40
+          21,
+          36
         ],
         "plate": "Step 2. Test the horn — two short, one long",
-        "source": "C:\\Firstlight\\workspace\\takes\\fog-signal-check\\s2_take1.mp4",
-        "sourceDuration": 5.083008,
-        "motion": "anim",
-        "beats": 2,
-        "clipSec": 5.083008,
-        "detailSec": 12.917
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 4,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 5,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 6,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 4,
+            "len": 1.61,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
       },
       {
         "id": "s3",
         "kind": "scene",
         "t": [
-          40,
-          56
+          36,
+          51
         ],
-        "plate": "Step 3. Confirm with the harbour by radio",
-        "source": "C:\\Firstlight\\workspace\\takes\\fog-signal-check\\s3_take1.mp4",
-        "sourceDuration": 5.083008,
-        "motion": "anim",
-        "beats": 2,
-        "clipSec": 5.083008,
-        "detailSec": 10.917
+        "plate": "Step 3. Write the count, not the memory",
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 7,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 8,
+            "len": 5.08,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 9,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 7,
+            "len": 1.57,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
       },
       {
         "id": "s4",
+        "kind": "scene",
+        "t": [
+          51,
+          66
+        ],
+        "plate": "Step 4. Have it confirmed from outside",
+        "target": 15,
+        "screen": 15,
+        "layout": [
+          {
+            "kind": "master",
+            "plan": 10,
+            "len": 3.3,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 11,
+            "len": 5.04,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 12,
+            "len": 5.08,
+            "speed": 1
+          },
+          {
+            "kind": "master",
+            "plan": 10,
+            "len": 1.57,
+            "speed": 1
+          }
+        ],
+        "notes": [
+          "монтаж по ролям: общий → средний → крупный → возврат 1.8 с",
+          "клипов с запасом, подрезано 0.2 с"
+        ],
+        "still": false
+      },
+      {
+        "id": "s5",
         "kind": "memo",
         "t": [
-          56,
-          72
+          66,
+          80
         ],
-        "plate": "Fog signal: three steps",
+        "plate": "Fog signal: four lines",
         "source": "rendered"
       }
     ],
     "output": "C:\\Firstlight\\workspace\\out\\Fog signal check.mp4",
-    "totalDuration": 72,
-    "durationTarget": 72,
+    "totalDuration": 80,
+    "durationTarget": 80,
     "vo": [
       {
         "scene": "s0",
-        "at": 1,
-        "voAt": 1,
+        "at": 0.6,
+        "voAt": 0.6,
         "mode": "cached",
-        "duration": 4.040272
+        "duration": 4.272472
       },
       {
         "scene": "s1",
-        "at": 6.5,
-        "voAt": 0.5,
+        "at": 6.2,
+        "voAt": 0.2,
         "mode": "cached",
-        "duration": 9.427302
+        "duration": 14.349932
       },
       {
         "scene": "s2",
-        "at": 22.5,
-        "voAt": 0.5,
+        "at": 21.2,
+        "voAt": 0.2,
         "mode": "cached",
-        "duration": 11.609977
+        "duration": 14.489252
       },
       {
         "scene": "s3",
-        "at": 40.5,
-        "voAt": 0.5,
+        "at": 36.2,
+        "voAt": 0.2,
         "mode": "cached",
-        "duration": 11.192018
+        "duration": 11.470658
       },
       {
         "scene": "s4",
-        "at": 57,
+        "at": 51.2,
+        "voAt": 0.2,
+        "mode": "cached",
+        "duration": 9.938141
+      },
+      {
+        "scene": "s5",
+        "at": 67,
         "voAt": 1,
         "mode": "cached",
-        "duration": 5.944308
+        "duration": 6.873107
       }
     ],
-    "voMode": "elevenlabs"
+    "voMode": "elevenlabs",
+    "sizeMb": 26.63
   },
   "verify": {
     "file": "workspace/out/Fog signal check.mp4",
-    "checkedAt": "2026-09-05T11:58:32.965Z",
+    "checkedAt": "2026-09-05T16:51:21.169Z",
     "verdict": "pass",
     "counts": {
-      "pass": 21,
+      "pass": 22,
       "warn": 0,
       "fail": 0
     },
@@ -285,7 +448,7 @@
       {
         "section": "Формат",
         "verdict": "pass",
-        "message": "битрейт аудио 115 кбит/с"
+        "message": "битрейт аудио 150 кбит/с"
       },
       {
         "section": "Формат",
@@ -295,12 +458,12 @@
       {
         "section": "Хронометраж",
         "verdict": "pass",
-        "message": "длительность 72.0 с в границах стандарта 60–180 с"
+        "message": "длительность 80.0 с в границах стандарта 60–180 с"
       },
       {
         "section": "Хронометраж",
         "verdict": "pass",
-        "message": "в пределах ±10% цели сценария (72 с)"
+        "message": "в пределах ±10% цели сценария (80 с)"
       },
       {
         "section": "Хронометраж",
@@ -320,29 +483,34 @@
       {
         "section": "Громкость",
         "verdict": "pass",
-        "message": "true peak -1.6 dBTP (порог −1.5)"
+        "message": "true peak -2.0 dBTP (порог −1.5)"
       },
       {
         "section": "Плашки (по кадрам из середины сцен)",
         "verdict": "pass",
-        "message": "s1: плашка в кадре (перепад яркости 192)"
+        "message": "s1: плашка в кадре (перепад яркости 182)"
       },
       {
         "section": "Плашки (по кадрам из середины сцен)",
         "verdict": "pass",
-        "message": "s2: плашка в кадре (перепад яркости 194)"
+        "message": "s2: плашка в кадре (перепад яркости 198)"
       },
       {
         "section": "Плашки (по кадрам из середины сцен)",
         "verdict": "pass",
-        "message": "s3: плашка в кадре (перепад яркости 185)"
+        "message": "s3: плашка в кадре (перепад яркости 200)"
+      },
+      {
+        "section": "Плашки (по кадрам из середины сцен)",
+        "verdict": "pass",
+        "message": "s4: плашка в кадре (перепад яркости 202)"
       }
     ]
   },
   "priemka": false,
   "acceptance": {
-    "total": 3,
-    "accepted": 3,
+    "total": 12,
+    "accepted": 12,
     "rejected": 0,
     "pending": 0,
     "unshot": 0,
@@ -355,6 +523,9 @@
       "blur"
     ]
   },
-  "updatedAt": 1788609512965,
+  "frameAcceptance": {
+    "accepted": 12
+  },
+  "updatedAt": 1788627081169,
   "stage": "assembled"
 }

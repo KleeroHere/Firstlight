@@ -97,6 +97,18 @@ function readRoll(id) {
   const takesDir = join(P.takes, id);
   const files = list(takesDir);
   const rejected = list(join(takesDir, "_rejected"));
+  // A roll storyboarded per plan (engine/auto_storyboard.py) names its start
+  // frames planN_master.png, not sN_shM_frame.png, so the scene-level naming
+  // below finds nothing and the Keyframes tab comes up empty even though the
+  // roll is fully framed. Map plan -> scene and show those too; they are the
+  // same pictures, listed under the scene they belong to.
+  const planSpec = readJson(join(ROOT, "workspace", "plans", `${id}.json`));
+  const mastersByScene = {};
+  for (const p of planSpec?.plans ?? []) {
+    if (!p.master || String(p.master).startsWith("chain:")) continue;
+    if (!existsSync(join(takesDir, p.master))) continue;
+    (mastersByScene[p.scene] ??= []).push(p.master);
+  }
   const scenes = (sc.scenes ?? []).map((s) => ({
     id: s.id,
     kind: s.kind ?? "scene",
@@ -107,7 +119,10 @@ function readRoll(id) {
     img: s.img ?? "",
     anim: s.anim ?? "",
     vo: s.vo ?? "",
-    frames: files.filter((f) => f.startsWith(`${s.id}_sh`) && f.endsWith("_frame.png")).sort(),
+    frames: [
+      ...files.filter((f) => f.startsWith(`${s.id}_sh`) && f.endsWith("_frame.png")).sort(),
+      ...(mastersByScene[s.id] ?? []),
+    ],
     takes: files.filter((f) => f.startsWith(`${s.id}_take`) && /\.(mp4|png|jpg)$/i.test(f)).sort(),
     rejected: rejected.filter((f) => f.startsWith(`${s.id}_`)).length,
   }));

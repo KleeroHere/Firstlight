@@ -1,2 +1,0 @@
-file 'C:/Firstlight/workspace/takes/handover-at-the-pier/_flf/plan1.mp4'
-file 'C:/Firstlight/workspace/takes/handover-at-the-pier/_flf/plan2.mp4'
