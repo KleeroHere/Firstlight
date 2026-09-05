@@ -137,15 +137,68 @@ every write comes from the interface, the same one-way relationship
 show how many plans are accepted, in the reshoot queue, awaiting a first
 review, or not shot yet — plus total spend, broken down by backend.
 
+## Working with Claude (and with agents in general)
+
+Two steps in this pipeline are judgement rather than arithmetic — deciding
+whether a shot is good enough to keep, and deciding whether a scene has been
+broken into the right shots. Both are a command:
+
+```bash
+node engine/claude_agent.mjs frames     --roll <roll>   # judge the start frames
+node engine/claude_agent.mjs qa         --roll <roll>   # judge the clips
+node engine/claude_agent.mjs storyboard --roll <roll>   # review the shot breakdown
+```
+
+Each runs one of two ways and picks automatically.
+
+**With `ANTHROPIC_API_KEY`** (and `npm install` in `engine/` for the official
+SDK) it calls Claude with `docs/QA-CHECKLIST.md` and the twelve-frame contact
+sheets as images, asks for one verdict per plan through a strict tool schema,
+and writes the result into `workspace/<roll>/acceptance.json`. The model is
+`$ANTHROPIC_MODEL`, default `claude-sonnet-5`.
+
+**Without a key**, or with `--packet`, it writes an **agent packet** to
+`workspace/<roll>/_review/<mode>/`: the contact sheets, the metrics, the motion
+lines, the checklist verbatim, and a verdict template. Hand that folder to any
+agent session — Claude Code, another model, or a person — and put the answer
+back with `--apply <verdict.json>`. The packet is not a downgrade: it is how a
+human reviewer and a model reviewer are given exactly the same evidence, which
+is the only way their verdicts can be compared, and it is what makes the
+pipeline usable from a session that has no API key of its own.
+
+Frame verdicts land under `frames` in `acceptance.json`, clip verdicts under
+`plans`, because the shooters read `plans` to decide what still needs shooting.
+
+**What an agent needs to know is in the repository, not in a prompt you type:**
+
+| File | What it holds |
+|---|---|
+| [`CLAUDE.md`](CLAUDE.md) | The production command sequence, the hard rules, where the state lives. Read first by any agent working here. |
+| [`docs/PRODUCTION-RULES.md`](docs/PRODUCTION-RULES.md) | The shooting rules and the defect each one prevents. |
+| [`docs/QA-CHECKLIST.md`](docs/QA-CHECKLIST.md) | The acceptance procedure, the defect vocabulary, the thresholds. |
+| `engine/pipeline.config.json` → `production`, `qa` | The same rules as data. `engine/guard.mjs` and `engine/guard.py` read them, so the Node and Python halves of the engine cannot drift apart — and changing a rule means changing this file, not remembering a better prompt. |
+| [`.env.example`](.env.example) | Every environment variable the pipeline can use and which script reads it. |
+
+The guard is enforced, not advisory: `wavespeed_batch.mjs` and `flf_batch.mjs`
+both run every motion line through it before spending anything, and a line
+missing the head-count clause — or carrying a phrase known to produce a defect
+— stops the run.
+
 ## Cost & time
 
-Honest numbers, not a promise — they move with prices and hardware.
+Honest numbers, not a promise — they move with prices and hardware. The episode
+line is measured, not modelled: it is what the two Showcase episodes actually
+cost, counting the fourteen frames and clips that acceptance rejected and sent
+back. The ledger every paid script writes to is `reports/wavespeed-spend.json`.
 
 | Item | Cost / time |
 | --- | --- |
+| Seedream 4 start frame or end key (`wavespeed_stills.mjs`) | $0.027 |
 | Gemini key (1K, image-edit) | ≈$0.067 |
-| Kling 2.6 Std, 5 s clip (`--model kling26-std`) | ≈$0.21 |
-| Kling Pro (2.5 Turbo), 5 s clip (`--model kling-pro`) | ≈$0.35 |
+| Kling 2.6 Std, 5 s clip — image-to-video only, **no end frame** (`--model kling26-std`) | $0.21 |
+| Kling 2.6 Pro, 5 s clip — takes an end frame (`--model kling26-pro`) | $0.35 |
+| Kling Pro (2.5 Turbo), 5 s clip (`--model kling-pro`) | $0.35 |
+| **One 80 s episode, four scenes, twelve clips, reshoots included** | **≈$4.50** |
 | RunPod GPU rent | ≈$0.5–0.7 / h |
 | Wan 2.2 14B FLF2V, 720p, 81 frames, lightx2v 4-step — RTX 4080 16 GB | ≈12 min |
 | Same, full pass (`--full`, 20 steps, no distillation) — RTX 4080 16 GB | ≈55 min |
@@ -209,30 +262,50 @@ Three ways to see it, in order of how much you want to install:
 
 ## Showcase
 
-Two Harbour Light episodes, produced end to end on the pipeline described
-above — real reference sheets, real keyframes, real clips, real acceptance
-decisions (including two rejects and their reshoots) — plus a narrated
-walkthrough of the pipeline. Click a poster to watch in the live demo; the
-files themselves are attached to the [latest release](https://github.com/KleeroHere/Firstlight/releases/latest).
+Two Harbour Light episodes, produced end to end by the pipeline described below
+— nothing hand-assembled around it — plus a narrated walkthrough that the same
+assembler cut. Every start frame and every clip went through an acceptance gate:
+**24 frames judged, 6 rejected and reshot; 24 clips judged, 8 rejected and
+reshot.** Every reject named a cause to change, and every fix went into the
+scenario or `engine/pipeline.config.json` rather than into a one-off command.
+Total model spend for both episodes, reshoots included: **$9.90**.
+
+Click a poster to watch it in the live demo; the full-quality files are attached
+to the [latest release](https://github.com/KleeroHere/Firstlight/releases/latest).
 
 | [![Fog signal check](docs/demo/posters/Fog-signal-check.jpg)](https://kleerohere.github.io/Firstlight/demo/files/out/Fog%20signal%20check.mp4) | [![Handover at the pier](docs/demo/posters/Handover-at-the-pier.jpg)](https://kleerohere.github.io/Firstlight/demo/files/out/Handover%20at%20the%20pier.mp4) |
 | --- | --- |
-| **Fog signal check** · 72 s · hand-written per-scene prompts, three first-last-frame shots (Kling 2.6 Pro). Grades 21 pass / 0 warn / 0 fail. | **Handover at the pier** · 60 s · the *no-manual-storyboard* path: only scene text and narration were written; `engine/auto_storyboard.py` derived the wide → medium → close breakdown and every frame prompt. Grades 21 pass / 0 warn / 0 fail. |
+| **Fog signal check** · 80 s · four scenes, twelve clips. A lighthouse crew checks a fog signal: forecast, horn, log, confirmation. Grades **22 pass / 0 warn / 0 fail**. | **Handover at the pier** · 80 s · four scenes, twelve clips. A shift changes hands: keys, a tag on a board, the last line cast off, a lantern raised once. Grades **22 pass / 0 warn / 0 fail**. |
+
+Every scene is cut **wide → medium → close → back to the wide**, from three
+five-second clips shot for that scene. No scene holds a frame, stretches a clip
+or slows one down: the build log records `still: false` for all eight, and the
+assembler trims 0.2 s per scene rather than filling 10.
 
 [![How Firstlight works](docs/demo/posters/How-Firstlight-works.jpg)](https://github.com/KleeroHere/Firstlight/releases/latest)
 
-**How Firstlight works** · 2:51 · narrated walkthrough: the scenario is the edit,
-keyframes and acceptance, motion backends (cloud GPU, local, API), QA agents and
-metrics, cut / narration / verify, cost and time. Source and narration in
-[`docs/demo/`](docs/demo/).
+**How Firstlight works** · 2:41 · a narrated walkthrough, and itself a roll of
+the series: a scenario whose scenes are `kind: clip` — a Playwright screen
+recording of the real interface, the pipeline diagram drawing itself frame by
+frame, inserts from both finished episodes, an animated cost panel — cut by the
+same `assemble_from_plans.mjs`, with the same caption plates, the same narration
+voice and the same `verify_video.mjs` pass as the episodes. Grades 24 pass /
+1 warn / 0 fail (the warning is the audio bitrate, held down deliberately by
+`--target-mb 24`). Sources in [`docs/demo/`](docs/demo/).
+
+What was accepted and on what evidence — contact sheets, metrics and the two
+blemishes that were kept rather than hidden — is in
+[`docs/DEMO-REVIEW.md`](docs/DEMO-REVIEW.md); how it was produced, command by
+command, is in [`docs/DEMO-LOG.md`](docs/DEMO-LOG.md).
 
 Open the [live demo](https://kleerohere.github.io/Firstlight/) to browse both
-rolls: reference sheets, plan lists, contact sheets and every acceptance
-decision as the interface shows them.
+rolls: scenarios, start frames, plan lists, contact sheets and every acceptance
+decision as the interface shows them. (The demo's media is transcoded to 720p so
+the page stays under 30 MB; the release assets are the 1080p originals.)
 
 ## Quick start — the example series
 
-The repository ships a small fictional series so the whole loop can be run without a GPU, an API key, or a production behind it: *Harbour Light*, a lighthouse and the three people who run it. `workspace/prompts/series.yaml` defines the world; `workspace/prompts/scenarios/fog-signal-check.yaml` is one 72-second episode.
+The repository ships a small fictional series so the whole loop can be run without a GPU, an API key, or a production behind it: *Harbour Light*, a lighthouse and the three people who run it. `workspace/prompts/series.yaml` defines the world; `workspace/prompts/scenarios/fog-signal-check.yaml` is one 80-second episode.
 
 ```bash
 pip install pyyaml               # ffmpeg and ffprobe on PATH, Node 22
@@ -242,7 +315,7 @@ node engine/assemble_video.mjs --id fog-signal-check --placeholder-vo
 node engine/verify_video.mjs "workspace/out/Fog signal check.mp4"
 ```
 
-That produces a real 1080p30 episode — title card, three captioned scenes, a memo card, placeholder narration, normalised audio — and grades it: on the example it comes out 20 pass, 2 warn, 0 fail — both warnings about the placeholder narration (it is silent, so the audio track compresses below the nominal bitrate). With a real voice they go away.
+That produces a real 1080p30 episode — title card, four captioned scenes, a memo card, placeholder narration, normalised audio — and grades it: on the example it comes out 20 pass, 2 warn, 0 fail — both warnings about the placeholder narration (it is silent, so the audio track compresses below the nominal bitrate). With a real voice they go away.
 
 ### The interface
 
