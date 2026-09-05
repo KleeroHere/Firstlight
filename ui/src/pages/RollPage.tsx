@@ -5,6 +5,7 @@ import type { Roll, Scene } from "../api";
 import { humanError } from "../utils/humanText";
 import { runJob } from "../components/JobsDrawer";
 import ScenarioEditor from "../components/ScenarioEditor";
+import AcceptanceBoard from "../components/AcceptanceBoard";
 import { showToast } from "../data/toastBus";
 
 /**
@@ -20,7 +21,7 @@ export default function RollPage() {
   const { id = "" } = useParams();
   const [roll, setRoll] = useState<Roll | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [tab, setTab] = useState<"scenario" | "frames" | "takes" | "episode" | null>(null);
+  const [tab, setTab] = useState<"scenario" | "frames" | "takes" | "acceptance" | "episode" | null>(null);
   const navigate = useNavigate();
 
   const reload = useCallback(() => {
@@ -85,6 +86,10 @@ export default function RollPage() {
           <p className="fl-muted">
             <span className={`fl-stage fl-stage--${roll.stage}`}>{STAGE_LABEL[roll.stage]}</span> · {scenes.length} scenes
             {roll.durationTarget ? ` · target ${roll.durationTarget} s` : ""}
+            {roll.acceptance
+              ? ` · ${roll.acceptance.accepted}/${roll.acceptance.total} plans accepted` +
+                (roll.acceptance.rejected ? `, ${roll.acceptance.rejected} in the reshoot queue` : "")
+              : ""}
           </p>
         </div>
         <div className="fl-actions">
@@ -114,9 +119,17 @@ export default function RollPage() {
       </div>
 
       <nav className="fl-tabs" aria-label="Sections">
-        {(["scenario", "frames", "takes", "episode"] as const).map((t) => (
+        {(["scenario", "frames", "takes", "acceptance", "episode"] as const).map((t) => (
           <button key={t} type="button" className={"fl-tab" + (tab === t ? " fl-tab--active" : "")} onClick={() => setTab(t)}>
-            {t === "scenario" ? "Scenario" : t === "frames" ? "Keyframes" : t === "takes" ? "Takes" : "Episode"}
+            {t === "scenario"
+              ? "Scenario"
+              : t === "frames"
+                ? "Keyframes"
+                : t === "takes"
+                  ? "Takes"
+                  : t === "acceptance"
+                    ? "Acceptance"
+                    : "Episode"}
           </button>
         ))}
       </nav>
@@ -156,6 +169,8 @@ export default function RollPage() {
           ))}
         </div>
       )}
+
+      {tab === "acceptance" && <AcceptanceBoard rollId={roll.id} />}
 
       {tab === "episode" && (
         <div className="fl-episode">

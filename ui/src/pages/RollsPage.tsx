@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { api, STAGES, STAGE_LABEL } from "../api";
-import type { Roll } from "../api";
+import type { Roll, Spend } from "../api";
 import { humanError } from "../utils/humanText";
 import { showToast } from "../data/toastBus";
 
@@ -12,6 +12,7 @@ import { showToast } from "../data/toastBus";
  */
 export default function RollsPage() {
   const [rolls, setRolls] = useState<Roll[] | null>(null);
+  const [spend, setSpend] = useState<Spend | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [creating, setCreating] = useState(false);
   const [title, setTitle] = useState("");
@@ -22,7 +23,10 @@ export default function RollsPage() {
   const reload = useCallback(() => {
     api
       .rolls()
-      .then((r) => setRolls(r.rolls))
+      .then((r) => {
+        setRolls(r.rolls);
+        setSpend(r.spend);
+      })
       .catch((e) => setError(humanError(e)));
   }, []);
   useEffect(reload, [reload]);
@@ -96,6 +100,19 @@ export default function RollsPage() {
         ))}
       </ol>
 
+      {spend && (
+        <p className="fl-muted fl-spend">
+          Spend so far: <b>${spend.total_usd.toFixed(2)}</b>
+          {Object.entries(spend.backends).map(([name, b]) => (
+            <span key={name}>
+              {" "}
+              · {name} ${b.spent_usd.toFixed(2)}
+              {b.limit_usd != null ? ` of $${b.limit_usd.toFixed(2)}` : ""}
+            </span>
+          ))}
+        </p>
+      )}
+
       {rolls.length === 0 && !creating && (
         <div className="fl-empty surface-card">
           <h2 className="fl-h2">Nothing here yet</h2>
@@ -128,6 +145,13 @@ export default function RollsPage() {
                   {r.durationTarget ? ` · target ${r.durationTarget} s` : ""}
                   {r.buildLog ? ` · cut ${Math.round(r.buildLog.totalDuration)} s` : ""}
                 </p>
+                {r.acceptance && (
+                  <p className="fl-muted fl-roll__acceptance">
+                    plans: {r.acceptance.accepted} accepted · {r.acceptance.rejected} in reshoot queue
+                    {r.acceptance.pending ? ` · ${r.acceptance.pending} awaiting review` : ""}
+                    {r.acceptance.unshot ? ` · ${r.acceptance.unshot} not shot` : ""}
+                  </p>
+                )}
                 <div className="fl-progress" aria-hidden="true">
                   <span className="fl-progress__keys" style={{ width: `${scenes.length ? (keyed / scenes.length) * 100 : 0}%` }} />
                   <span className="fl-progress__takes" style={{ width: `${scenes.length ? (shot / scenes.length) * 100 : 0}%` }} />

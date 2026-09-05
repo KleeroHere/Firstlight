@@ -25,6 +25,16 @@ export interface Check {
   message: string;
 }
 
+/** How far a roll's plan-list has got — see Plan / the Acceptance tab. */
+export interface AcceptanceSummary {
+  total: number;
+  accepted: number;
+  rejected: number;
+  pending: number;
+  unshot: number;
+  defects: string[];
+}
+
 export interface Roll {
   id: string;
   title: string;
@@ -34,8 +44,34 @@ export interface Roll {
   buildLog: { createdAt: string; totalDuration: number; voMode: string } | null;
   verify: { verdict: "pass" | "warn" | "fail"; counts: { pass: number; warn: number; fail: number }; checkedAt: string; checks: Check[] } | null;
   priemka: boolean;
+  acceptance: AcceptanceSummary | null;
   updatedAt: number;
   stage: Stage;
+}
+
+export type Decision = "accepted" | "rejected" | "redo";
+
+/** One clip for one plan, named plan<N>.mp4 or plan<N>_s<seed>.mp4. */
+export interface PlanVariant {
+  file: string;
+  key: string;
+  decision: Decision | null;
+  defects: string[];
+  comment: string;
+}
+
+/** One shot in the plan-list (engine/make_plans.py), one level below a scene. */
+export interface Plan {
+  plan: number;
+  scene: string;
+  i2v: boolean;
+  cycle: boolean;
+  closeup: boolean;
+  motion: string;
+  frames: number | null;
+  master: string | null;
+  key: string | null;
+  variants: PlanVariant[];
 }
 
 export interface Job {
@@ -104,8 +140,14 @@ export interface Workspace {
   folders: WorkspaceFolder[];
 }
 
+/** One ledger per backend (engine/spend.mjs, engine/wavespeed_batch.mjs). */
+export interface Spend {
+  backends: Record<string, { spent_usd: number; limit_usd?: number; runs: number }>;
+  total_usd: number;
+}
+
 export const api = {
-  rolls: () => get<{ rolls: Roll[]; spend: Record<string, unknown> | null }>("/api/rolls"),
+  rolls: () => get<{ rolls: Roll[]; spend: Spend | null }>("/api/rolls"),
   roll: (id: string) => get<Roll>(`/api/rolls/${encodeURIComponent(id)}`),
   workspace: () => get<Workspace>("/api/workspace"),
   createRoll: (title: string, duration: number) =>
@@ -115,6 +157,11 @@ export const api = {
   saveScenario: (id: string, doc: Scenario) =>
     send<{ compiled: boolean; log: string }>("PUT", `/api/rolls/${encodeURIComponent(id)}/scenario`, doc),
   reject: (id: string, file: string) => post<{ ok: true }>(`/api/rolls/${encodeURIComponent(id)}/reject`, { file }),
+  plans: (id: string) => get<{ plans: Plan[]; defects: string[] }>(`/api/rolls/${encodeURIComponent(id)}/plans`),
+  decide: (id: string, key: string, decision: Decision, defects: string[], comment: string) =>
+    post<{ plans: Record<string, unknown> }>(`/api/rolls/${encodeURIComponent(id)}/acceptance`, { key, decision, defects, comment }),
+  contactSheet: (id: string, clip: string) =>
+    post<{ sheet: string }>(`/api/rolls/${encodeURIComponent(id)}/contact-sheet`, { clip }),
   run: (script: string, args: string[]) => post<{ id: string }>("/api/jobs", { script, args }),
   jobs: () => get<Job[]>("/api/jobs"),
   /** Streams a job's output; resolves with the exit code when it finishes. */

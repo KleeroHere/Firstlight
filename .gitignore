@@ -14,6 +14,7 @@ workspace/plans/
 workspace/reshoot.json
 workspace/spend.json
 workspace/*.log
+workspace/*/acceptance.json
 
 # Keys and hosts live in the environment, never here.
 .env

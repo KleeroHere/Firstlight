@@ -12,9 +12,9 @@
 //
 // No dependencies beyond Node itself, on purpose.
 import { createServer } from "node:http";
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { rmSync } from "node:fs";
-import { existsSync, readdirSync, readFileSync, statSync, mkdirSync, renameSync, createReadStream } from "node:fs";
+import { existsSync, readdirSync, readFileSync, writeFileSync, statSync, mkdirSync, renameSync, createReadStream } from "node:fs";
 import { join, resolve, extname, basename, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -83,6 +83,7 @@ function readRoll(id) {
     buildLog: buildLog && { createdAt: buildLog.createdAt, totalDuration: buildLog.totalDuration, voMode: buildLog.voMode },
     verify: verify && { verdict: verify.verdict, counts: verify.counts, checkedAt: verify.checkedAt, checks: verify.checks },
     priemka: existsSync(join(takesDir, "priemka.html")),
+    acceptance: summarizeAcceptance(readPlans(id)),
     updatedAt: Math.max(mtime(takesDir), output ? mtime(join(P.out, output)) : 0),
   };
   roll.stage = stageOf(roll);
@@ -96,8 +97,93 @@ function readRolls() {
     .sort((a, b) => b.updatedAt - a.updatedAt);
 }
 
+/** Spend is one ledger per backend (see engine/spend.mjs, engine/wavespeed_batch.mjs); reports/ is not committed. */
 function readSpend() {
-  return readJson(join(ROOT, "workspace", "spend.json"));
+  const gemini = readJson(join(ROOT, "reports", "gemini-spend.json"));
+  const wavespeed = readJson(join(ROOT, "reports", "wavespeed-spend.json"));
+  if (!gemini && !wavespeed) return null;
+  const backends = {};
+  if (gemini) backends.gemini = { spent_usd: gemini.spent_usd, limit_usd: gemini.limit_usd, runs: gemini.runs?.length ?? 0 };
+  if (wavespeed) backends.wavespeed = { spent_usd: wavespeed.spent_usd, runs: wavespeed.runs?.length ?? 0 };
+  const total_usd = Number(Object.values(backends).reduce((s, b) => s + (b.spent_usd || 0), 0).toFixed(3));
+  return { backends, total_usd };
+}
+
+// --- plans and acceptance ------------------------------------------------------
+
+/**
+ * The plan-list (engine/make_plans.py output, workspace/plans/<id>.json) is
+ * one level below scenes: one plan per shot, with its own keyframes and its
+ * own clip variants by seed. Not every roll has one — the example series
+ * ships scenes cut from drawn frames instead — so a missing file is not an
+ * error, just an empty acceptance screen.
+ */
+function readPlans(rollId) {
+  const spec = readJson(join(ROOT, "workspace", "plans", `${rollId}.json`));
+  if (!spec) return null;
+  const takesDir = join(P.takes, rollId);
+  const flfFiles = list(join(takesDir, "_flf"));
+  const acceptance = readAcceptance(rollId);
+  const plans = (spec.plans ?? []).map((p) => {
+    const rx = new RegExp(`^plan${p.plan}(_[A-Za-z0-9]+)?\\.mp4$`);
+    const variants = flfFiles
+      .map((f) => ({ f, m: f.match(rx) }))
+      .filter((x) => x.m)
+      .map((x) => {
+        const key = `plan${p.plan}${x.m[1] ?? ""}`;
+        const a = acceptance.plans?.[key];
+        return { file: `_flf/${x.f}`, key, decision: a?.decision ?? null, defects: a?.defects ?? [], comment: a?.comment ?? "" };
+      })
+      .sort((a, b) => a.key.localeCompare(b.key));
+    let master = null;
+    if (String(p.master).startsWith("chain:")) {
+      const src = p.master.slice(6);
+      if (existsSync(join(takesDir, "_chain", `${src}_last.png`))) master = `_chain/${src}_last.png`;
+    } else if (p.master && existsSync(join(takesDir, p.master))) {
+      master = p.master;
+    }
+    const keyRel = `keys/plan${p.plan}_key.png`;
+    return {
+      plan: p.plan, scene: p.scene, i2v: !!p.i2v, cycle: !!p.cycle, closeup: !!p.closeup,
+      motion: p.motion ?? "", frames: p.frames ?? null,
+      master, key: existsSync(join(takesDir, keyRel)) ? keyRel : null,
+      variants,
+    };
+  });
+  return plans;
+}
+
+const DEFECTS = ["extra-person", "extra-hand", "object-moved", "cut-jump", "face-drift", "blur"];
+
+/** How far a roll's plans have got, for the rolls list and the roll header. */
+function summarizeAcceptance(plans) {
+  if (!plans) return null;
+  let accepted = 0, rejected = 0, pending = 0, unshot = 0;
+  for (const p of plans) {
+    if (!p.variants.length) unshot++;
+    else if (p.variants.some((v) => v.decision === "accepted")) accepted++;
+    else if (p.variants.every((v) => v.decision === "rejected" || v.decision === "redo")) rejected++;
+    else pending++;
+  }
+  return { total: plans.length, accepted, rejected, pending, unshot, defects: DEFECTS };
+}
+
+function acceptancePath(rollId) {
+  return join(ROOT, "workspace", rollId, "acceptance.json");
+}
+function readAcceptance(rollId) {
+  return readJson(acceptancePath(rollId)) ?? { plans: {} };
+}
+/** The engine only ever reads this file; every write comes from here. */
+function writeAcceptance(rollId, key, patch) {
+  if (!ARG_OK.test(rollId) || !/^[\w-]+$/.test(key)) throw new Error("bad name");
+  const p = acceptancePath(rollId);
+  const data = readAcceptance(rollId);
+  data.plans = data.plans ?? {};
+  data.plans[key] = { ...data.plans[key], ...patch, at: new Date().toISOString() };
+  mkdirSync(dirname(p), { recursive: true });
+  writeFileSync(p, JSON.stringify(data, null, 2), "utf8");
+  return data;
 }
 
 // --- jobs: running engine scripts ---------------------------------------------
@@ -348,6 +434,34 @@ const server = createServer(async (req, res) => {
       const { file } = await readBody(req);
       rejectFrame(m[1], file);
       return sendJson(res, 200, { ok: true });
+    }
+
+    // The acceptance screen: one plan at a time, first/last keyframes, clip
+    // variants by seed, a defect checklist, and a decision. See docs/ARCHITECTURE.md.
+    if ((m = /^\/api\/rolls\/([\w-]+)\/plans$/.exec(path)) && req.method === "GET") {
+      const plans = readPlans(m[1]);
+      return plans
+        ? sendJson(res, 200, { plans, defects: DEFECTS })
+        : sendJson(res, 404, { error: "no plan-list for this roll — run engine/make_plans.py" });
+    }
+    if ((m = /^\/api\/rolls\/([\w-]+)\/acceptance$/.exec(path)) && req.method === "POST") {
+      const { key, decision, defects, comment } = await readBody(req);
+      if (!key || !/^plan\d+(_[A-Za-z0-9]+)?$/.test(key)) return sendJson(res, 400, { error: "bad key" });
+      if (!["accepted", "rejected", "redo"].includes(decision)) return sendJson(res, 400, { error: "bad decision" });
+      const data = writeAcceptance(m[1], key, { decision, defects: Array.isArray(defects) ? defects : [], comment: String(comment ?? "") });
+      return sendJson(res, 200, data);
+    }
+    // Rendered on demand with engine/contact_sheet.mjs and cached beside the
+    // clip as <clip>.sheet.png; the script itself skips the work if the sheet
+    // is already newer than the clip.
+    if ((m = /^\/api\/rolls\/([\w-]+)\/contact-sheet$/.exec(path)) && req.method === "POST") {
+      const { clip } = await readBody(req);
+      if (!clip || typeof clip !== "string" || clip.includes("..") || clip.includes("\\")) return sendJson(res, 400, { error: "bad clip" });
+      const abs = join(P.takes, m[1], clip);
+      if (!existsSync(abs)) return sendJson(res, 404, { error: "no such clip" });
+      const r = spawnSync("node", [join(ROOT, "engine", "contact_sheet.mjs"), "--clip", abs], { encoding: "utf8" });
+      if (r.status !== 0) return sendJson(res, 500, { error: (r.stderr || r.stdout || "contact_sheet.mjs failed").trim().slice(-500) });
+      return sendJson(res, 200, { sheet: `${clip}.sheet.png` });
     }
     if (path === "/api/jobs" && req.method === "POST") {
       const { script, args = [] } = await readBody(req);
