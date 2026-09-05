@@ -1,0 +1,94 @@
+# Handover at the pier
+#
+# Edited through the interface or by hand — both write this file. Compile it
+# with: python engine/build_prompts.py
+
+id: handover-at-the-pier
+title: Handover at the pier
+scenario: Handover at the pier.md
+duration_target: 60
+scenes:
+  - id: s0
+    kind: title
+    t: [0, 6]
+    vo_at: 1
+    plate: Handover at the pier
+    vo: 'End of shift: the watch changes hands. Three steps.'
+  - id: s1
+    t: [6, 20]
+    vo_at: 0.5
+    motion: anim
+    plate: Step 1. Confirm the last boat
+    chars:
+      - tomas
+    refs:
+      tomas:
+        - base
+        - dialog
+    bg: pier
+    img: >-
+      Tomas out on the pier at dusk, confirming the last boat in over the radio
+      before the watch changes.
+    anim: He lowers the radio and notes the time in his pocket notebook.
+    vo: >-
+      Before anything else, the last boat gets confirmed. The apprentice calls it
+      in from the pier, radio to his mouth, and writes the time down before he walks
+      back.
+  - id: s2
+    t: [20, 38]
+    vo_at: 0.5
+    motion: anim
+    plate: Step 2. Pass the log and the keys
+    chars:
+      - mara
+      - tomas
+    refs:
+      mara:
+        - base
+        - fullbody
+      tomas:
+        - base
+        - fullbody
+    bg: lantern-room
+    img: >-
+      Mara and Tomas in the lantern room at the signal panel, a small paper logbook
+      (a handwritten notebook, not a piece of wood) and the brass keys changing
+      hands between them.
+    anim: >-
+      Mara hands over the paper logbook and the keys; Tomas takes them with both
+      hands.
+    vo: >-
+      Then the logbook itself changes hands. The keeper passes the notebook and
+      the keys to the apprentice, so the next watch starts from the same page, not
+      a guess.
+  - id: s3
+    t: [38, 52]
+    vo_at: 0.5
+    motion: anim
+    plate: Step 3. Log it in the office too
+    chars:
+      - ines
+    refs:
+      ines:
+        - base
+        - dialog
+    bg: harbour-office
+    img: >-
+      Ines at the harbour office desk, marking the new watch's name in the log and
+      switching on the desk lamp as evening comes on.
+    anim: She writes the name, then reaches over and turns on the lamp.
+    vo: >-
+      The office logs the change too - a name, a time, the lamp switched on for
+      the night. Three logs, one line each, and they all agree.
+  - id: s4
+    kind: memo
+    t: [52, 60]
+    vo_at: 1
+    plate: 'Handover: three logs, one line'
+    memo:
+      title: 'Handover: three logs, one line'
+      items:
+        - Last boat confirmed on the pier
+        - Log and keys passed in the lantern room
+        - New watch logged in the office
+    vo: Pier, lantern room, office - one same watch, three lines that agree.
