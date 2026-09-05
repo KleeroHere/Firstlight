@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Firstlight — daybreak beam">
+  <title>Firstlight — daybreak beam</title>
+  <defs>
+    <linearGradient id="b-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C2422"/>
+      <stop offset=".38" stop-color="#255450"/>
+      <stop offset=".62" stop-color="#6E9E92"/>
+      <stop offset=".72" stop-color="#E7C9A6"/>
+    </linearGradient>
+    <clipPath id="b-badge"><circle cx="256" cy="256" r="232"/></clipPath>
+    <filter id="b-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#b-badge)">
+    <rect width="512" height="512" fill="url(#b-sky)"/>
+    <!-- the beam: a fan of light struck from the sun on the horizon -->
+    <g fill="#F7EFE2">
+      <path d="M256 330 L-298 247 L-284 180 Z" opacity=".22"/>
+      <path d="M256 330 L796 180 L810 247 Z" opacity=".22"/>
+      <path d="M256 330 L-216 29 L-163 -41 Z" opacity=".32"/>
+      <path d="M256 330 L675 -41 L728 29 Z" opacity=".32"/>
+      <path d="M256 330 L-45 -142 L51 -191 Z" opacity=".46"/>
+      <path d="M256 330 L461 -191 L557 -142 Z" opacity=".46"/>
+      <path d="M256 330 L193 -226 L319 -226 Z" opacity=".62"/>
+    </g>
+    <!-- sea -->
+    <path d="M0 330 H512 V512 H0 Z" fill="#12312E"/>
+    <g fill="#E04E14">
+      <rect x="226" y="356" width="60" height="14" rx="7"/>
+      <rect x="206" y="394" width="100" height="15" rx="7.5"/>
+      <rect x="182" y="436" width="148" height="16" rx="8" opacity=".82"/>
+    </g>
+    <!-- the sun, halved by the horizon -->
+    <path d="M168 330 a88 88 0 0 1 176 0 Z" fill="#E04E14"/>
+    <path d="M204 330 a52 52 0 0 1 104 0 Z" fill="#F7C77E"/>
+    <rect x="0" y="323" width="512" height="8" fill="#0C2422" opacity=".5"/>
+    <rect width="512" height="512" filter="url(#b-grain)" opacity=".07"/>
+  </g>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="#C9A26A" stroke-width="6" opacity=".55"/>
+  <circle cx="256" cy="256" r="232" fill="none" stroke="#0C2422" stroke-width="15"/>
+</svg>

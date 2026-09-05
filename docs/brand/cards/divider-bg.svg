@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>Firstlight — chapter divider card</title>
+  <defs>
+    <radialGradient id="d-glow" cx="960" cy="1180" r="1180" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F7A05A" stop-opacity=".95"/>
+      <stop offset=".34" stop-color="#E04E14" stop-opacity=".5"/>
+      <stop offset="1" stop-color="#E04E14" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="d-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="4" seed="21"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="#A8390C"/>
+  <rect width="1920" height="1080" fill="url(#d-glow)"/>
+  <!-- the same fan as the title card, struck from below the frame -->
+  <g fill="#F7EFE2">
+    <path d="M960 1180 L-1475 269 L-1346 -21 Z" opacity=".05"/>
+    <path d="M960 1180 L3266 -21 L3395 269 Z" opacity=".05"/>
+    <path d="M960 1180 L-1032 -491 L-780 -752 Z" opacity=".06"/>
+    <path d="M960 1180 L2700 -752 L2952 -491 Z" opacity=".06"/>
+    <path d="M960 1180 L-281 -1105 L92 -1271 Z" opacity=".08"/>
+    <path d="M960 1180 L1828 -1271 L2201 -1105 Z" opacity=".08"/>
+    <path d="M960 1180 L733 -1410 L1187 -1410 Z" opacity=".10"/>
+  </g>
+  <g fill="#7A2605" opacity=".26">
+    <rect x="0" y="120" width="1920" height="10"/>
+    <rect x="0" y="198" width="1920" height="7"/>
+    <rect x="0" y="878" width="1920" height="7"/>
+    <rect x="0" y="956" width="1920" height="10"/>
+  </g>
+  <rect width="1920" height="1080" filter="url(#d-grain)" opacity=".09"/>
+  <rect x="56" y="56" width="1808" height="968" fill="none" stroke="#F7EFE2" stroke-width="3" opacity=".34"/>
+</svg>

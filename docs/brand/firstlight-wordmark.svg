@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1356 400" width="1356" height="400" role="img" aria-label="Firstlight">
+  <title>Firstlight</title>
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" x="40" y="82" width="236" height="236" role="img" aria-label="Firstlight">
+  <title>Firstlight</title>
+  <defs>
+    <linearGradient id="fl-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C2422"/>
+      <stop offset=".38" stop-color="#255450"/>
+      <stop offset=".62" stop-color="#6E9E92"/>
+      <stop offset=".72" stop-color="#E7C9A6"/>
+    </linearGradient>
+    <clipPath id="fl-badge"><circle cx="256" cy="256" r="232"/></clipPath>
+    <filter id="fl-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="7"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#fl-badge)">
+    <rect x="40" y="82" width="236" height="236" fill="url(#fl-sky)"/>
+    <!-- the beam: a fan of light struck from the sun sitting on the horizon -->
+    <g fill="#F7EFE2">
+      <path d="M256 330 L-298 247 L-284 180 Z" opacity=".22"/>
+      <path d="M256 330 L796 180 L810 247 Z" opacity=".22"/>
+      <path d="M256 330 L-216 29 L-163 -41 Z" opacity=".32"/>
+      <path d="M256 330 L675 -41 L728 29 Z" opacity=".32"/>
+      <path d="M256 330 L-45 -142 L51 -191 Z" opacity=".46"/>
+      <path d="M256 330 L461 -191 L557 -142 Z" opacity=".46"/>
+      <path d="M256 330 L193 -226 L319 -226 Z" opacity=".62"/>
+    </g>
+    <!-- the sea, and the light broken across it -->
+    <path d="M0 330 H512 V512 H0 Z" fill="#12312E"/>
+    <g fill="#E04E14">
+      <rect x="226" y="356" width="60" height="14" rx="7"/>
+      <rect x="206" y="394" width="100" height="15" rx="7.5"/>
+      <rect x="182" y="436" width="148" height="16" rx="8" opacity=".82"/>
+    </g>
+    <!-- the sun, halved by the horizon -->
+    <path d="M168 330 a88 88 0 0 1 176 0 Z" fill="#E04E14"/>
+    <path d="M204 330 a52 52 0 0 1 104 0 Z" fill="#F7C77E"/>
+    <rect x="0" y="323" width="512" height="8" fill="#0C2422" opacity=".5"/>
+    <rect x="40" y="82" width="236" height="236" filter="url(#fl-grain)" opacity=".07"/>
+  </g>
+  <circle cx="256" cy="256" r="216" fill="none" stroke="#C9A26A" stroke-width="6" opacity=".55"/>
+  <circle cx="256" cy="256" r="232" fill="none" stroke="#0C2422" stroke-width="15"/>
+</svg>
+  <g fill="#10302D" transform="translate(332.0 262) scale(0.17600 -0.17600)">
+    <path transform="translate(0.0 0)" d="M165 438H708V277H165ZM726 750V589H169L262 682V0H73V750Z"/>
+    <path transform="translate(751.0 0)" d="M60 578 152 559 245 578V0H60ZM153 630Q104 630 73.0 655.5Q42 681 42 723Q42 766 73.0 791.0Q104 816 153 816Q203 816 233.0 791.0Q263 766 263 723Q263 681 233.0 655.5Q203 630 153 630Z"/>
+    <path transform="translate(1044.0 0)" d="M33 570H221L255 365V0H69V380ZM527 578V418Q500 424 473.5 427.0Q447 430 425 430Q377 430 338.5 410.5Q300 391 277.5 349.0Q255 307 255 240L218 286Q225 347 241.0 401.0Q257 455 285.0 496.5Q313 538 354.5 562.0Q396 586 455 586Q472 586 491.0 584.0Q510 582 527 578Z"/>
+    <path transform="translate(1574.0 0)" d="M702 183Q702 119 664.5 74.5Q627 30 555.0 7.0Q483 -16 380 -16Q275 -16 196.0 10.0Q117 36 73.0 83.0Q29 130 26 192H215Q221 167 243.5 148.0Q266 129 302.0 119.5Q338 110 387 110Q453 110 487.0 124.0Q521 138 521 166Q521 187 496.5 198.0Q472 209 409 214L305 222Q207 229 149.0 253.0Q91 277 66.5 314.0Q42 351 42 397Q42 460 81.5 502.0Q121 544 191.0 565.0Q261 586 355 586Q449 586 522.5 561.0Q596 536 640.5 492.0Q685 448 691 389H502Q498 409 480.5 426.0Q463 443 430.5 453.5Q398 464 346 464Q287 464 256.0 451.0Q225 438 225 413Q225 394 244.0 383.0Q263 372 316 367L451 357Q547 349 601.5 326.5Q656 304 679.0 268.0Q702 232 702 183Z"/>
+    <path transform="translate(2296.0 0)" d="M5 432V513L123 556L203 722H309V570H555V432H309V244Q309 180 335.0 154.5Q361 129 428 129Q471 129 503.5 136.5Q536 144 565 157V16Q535 4 486.5 -6.0Q438 -16 386 -16Q295 -16 236.5 13.0Q178 42 150.5 94.5Q123 147 123 218V432Z"/>
+    <path transform="translate(2875.0 0)" d="M60 770H245V0H60Z"/>
+    <path transform="translate(3168.0 0)" d="M60 578 152 559 245 578V0H60ZM153 630Q104 630 73.0 655.5Q42 681 42 723Q42 766 73.0 791.0Q104 816 153 816Q203 816 233.0 791.0Q263 766 263 723Q263 681 233.0 655.5Q203 630 153 630Z"/>
+    <path transform="translate(3461.0 0)" d="M562 143V240L568 263V395L562 416V570H748V152Q748 46 699.5 -28.5Q651 -103 565.0 -142.0Q479 -181 365 -181Q286 -181 219.5 -160.5Q153 -140 88 -99V43Q149 -3 216.5 -23.5Q284 -44 353 -44Q454 -44 508.0 1.5Q562 47 562 143ZM310 56Q230 56 167.0 89.0Q104 122 68.0 181.5Q32 241 32 321Q32 401 68.0 460.5Q104 520 167.0 553.0Q230 586 310 586Q370 586 420.0 567.5Q470 549 509.0 519.0Q548 489 575.0 453.5Q602 418 616.0 382.5Q630 347 630 319Q630 282 608.0 236.5Q586 191 544.5 150.0Q503 109 444.0 82.5Q385 56 310 56ZM372 185Q434 185 483.0 218.0Q532 251 568 321Q532 392 482.5 425.0Q433 458 372 458Q325 458 290.5 441.0Q256 424 237.5 393.5Q219 363 219 321Q219 280 237.0 249.5Q255 219 289.5 202.0Q324 185 372 185Z"/>
+    <path transform="translate(4254.0 0)" d="M60 770H245V0H60ZM459 586Q540 586 597.5 553.5Q655 521 685.5 461.0Q716 401 716 318V0H530V290Q530 361 495.5 397.5Q461 434 395 434Q350 434 316.0 414.5Q282 395 263.5 359.5Q245 324 245 275L186 306Q198 397 236.0 459.0Q274 521 331.5 553.5Q389 586 459 586Z"/>
+    <path transform="translate(5010.0 0)" d="M5 432V513L123 556L203 722H309V570H555V432H309V244Q309 180 335.0 154.5Q361 129 428 129Q471 129 503.5 136.5Q536 144 565 157V16Q535 4 486.5 -6.0Q438 -16 386 -16Q295 -16 236.5 13.0Q178 42 150.5 94.5Q123 147 123 218V432Z"/>
+  </g>
+</svg>

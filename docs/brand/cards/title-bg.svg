@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>Firstlight — episode title card</title>
+  <defs>
+    <linearGradient id="t-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#08201E"/>
+      <stop offset=".34" stop-color="#12312E"/>
+      <stop offset=".58" stop-color="#1F5551"/>
+      <stop offset=".72" stop-color="#3E7A72"/>
+    </linearGradient>
+    <radialGradient id="t-glow" cx="1450" cy="780" r="760" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#F7C77E" stop-opacity=".85"/>
+      <stop offset=".38" stop-color="#E7A277" stop-opacity=".38"/>
+      <stop offset="1" stop-color="#E7A277" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="t-scrim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#08201E" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#08201E" stop-opacity=".58"/>
+      <stop offset="1" stop-color="#08201E" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="t-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="4" seed="12"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#t-sky)"/>
+  <rect width="1920" height="1080" fill="url(#t-glow)"/>
+  <!-- the fan the low sun throws across the sky -->
+  <g fill="#F7EFE2">
+    <path d="M1450 780 L-950 780 L-898 281 Z" opacity=".06"/>
+    <path d="M1450 780 L-791 -80 L-516 -597 Z" opacity=".07"/>
+    <path d="M1450 780 L-217 -946 L178 -1255 Z" opacity=".08"/>
+    <path d="M1450 780 L748 -1515 L1158 -1602 Z" opacity=".11"/>
+    <path d="M1450 780 L1867 -1584 L2192 -1503 Z" opacity=".09"/>
+  </g>
+  <!-- a band of shade where the episode title is drawn (y 0.40h-0.62h) -->
+  <rect x="0" y="352" width="1920" height="400" fill="url(#t-scrim)"/>
+  <!-- the harbour: a headland, the lighthouse, and the sea -->
+  <path d="M0 792 H1920 V1080 H0 Z" fill="#0E2A28"/>
+  <path d="M0 780 H1920 V794 H0 Z" fill="#08201E" opacity=".7"/>
+  <g fill="#08201E">
+    <path d="M0 782 H196 L262 744 H452 L498 782 Z"/>
+    <path d="M312 782 V500 h-13 l0 -34 h84 l0 34 h-13 v282 Z"/>
+    <path d="M300 466 h108 l-16 -34 h-76 Z"/>
+    <path d="M322 432 h64 v-46 h-64 Z"/>
+    <path d="M338 386 h32 l-16 -30 Z"/>
+  </g>
+  <rect x="330" y="394" width="48" height="30" rx="4" fill="#F7C77E" opacity=".9"/>
+  <!-- the sun on the horizon, and the light broken across the water -->
+  <path d="M1362 780 a88 88 0 0 1 176 0 Z" fill="#E04E14"/>
+  <path d="M1394 780 a56 56 0 0 1 112 0 Z" fill="#F7C77E"/>
+  <g fill="#E04E14">
+    <rect x="1420" y="812" width="60" height="14" rx="7"/>
+    <rect x="1398" y="856" width="104" height="15" rx="7.5"/>
+    <rect x="1372" y="906" width="156" height="16" rx="8" opacity=".9"/>
+    <rect x="1338" y="962" width="224" height="17" rx="8.5" opacity=".78"/>
+    <rect x="1300" y="1024" width="300" height="18" rx="9" opacity=".62"/>
+  </g>
+  <rect width="1920" height="1080" filter="url(#t-grain)" opacity=".07"/>
+  <!-- a hairline of brass, the way the series frames every card -->
+  <rect x="56" y="56" width="1808" height="968" fill="none" stroke="#C9A26A" stroke-width="3" opacity=".45"/>
+</svg>

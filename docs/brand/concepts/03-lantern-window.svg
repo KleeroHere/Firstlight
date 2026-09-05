@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Firstlight — lantern window">
+  <title>Firstlight — lantern window</title>
+  <defs>
+    <linearGradient id="w-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1F5551"/>
+      <stop offset=".45" stop-color="#6E9E92"/>
+      <stop offset=".72" stop-color="#F4CFB0"/>
+      <stop offset="1" stop-color="#F0BE81"/>
+    </linearGradient>
+    <clipPath id="w-pane">
+      <path d="M92 250 a164 164 0 0 1 328 0 V444 a20 20 0 0 1 -20 20 H112 a20 20 0 0 1 -20 -20 Z"/>
+    </clipPath>
+    <filter id="w-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="11"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#w-pane)">
+    <rect width="512" height="512" fill="url(#w-sky)"/>
+    <path d="M0 366 H512 V512 H0 Z" fill="#1F5551"/>
+    <path d="M180 366 a76 76 0 0 1 152 0 Z" fill="#E04E14"/>
+    <g fill="#F0BE81" opacity=".8">
+      <rect x="232" y="386" width="48" height="11" rx="5.5"/>
+      <rect x="214" y="414" width="84" height="12" rx="6"/>
+      <rect x="192" y="444" width="128" height="12" rx="6"/>
+    </g>
+    <rect width="512" height="512" filter="url(#w-grain)" opacity=".07"/>
+    <!-- the muntins of the lantern room -->
+    <g fill="#C9A26A">
+      <rect x="246" y="70" width="20" height="400"/>
+      <rect x="80" y="246" width="352" height="20"/>
+    </g>
+  </g>
+  <path d="M92 250 a164 164 0 0 1 328 0 V444 a20 20 0 0 1 -20 20 H112 a20 20 0 0 1 -20 -20 Z" fill="none" stroke="#0C2422" stroke-width="16"/>
+</svg>

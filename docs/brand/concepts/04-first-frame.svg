@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Firstlight — first frame">
+  <title>Firstlight — first frame</title>
+  <defs>
+    <linearGradient id="r-sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0C2422"/>
+      <stop offset=".45" stop-color="#3E7A72"/>
+      <stop offset="1" stop-color="#E7C9A6"/>
+    </linearGradient>
+    <clipPath id="r-frame"><rect x="36" y="116" width="440" height="280" rx="24"/></clipPath>
+    <filter id="r-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="3" seed="5"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <g clip-path="url(#r-frame)">
+    <rect x="36" y="116" width="440" height="280" fill="url(#r-sky)"/>
+    <path d="M36 296 H476 V396 H36 Z" fill="#12312E"/>
+    <path d="M176 296 a80 80 0 0 1 160 0 Z" fill="#E04E14"/>
+    <path d="M208 296 a48 48 0 0 1 96 0 Z" fill="#F7C77E"/>
+    <g fill="#E04E14">
+      <rect x="230" y="316" width="52" height="12" rx="6"/>
+      <rect x="210" y="344" width="92" height="13" rx="6.5"/>
+      <rect x="184" y="374" width="144" height="14" rx="7"/>
+    </g>
+    <rect width="512" height="512" filter="url(#r-grain)" opacity=".07"/>
+  </g>
+  <rect x="36" y="116" width="440" height="280" rx="24" fill="none" stroke="#0C2422" stroke-width="16"/>
+  <!-- the sprockets: this is a frame of film, and it is the first one -->
+  <g fill="#E04E14">
+    <rect x="56" y="52" width="66" height="38" rx="12"/>
+    <rect x="160" y="52" width="66" height="38" rx="12" opacity=".55"/>
+    <rect x="264" y="52" width="66" height="38" rx="12" opacity=".55"/>
+    <rect x="368" y="52" width="66" height="38" rx="12" opacity=".55"/>
+    <g opacity=".55">
+      <rect x="56" y="422" width="66" height="38" rx="12"/>
+      <rect x="160" y="422" width="66" height="38" rx="12"/>
+      <rect x="264" y="422" width="66" height="38" rx="12"/>
+      <rect x="368" y="422" width="66" height="38" rx="12"/>
+    </g>
+  </g>
+</svg>

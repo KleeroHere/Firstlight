@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="1920" height="1080">
+  <title>Firstlight — memo card</title>
+  <defs>
+    <linearGradient id="m-paper" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FDF8EE"/>
+      <stop offset="1" stop-color="#F2E4CE"/>
+    </linearGradient>
+    <filter id="m-grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency=".65" numOctaves="4" seed="33"/>
+      <feColorMatrix type="saturate" values="0"/>
+    </filter>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#m-paper)"/>
+  <!-- the rings of the lens, kept in the margin so the list stays clear -->
+  <g fill="none" stroke="#C9A26A" opacity=".5">
+    <circle cx="152" cy="152" r="44" stroke-width="7"/>
+    <circle cx="152" cy="152" r="78" stroke-width="7"/>
+    <circle cx="152" cy="152" r="112" stroke-width="7"/>
+  </g>
+  <circle cx="152" cy="152" r="19" fill="#E04E14" opacity=".85"/>
+  <rect x="56" y="56" width="1808" height="874" fill="none" stroke="#8A6A3C" stroke-width="3" opacity=".4"/>
+  <!-- the sea along the foot of the page, with the sun just clear of the frame -->
+  <path d="M1428 954 a86 86 0 0 1 172 0 Z" fill="#E04E14"/>
+  <path d="M1460 954 a54 54 0 0 1 108 0 Z" fill="#F7C77E"/>
+  <path d="M0 942 H1920 V1080 H0 Z" fill="#1F5551"/>
+  <path d="M0 936 H1920 V950 H0 Z" fill="#12312E"/>
+  <g fill="#F7C77E" opacity=".85">
+    <rect x="1484" y="976" width="60" height="13" rx="6.5"/>
+    <rect x="1462" y="1010" width="104" height="14" rx="7"/>
+    <rect x="1436" y="1048" width="156" height="15" rx="7.5" opacity=".8"/>
+  </g>
+  <rect width="1920" height="1080" filter="url(#m-grain)" opacity=".05"/>
+</svg>

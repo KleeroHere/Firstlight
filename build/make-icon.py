@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
-"""Turns docs/brand/firstlight.png (the ribbon mark, 512x677, transparent)
-into a square multi-size .ico: build/firstlight.ico for Firstlight.exe
-(build-exe.mjs embeds it with rcedit) and ui/public/favicon.ico for the
-browser tab (see the <link rel="icon"> in ui/index.html).
+"""Turns docs/brand/firstlight.png (the mark, 1024x1024, transparent) into a
+multi-size .ico: build/firstlight.ico for Firstlight.exe (build-exe.mjs
+embeds it with rcedit) and ui/public/favicon.ico for the browser tab (see
+the <link rel="icon"> in ui/index.html).
 
-The source is taller than it is wide, so it is padded onto a transparent
-square canvas (centered, nothing cropped) before Pillow renders the size
-set — an .ico is square, and a plain resize would squash the ribbon.
+An .ico is square, so a mark that is not gets padded onto a transparent
+square canvas first (centered, nothing cropped) rather than squashed. The
+current mark is already square, which leaves square() a no-op.
+
+Run `node build/make-brand.mjs` first — that is what draws the PNG from
+docs/brand/firstlight.svg.
 
     python build/make-icon.py
 """
