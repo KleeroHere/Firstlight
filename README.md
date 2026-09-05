@@ -207,6 +207,35 @@ Three ways to see it, in order of how much you want to install:
   a job; only the server and the interface run from the .exe alone.
 - **From source** — see **Quick start** below.
 
+## Showcase
+
+Two Harbour Light episodes, produced end to end on the pipeline described
+above, not synthetic test clips:
+
+| Episode | What it shows |
+| --- | --- |
+| **[Fog signal check](workspace/prompts/scenarios/fog-signal-check.yaml)** — 72 s | The example scenario, shot for real: hand-written per-scene frame and motion prompts, all three shots first-last-frame (Kling 2.6 Pro). Grades **21 pass, 0 warn, 0 fail**. |
+| **[Handover at the pier](workspace/prompts/scenarios/handover-at-the-pier.yaml)** — 60 s | The *no-manual-storyboard* path: the scenario has only scene-level text and narration — `engine/auto_storyboard.py` derives the wide → medium → close shot breakdown, writes every frame prompt, and calls the image backend itself. Grades **21 pass, 0 warn, 0 fail**. |
+
+Both are in the [live demo](https://kleerohere.github.io/Firstlight/) — real
+reference sheets, real keyframes, real clips, real acceptance decisions,
+including two rejects (`extra-hand`, `prop-appears`) and their reshoots,
+visible on the Acceptance tab exactly as they were judged.
+
+**[How Firstlight works](docs/demo/How%20Firstlight%20works.mp4)** (≈2:50,
+narrated) walks through the pipeline against this same material: what it
+does, why the scenario is the edit, keyframes and acceptance, the three
+motion backends, the QA reject → redo → accept cycle above, the cut/verify
+step, and real cost and time for this demo (`docs/demo/`, scripts included:
+`make_diagram.py`, `make_cards.py`, `tts_narration.mjs`, `shots.mjs`,
+`assemble_explainer.sh`).
+
+Both episodes together — 7 character/background stills, 18 keyframes, 17
+motion clips including 3 reshoots after a QA reject — cost **≈$4.53** on
+WaveSpeed (Seedream 4 stills + keys, Kling 2.6 Std/Pro motion) and under
+1,200 characters of narration. Character sheets: `workspace/refs/`;
+backgrounds: `workspace/backgrounds/`.
+
 ## Quick start — the example series
 
 The repository ships a small fictional series so the whole loop can be run without a GPU, an API key, or a production behind it: *Harbour Light*, a lighthouse and the three people who run it. `workspace/prompts/series.yaml` defines the world; `workspace/prompts/scenarios/fog-signal-check.yaml` is one 72-second episode.

@@ -6,17 +6,17 @@
       "i2v": false,
       "cycle": false,
       "closeup": false,
-      "motion": "She finishes the line and looks up at the window.",
-      "frames": 8,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. She finishes the line and looks up at the window.",
+      "frames": 81,
       "master": "plan1_master.png",
       "key": "keys/plan1_key.png",
       "variants": [
         {
-          "file": "plan1.mp4",
+          "file": "_flf/plan1.mp4",
           "key": "plan1",
           "decision": "accepted",
           "defects": [],
-          "comment": "Clean — the look-up reads clearly, keeps both keyframes."
+          "comment": "Independent QA pass confirms: 6-frame contact sheet shows Ines alone the whole clip, cardigan/glasses/pencil consistent with refs, no camera-look, no readable board text. The 9% mid-clip area flag (frame 9) is her head turning up to the window as scripted, not an extra person or hand. jump 0.011, drift 0.058, k0 0.991/k1 0.991."
         }
       ]
     },
@@ -24,50 +24,39 @@
       "plan": 2,
       "scene": "s2",
       "i2v": false,
-      "cycle": true,
+      "cycle": false,
       "closeup": false,
-      "motion": "Mara pulls the lever down once, holds it, lets it back up.",
-      "frames": 16,
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Mara pulls the lever down once, holds it, lets it back up.",
+      "frames": 81,
       "master": "plan2_master.png",
       "key": "keys/plan2_key.png",
       "variants": [
         {
-          "file": "plan2.mp4",
+          "file": "_flf/plan2.mp4",
           "key": "plan2",
-          "decision": "redo",
-          "defects": [
-            "cut-jump"
-          ],
-          "comment": "The hold reads as two separate pulls — retime it to one beat."
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independent QA pass confirms: Mara and Tomas both static except the lever hand; one clean down-hold-up cycle, Tomas's notebook never changes hands, no extra hands. jump 0.005, drift 0.022, k0 0.991/k1 0.991."
         }
       ]
     },
     {
       "plan": 3,
       "scene": "s3",
-      "i2v": true,
+      "i2v": false,
       "cycle": false,
-      "closeup": true,
-      "motion": "He lowers the radio and gives a small thumbs-up towards the tower.",
-      "frames": 24,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. He lowers the radio and gives a small thumbs-up towards the tower.",
+      "frames": 81,
       "master": "plan3_master.png",
-      "key": null,
+      "key": "keys/plan3_key.png",
       "variants": [
         {
-          "file": "plan3_s1.mp4",
-          "key": "plan3_s1",
-          "decision": "rejected",
-          "defects": [
-            "extra-hand"
-          ],
-          "comment": "A second hand appears on the radio for two frames."
-        },
-        {
-          "file": "plan3_s2.mp4",
-          "key": "plan3_s2",
-          "decision": null,
+          "file": "_flf/plan3.mp4",
+          "key": "plan3",
+          "decision": "accepted",
           "defects": [],
-          "comment": ""
+          "comment": "Independent QA pass confirms: Tomas alone on the pier, radio lowers smoothly into a thumbs-up that lands on the last frame and matches the end key; notebook stays in pocket throughout. jump 0.003, drift 0.024, k0 0.992/k1 0.992."
         }
       ]
     }

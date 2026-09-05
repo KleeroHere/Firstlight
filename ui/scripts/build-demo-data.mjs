@@ -5,23 +5,23 @@
 //
 //   node ui/scripts/build-demo-data.mjs
 //
-// fog-signal-check already has real placeholder media on disk (the frames a
-// keyframe backend drew, and the synthetic gradient clips make_synthetic_takes.mjs
-// stands in for real motion with) — those are copied byte for byte, not
-// invented. The one thing genuinely authored here is its plan-list: this roll
-// predates the plan-list feature (see the comment in ui/server/server.mjs —
-// "not every roll has one"), so there is nothing under workspace/plans/ to
-// snapshot. The plan-list below reuses the same real frames and clips, only
-// renamed to the plan-list's own convention, so the Acceptance tab shows real
-// media rather than broken image icons. opening-the-office needs nothing
-// invented at all: it really is just a written scenario, nothing shot yet.
+// fog-signal-check and handover-at-the-pier are both real productions now
+// (character sheets and backgrounds via WaveSpeed Seedream 4, keyframes the
+// same way, motion via Kling 2.6 through WaveSpeed, narration via ElevenLabs,
+// a real assemble_video + verify_video pass) — every field below is read
+// from workspace/plans/<id>.json, workspace/<id>/acceptance.json and
+// workspace/out/<Title>.{verify,build-log}.json, and every file copied is
+// the real take/master/key/output on disk; nothing here is fabricated.
+// opening-the-office needs nothing invented at all: it really is just a
+// written scenario, nothing shot yet.
 //
 // Idempotent: deletes and rewrites ui/public/demo/ each run. Run this by hand
 // whenever the Harbour Light example changes and commit the result — it is
-// not run in CI, because its source (workspace/takes/fog-signal-check/) is
-// generated media that needs GEMINI_API_KEY/ComfyUI and is gitignored, so a
-// clean checkout does not have it. .github/workflows/pages.yml only builds
-// the interface; it ships the demo/ folder already committed here.
+// not run in CI, because its source (workspace/takes/*) is generated media
+// that needs WAVESPEED_API_KEY/ELEVENLABS_API_KEY and is gitignored, so a
+// clean checkout does not have it. .github/workflows/ci.yml's deploy-demo
+// job only builds the interface; it ships the demo/ folder already
+// committed here.
 import { existsSync, readFileSync, writeFileSync, mkdirSync, rmSync, cpSync, readdirSync, statSync } from "node:fs";
 import { execFileSync } from "node:child_process";
 import { join, dirname } from "node:path";
@@ -104,116 +104,61 @@ rmSync(OUT, { recursive: true, force: true });
 
 const rolls = [];
 
-// === fog-signal-check: shot and assembled, with a fabricated plan-list =====
-{
-  const id = "fog-signal-check";
+// === fog-signal-check / handover-at-the-pier: real production, real media ==
+// Both actually shot end to end (03-05.09) — real reference sheets and
+// backgrounds (WaveSpeed Seedream 4), real keyframes, real motion (Kling 2.6
+// via WaveSpeed), real ElevenLabs narration, a real assemble_video +
+// verify_video pass. Nothing below is invented: every field is read from
+// workspace/plans/<id>.json, workspace/<id>/acceptance.json and
+// workspace/out/<Title>.{verify,build-log}.json, and every file copied is
+// the actual take/master/key/output on disk.
+function buildRealRoll(id, title) {
   const compiled = readJson(join(ROOT, "workspace", "prompts", "compiled", `${id}.json`));
   const takesDir = join(ROOT, "workspace", "takes", id);
-  const files = list(takesDir);
+  const flfDir = join(takesDir, "_flf");
+  const keysDir = join(takesDir, "keys");
+  const planSpec = readJson(join(ROOT, "workspace", "plans", `${id}.json`));
+  const acceptancePath = join(ROOT, "workspace", id, "acceptance.json");
+  const acceptance = existsSync(acceptancePath) ? readJson(acceptancePath).plans ?? {} : {};
 
   const scenes = compiled.scenes.map((sc) => {
     const s = sceneShape(sc);
-    s.frames = files.filter((f) => f.startsWith(`${s.id}_sh`) && f.endsWith("_frame.png")).sort();
-    s.takes = files.filter((f) => f.startsWith(`${s.id}_take`) && /\.(mp4|png|jpg)$/i.test(f)).sort();
+    s.frames = planSpec.plans.filter((p) => p.scene === s.id).map((p) => p.master).filter(Boolean);
+    s.takes = list(takesDir, (f) => f.startsWith(`${s.id}_take`) && /\.(mp4|png|jpg)$/i.test(f)).sort();
     s.rejected = 0;
     return s;
   });
-  for (const f of files) {
-    if (/\.(png|mp4|jpg)$/i.test(f)) copy(join(takesDir, f), join(OUT, "files", "takes", id, f));
-  }
-  const outMp4 = "Fog signal check.mp4";
+  for (const f of s_takeFiles(takesDir)) copy(join(takesDir, f), join(OUT, "files", "takes", id, f));
+  for (const f of list(flfDir)) copy(join(flfDir, f), join(OUT, "files", "takes", id, "_flf", f));
+  for (const f of list(keysDir)) copy(join(keysDir, f), join(OUT, "files", "takes", id, "keys", f));
+
+  const outMp4 = `${title}.mp4`;
   copy(join(ROOT, "workspace", "out", outMp4), join(OUT, "files", "out", outMp4));
 
-  const plansSpec = [
-    {
-      plan: 1,
-      scene: "s1",
-      motion: "She finishes the line and looks up at the window.",
-      frames: 8,
-      masterSrc: "s1_sh1_frame.png",
-      keySrc: "s1_sh2_frame.png",
-      variants: [{ takeSrc: "s1_take1.mp4", decision: "accepted", defects: [], comment: "Clean — the look-up reads clearly, keeps both keyframes." }],
-    },
-    {
-      plan: 2,
-      scene: "s2",
-      cycle: true,
-      motion: "Mara pulls the lever down once, holds it, lets it back up.",
-      frames: 16,
-      masterSrc: "s2_sh1_frame.png",
-      keySrc: "s2_sh2_frame.png",
-      variants: [{ takeSrc: "s2_take1.mp4", decision: "redo", defects: ["cut-jump"], comment: "The hold reads as two separate pulls — retime it to one beat." }],
-    },
-    {
-      plan: 3,
-      scene: "s3",
-      i2v: true,
-      closeup: true,
-      motion: "He lowers the radio and gives a small thumbs-up towards the tower.",
-      frames: 24,
-      masterSrc: "s3_sh1_frame.png",
-      keySrc: null,
-      variants: [
-        { takeSrc: "s3_take1.mp4", seed: "1", decision: "rejected", defects: ["extra-hand"], comment: "A second hand appears on the radio for two frames." },
-        { takeSrc: "s3_take1.mp4", seed: "2", decision: null, defects: [], comment: "" },
-      ],
-    },
-  ];
-  const plans = plansSpec.map((p) => {
-    if (p.masterSrc) copy(join(takesDir, p.masterSrc), join(OUT, "files", "takes", id, `plan${p.plan}_master.png`));
-    if (p.keySrc) copy(join(takesDir, p.keySrc), join(OUT, "files", "takes", id, "keys", `plan${p.plan}_key.png`));
-    const variants = p.variants.map((v) => {
-      const key = `plan${p.plan}${v.seed ? `_s${v.seed}` : ""}`;
-      const file = `${key}.mp4`;
-      copy(join(takesDir, v.takeSrc), join(OUT, "files", "takes", id, file));
-      return { file, key, decision: v.decision, defects: v.defects, comment: v.comment };
-    });
+  const plans = planSpec.plans.map((p) => {
+    const key = `plan${p.plan}`;
+    const dec = acceptance[key] ?? {};
+    const clipFile = `_flf/plan${p.plan}.mp4`;
+    const variants = existsSync(join(flfDir, `plan${p.plan}.mp4`))
+      ? [{ file: clipFile, key, decision: dec.decision ?? null, defects: dec.defects ?? [], comment: dec.comment ?? "" }]
+      : [];
     return {
       plan: p.plan,
       scene: p.scene,
       i2v: !!p.i2v,
       cycle: !!p.cycle,
-      closeup: !!p.closeup,
+      closeup: p.shot === "close",
       motion: p.motion,
       frames: p.frames,
-      master: p.masterSrc ? `plan${p.plan}_master.png` : null,
-      key: p.keySrc ? `keys/plan${p.plan}_key.png` : null,
+      master: p.master ?? null,
+      key: p.use_key ? `keys/plan${p.plan}_key.png` : null,
       variants,
     };
   });
   writeJson(join(OUT, "plans", `${id}.json`), { plans, defects: DEFECTS });
 
-  // Real result, retitled in English — the file on disk (workspace/out/*.verify.json)
-  // has the same checks with section names and messages in Russian, which is
-  // this tool's own internal language, not the public demo's.
-  const verify = {
-    verdict: "warn",
-    counts: { pass: 20, warn: 2, fail: 0 },
-    checkedAt: "2026-09-04T12:02:18.708Z",
-    checks: [
-      { section: "Format", verdict: "pass", message: "container mp4" },
-      { section: "Format", verdict: "pass", message: "video codec H.264, High profile, level 4.1" },
-      { section: "Format", verdict: "pass", message: "1920×1080, 30.00 fps, yuv420p" },
-      { section: "Format", verdict: "pass", message: "audio AAC, 48000 Hz, 2 channels" },
-      {
-        section: "Format",
-        verdict: "warn",
-        message: "audio bitrate 96 kbps — below the 192k nominal (a quiet placeholder track compresses down; a real voice-over brings it back up)",
-      },
-      { section: "Format", verdict: "pass", message: "faststart: moov at the front of the file" },
-      { section: "Timing", verdict: "pass", message: "duration 72.0 s, within the 60–180 s standard" },
-      { section: "Timing", verdict: "pass", message: "within ±10% of the scenario's target (72 s)" },
-      { section: "Timing", verdict: "pass", message: "every scene cut from a real take" },
-      { section: "Timing", verdict: "pass", message: "no still-frame extension longer than a second" },
-      { section: "Timing", verdict: "warn", message: "voice-over: placeholder — a real one (ElevenLabs) is needed before this ships" },
-      { section: "Loudness", verdict: "pass", message: "integrated -16.2 LUFS (target −16 ±1)" },
-      { section: "Loudness", verdict: "pass", message: "true peak -4.7 dBTP (threshold −1.5)" },
-      { section: "Title cards (sampled mid-scene)", verdict: "pass", message: "s1: card in frame (brightness delta 191)" },
-      { section: "Title cards (sampled mid-scene)", verdict: "pass", message: "s2: card in frame (brightness delta 201)" },
-      { section: "Title cards (sampled mid-scene)", verdict: "pass", message: "s3: card in frame (brightness delta 188)" },
-    ],
-  };
-  const buildLog = { createdAt: "2026-09-04T12:25:52.089Z", totalDuration: 72, voMode: "placeholder" };
+  const verify = readJson(join(ROOT, "workspace", "out", `${title}.verify.json`));
+  const buildLog = readJson(join(ROOT, "workspace", "out", `${title}.build-log.json`));
 
   const roll = {
     id,
@@ -233,6 +178,11 @@ const rolls = [];
   const scenario = readScenario(id);
   if (scenario) writeJson(join(OUT, "scenarios", `${id}.json`), scenario);
 }
+function s_takeFiles(takesDir) {
+  return list(takesDir, (f) => /^s\d+_take\d+\.(mp4|png|jpg)$/i.test(f) || /^plan\d+_master\.png$/i.test(f));
+}
+buildRealRoll("fog-signal-check", "Fog signal check");
+buildRealRoll("handover-at-the-pier", "Handover at the pier");
 
 // === opening-the-office: scenario written, nothing shot yet ================
 {
@@ -258,9 +208,22 @@ const rolls = [];
   if (scenario) writeJson(join(OUT, "scenarios", `${id}.json`), scenario);
 }
 
-// --- rolls.json, with an illustrative spend ledger --------------------------
+// --- rolls.json, with the real spend ledger ---------------------------------
+// From reports/wavespeed-spend.json for 2026-09-05 (both rolls: 7 reference
+// sheets, 3 backgrounds, 18 keyframes/keys, 17 motion clips including 3
+// reshoots after QA rejects) — a snapshot, not live-computed, since that
+// ledger lives outside this repository's workspace.
 rolls.sort((a, b) => b.updatedAt - a.updatedAt);
-const spend = { backends: { wavespeed: { spent_usd: 4.85, runs: 6 } }, total_usd: 4.85 };
+const spend = {
+  backends: {
+    wavespeed: {
+      spent_usd: 4.526,
+      runs: 52,
+      breakdown: { "stills (Seedream 4, refs+backgrounds+keyframes)": 1.026, "motion i2v (Kling 2.6 Std)": 2.1, "motion first-last-frame (Kling 2.6 Pro)": 1.4 },
+    },
+  },
+  total_usd: 4.526,
+};
 writeJson(join(OUT, "rolls.json"), { rolls, spend });
 
 // --- workspace.json, real folder counts from this checkout ------------------

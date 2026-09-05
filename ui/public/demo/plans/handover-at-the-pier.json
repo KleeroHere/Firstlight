@@ -1,0 +1,172 @@
+{
+  "plans": [
+    {
+      "plan": 1,
+      "scene": "s1",
+      "i2v": true,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. He lowers the radio and notes the time in his pocket notebook.",
+      "frames": 81,
+      "master": "plan1_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "_flf/plan1.mp4",
+          "key": "plan1",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independent QA pass confirms: Tomas alone on the pier the whole clip, radio lowers and he pulls the notebook from his jacket pocket, matching motion. Jacket/hair/notebook consistent with refs, no camera-look, no readable text. jump 0.016, drift 0.036, k0 0.991."
+        }
+      ]
+    },
+    {
+      "plan": 2,
+      "scene": "s1",
+      "i2v": true,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. He already holds a pen clipped to the notebook's wire spiral; he pulls both out of his pocket together, one motion, and writes the time. No object appears from nowhere and no object vanishes. Their mouth stays closed unless they are the one speaking.",
+      "frames": 81,
+      "master": "plan2_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "_flf/plan2.mp4",
+          "key": "plan2",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independent QA re-review after reshoot (this plan was rejected on its first pass here for prop-appears: a pen materializing mid-clip with no retrieval beat). Fresh contact sheet (13:52 take): the pen is visible clipped to the notebook from the moment both come out of his pocket (~frame 21-25) and stays in view through to writing at frame 73+ — reads as one retrieval, not an object popping into an idle hand. Fresh metrics agree: same span still shows as the largest area change (expected, something newly visible either way), but nothing else flags. Accepted."
+        }
+      ]
+    },
+    {
+      "plan": 3,
+      "scene": "s2",
+      "i2v": false,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly two people are in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Mara hands over the paper logbook and the keys; Tomas takes them with both hands.",
+      "frames": 81,
+      "master": "plan3_master.png",
+      "key": "keys/plan3_key.png",
+      "variants": [
+        {
+          "file": "_flf/plan3.mp4",
+          "key": "plan3",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independent QA pass confirms: wide two-shot, Mara and Tomas static through the handoff, matches the FLF end key well (k0/k1 ~0.99, jump 0.006 — the lowest in this roll). QA metric flagged colour drift (6.74); not visible to the eye across the 6 sampled frames, most likely the rotating beacon lamp behind them, not a defect."
+        }
+      ]
+    },
+    {
+      "plan": 4,
+      "scene": "s2",
+      "i2v": true,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Mara hands over the paper logbook and the keys. Their mouth stays closed unless they are the one speaking.",
+      "frames": 81,
+      "master": "plan4_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "_flf/plan4.mp4",
+          "key": "plan4",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independently re-reviewed after the producer's reshoot (original take was rejected here for extra-hand: a second, dark-sleeved hand not matching Tomas's orange jacket entered the frame). Fresh contact sheet and now-current metrics agree: Mara alone the whole clip, both hands her own, cradling the book/keys throughout, no flags, no extra person. Confirmed clean."
+        }
+      ]
+    },
+    {
+      "plan": 5,
+      "scene": "s2",
+      "i2v": true,
+      "cycle": false,
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Only their own hands (or face) move, doing one small, calm motion related to: Tomas takes them with both hands. Nothing loops; the motion starts and finishes once.",
+      "frames": 81,
+      "master": "plan5_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "_flf/plan5.mp4",
+          "key": "plan5",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independently re-reviewed after the producer's reshoot (original take was rejected here for the same extra-hand root cause as plan4). Fresh contact sheet and now-current metrics agree: Tomas alone, both his own hands doing one small calm motion at his jacket zipper/collar, nothing loops, no second person, no camera movement. Confirmed clean."
+        }
+      ]
+    },
+    {
+      "plan": 6,
+      "scene": "s3",
+      "i2v": true,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. She writes the name, then reaches over and turns on the lamp.",
+      "frames": 81,
+      "master": "plan6_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "_flf/plan6.mp4",
+          "key": "plan6",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independent QA pass confirms: Ines alone at the desk; she writes, then reaches to the lamp and resumes writing, matching motion exactly. Cardigan/glasses/pencil-behind-ear consistent with refs, no camera-look, board text stays illegible. jump 0.009, drift 0.018, k0 0.991."
+        }
+      ]
+    },
+    {
+      "plan": 7,
+      "scene": "s3",
+      "i2v": true,
+      "cycle": false,
+      "closeup": false,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. She writes the name, then reaches over and turns on the lamp. Their mouth stays closed unless they are the one speaking.",
+      "frames": 81,
+      "master": "plan7_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "_flf/plan7.mp4",
+          "key": "plan7",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independent QA pass confirms: closer coverage of the same beat as plan6 — writes, reaches to the lamp, resumes writing, mouth closed throughout (no dialogue in this shot). Consistent identity, no extra hands. jump 0.014, drift 0.051, k0 0.991."
+        }
+      ]
+    },
+    {
+      "plan": 8,
+      "scene": "s2",
+      "i2v": true,
+      "cycle": false,
+      "closeup": true,
+      "motion": "Exactly one person is in the shot; nobody else enters or leaves the frame; every door in the background stays closed; the camera is static and locked off, no zoom, no cut. Tomas tucks the paper logbook and the keys into his jacket pocket, a small settled motion, then goes still. Nothing loops; the motion starts and finishes once.",
+      "frames": 81,
+      "master": "plan8_master.png",
+      "key": null,
+      "variants": [
+        {
+          "file": "_flf/plan8.mp4",
+          "key": "plan8",
+          "decision": "accepted",
+          "defects": [],
+          "comment": "Independent QA pass: new plan, added to cover the 2.8s freeze-frame pad flagged in the assembled episode's verify.json for scene s2. Contact sheet shows Tomas alone throughout, tucking the logbook page and keys into his jacket pocket and settling still — a single, non-looping closing beat, no extra hands, identity/jacket consistent with refs, no camera-look. Note: reports/qa-handover-at-the-pier/metrics.json has not been regenerated to include plan8 yet (only 7 entries) — this accept is from the visual contact sheet only; re-run engine/qa_clip.py for this roll and re-check the numeric flags once it has plan8's row."
+        }
+      ]
+    }
+  ],
+  "defects": [
+    "extra-person",
+    "extra-hand",
+    "object-moved",
+    "cut-jump",
+    "face-drift",
+    "blur"
+  ]
+}

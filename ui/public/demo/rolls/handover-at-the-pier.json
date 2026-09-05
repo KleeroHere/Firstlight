@@ -1,0 +1,364 @@
+{
+  "id": "handover-at-the-pier",
+  "title": "Handover at the pier",
+  "durationTarget": 60,
+  "scenes": [
+    {
+      "id": "s0",
+      "kind": "title",
+      "plate": "Handover at the pier",
+      "t": [
+        0,
+        6
+      ],
+      "chars": [],
+      "bg": null,
+      "img": "",
+      "anim": "",
+      "vo": "End of shift: the watch changes hands. Three steps.",
+      "frames": [],
+      "takes": [],
+      "rejected": 0
+    },
+    {
+      "id": "s1",
+      "kind": "scene",
+      "plate": "Step 1. Confirm the last boat",
+      "t": [
+        6,
+        20
+      ],
+      "chars": [
+        "tomas"
+      ],
+      "bg": "pier",
+      "img": "Tomas out on the pier at dusk, confirming the last boat in over the radio before the watch changes.",
+      "anim": "He lowers the radio and notes the time in his pocket notebook.",
+      "vo": "Before anything else, the last boat gets confirmed. The apprentice calls it in from the pier, radio to his mouth, and writes the time down before he walks back.",
+      "frames": [
+        "plan1_master.png",
+        "plan2_master.png"
+      ],
+      "takes": [
+        "s1_take1.mp4"
+      ],
+      "rejected": 0
+    },
+    {
+      "id": "s2",
+      "kind": "scene",
+      "plate": "Step 2. Pass the log and the keys",
+      "t": [
+        20,
+        38
+      ],
+      "chars": [
+        "mara",
+        "tomas"
+      ],
+      "bg": "lantern-room",
+      "img": "Mara and Tomas in the lantern room at the signal panel, a small paper logbook (a handwritten notebook, not a piece of wood) and the brass keys changing hands between them.",
+      "anim": "Mara hands over the paper logbook and the keys; Tomas takes them with both hands.",
+      "vo": "Then the logbook itself changes hands. The keeper passes the notebook and the keys to the apprentice, so the next watch starts from the same page, not a guess.",
+      "frames": [
+        "plan3_master.png",
+        "plan4_master.png",
+        "plan5_master.png",
+        "plan8_master.png"
+      ],
+      "takes": [
+        "s2_take1.mp4"
+      ],
+      "rejected": 0
+    },
+    {
+      "id": "s3",
+      "kind": "scene",
+      "plate": "Step 3. Log it in the office too",
+      "t": [
+        38,
+        52
+      ],
+      "chars": [
+        "ines"
+      ],
+      "bg": "harbour-office",
+      "img": "Ines at the harbour office desk, marking the new watch's name in the log and switching on the desk lamp as evening comes on.",
+      "anim": "She writes the name, then reaches over and turns on the lamp.",
+      "vo": "The office logs the change too - a name, a time, the lamp switched on for the night. Three logs, one line each, and they all agree.",
+      "frames": [
+        "plan6_master.png",
+        "plan7_master.png"
+      ],
+      "takes": [
+        "s3_take1.mp4"
+      ],
+      "rejected": 0
+    },
+    {
+      "id": "s4",
+      "kind": "memo",
+      "plate": "Handover: three logs, one line",
+      "t": [
+        52,
+        60
+      ],
+      "chars": [],
+      "bg": null,
+      "img": "",
+      "anim": "",
+      "vo": "Pier, lantern room, office - one same watch, three lines that agree.",
+      "frames": [],
+      "takes": [],
+      "rejected": 0
+    }
+  ],
+  "output": "Handover at the pier.mp4",
+  "buildLog": {
+    "id": "handover-at-the-pier",
+    "title": "Handover at the pier",
+    "createdAt": "2026-09-05T12:20:28.022Z",
+    "scenes": [
+      {
+        "id": "s0",
+        "kind": "title",
+        "t": [
+          0,
+          6
+        ],
+        "plate": "Handover at the pier",
+        "source": "rendered"
+      },
+      {
+        "id": "s1",
+        "kind": "scene",
+        "t": [
+          6,
+          20
+        ],
+        "plate": "Step 1. Confirm the last boat",
+        "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s1_take1.mp4",
+        "sourceDuration": 10.083333,
+        "motion": "anim",
+        "beats": 2,
+        "clipSec": 10.083333,
+        "detailSec": 3.917
+      },
+      {
+        "id": "s2",
+        "kind": "scene",
+        "t": [
+          20,
+          38
+        ],
+        "plate": "Step 2. Pass the log and the keys",
+        "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s2_take1.mp4",
+        "sourceDuration": 20.208008,
+        "frozenTail": 0,
+        "motion": "anim",
+        "beats": 1
+      },
+      {
+        "id": "s3",
+        "kind": "scene",
+        "t": [
+          38,
+          52
+        ],
+        "plate": "Step 3. Log it in the office too",
+        "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s3_take1.mp4",
+        "sourceDuration": 10.083333,
+        "motion": "anim",
+        "beats": 2,
+        "clipSec": 10.083333,
+        "detailSec": 3.917
+      },
+      {
+        "id": "s4",
+        "kind": "memo",
+        "t": [
+          52,
+          60
+        ],
+        "plate": "Handover: three logs, one line",
+        "source": "rendered"
+      }
+    ],
+    "output": "C:\\Firstlight\\workspace\\out\\Handover at the pier.mp4",
+    "totalDuration": 60,
+    "durationTarget": 60,
+    "vo": [
+      {
+        "scene": "s0",
+        "at": 1,
+        "voAt": 1,
+        "mode": "cached",
+        "duration": 4.086712
+      },
+      {
+        "scene": "s1",
+        "at": 6.5,
+        "voAt": 0.5,
+        "mode": "cached",
+        "duration": 11.192018
+      },
+      {
+        "scene": "s2",
+        "at": 20.5,
+        "voAt": 0.5,
+        "mode": "cached",
+        "duration": 11.517098
+      },
+      {
+        "scene": "s3",
+        "at": 38.5,
+        "voAt": 0.5,
+        "mode": "cached",
+        "duration": 10.866939
+      },
+      {
+        "scene": "s4",
+        "at": 53,
+        "voAt": 1,
+        "mode": "cached",
+        "duration": 5.990748
+      }
+    ],
+    "voMode": "elevenlabs"
+  },
+  "verify": {
+    "file": "workspace/out/Handover at the pier.mp4",
+    "checkedAt": "2026-09-05T12:20:43.643Z",
+    "verdict": "pass",
+    "counts": {
+      "pass": 21,
+      "warn": 0,
+      "fail": 0
+    },
+    "checks": [
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "контейнер mp4 (mov,mp4,m4a,3gp,3g2,mj2)"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "видеокодек H.264 (h264)"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "профиль High"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "level 4.1 ≤ 4.1"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "разрешение 1920×1080"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "частота кадров 30.00 fps"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "pix_fmt yuv420p"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "аудиокодек AAC (aac)"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "частота 48000 Гц"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "каналы: 2"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "битрейт аудио 142 кбит/с"
+      },
+      {
+        "section": "Формат",
+        "verdict": "pass",
+        "message": "faststart: moov в начале файла"
+      },
+      {
+        "section": "Хронометраж",
+        "verdict": "pass",
+        "message": "длительность 60.0 с в границах стандарта 60–180 с"
+      },
+      {
+        "section": "Хронометраж",
+        "verdict": "pass",
+        "message": "в пределах ±10% цели сценария (60 с)"
+      },
+      {
+        "section": "Хронометраж",
+        "verdict": "pass",
+        "message": "все сцены собраны из настоящих дублей"
+      },
+      {
+        "section": "Хронометраж",
+        "verdict": "pass",
+        "message": "стоп-кадровых дотяжек длиннее секунды нет"
+      },
+      {
+        "section": "Громкость",
+        "verdict": "pass",
+        "message": "integrated -15.9 LUFS (цель −16 ±1)"
+      },
+      {
+        "section": "Громкость",
+        "verdict": "pass",
+        "message": "true peak -1.6 dBTP (порог −1.5)"
+      },
+      {
+        "section": "Плашки (по кадрам из середины сцен)",
+        "verdict": "pass",
+        "message": "s1: плашка в кадре (перепад яркости 198)"
+      },
+      {
+        "section": "Плашки (по кадрам из середины сцен)",
+        "verdict": "pass",
+        "message": "s2: плашка в кадре (перепад яркости 171)"
+      },
+      {
+        "section": "Плашки (по кадрам из середины сцен)",
+        "verdict": "pass",
+        "message": "s3: плашка в кадре (перепад яркости 184)"
+      }
+    ]
+  },
+  "priemka": false,
+  "acceptance": {
+    "total": 8,
+    "accepted": 8,
+    "rejected": 0,
+    "pending": 0,
+    "unshot": 0,
+    "defects": [
+      "extra-person",
+      "extra-hand",
+      "object-moved",
+      "cut-jump",
+      "face-drift",
+      "blur"
+    ]
+  },
+  "updatedAt": 1788610843643,
+  "stage": "assembled"
+}

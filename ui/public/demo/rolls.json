@@ -1,6 +1,370 @@
 {
   "rolls": [
     {
+      "id": "handover-at-the-pier",
+      "title": "Handover at the pier",
+      "durationTarget": 60,
+      "scenes": [
+        {
+          "id": "s0",
+          "kind": "title",
+          "plate": "Handover at the pier",
+          "t": [
+            0,
+            6
+          ],
+          "chars": [],
+          "bg": null,
+          "img": "",
+          "anim": "",
+          "vo": "End of shift: the watch changes hands. Three steps.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        },
+        {
+          "id": "s1",
+          "kind": "scene",
+          "plate": "Step 1. Confirm the last boat",
+          "t": [
+            6,
+            20
+          ],
+          "chars": [
+            "tomas"
+          ],
+          "bg": "pier",
+          "img": "Tomas out on the pier at dusk, confirming the last boat in over the radio before the watch changes.",
+          "anim": "He lowers the radio and notes the time in his pocket notebook.",
+          "vo": "Before anything else, the last boat gets confirmed. The apprentice calls it in from the pier, radio to his mouth, and writes the time down before he walks back.",
+          "frames": [
+            "plan1_master.png",
+            "plan2_master.png"
+          ],
+          "takes": [
+            "s1_take1.mp4"
+          ],
+          "rejected": 0
+        },
+        {
+          "id": "s2",
+          "kind": "scene",
+          "plate": "Step 2. Pass the log and the keys",
+          "t": [
+            20,
+            38
+          ],
+          "chars": [
+            "mara",
+            "tomas"
+          ],
+          "bg": "lantern-room",
+          "img": "Mara and Tomas in the lantern room at the signal panel, a small paper logbook (a handwritten notebook, not a piece of wood) and the brass keys changing hands between them.",
+          "anim": "Mara hands over the paper logbook and the keys; Tomas takes them with both hands.",
+          "vo": "Then the logbook itself changes hands. The keeper passes the notebook and the keys to the apprentice, so the next watch starts from the same page, not a guess.",
+          "frames": [
+            "plan3_master.png",
+            "plan4_master.png",
+            "plan5_master.png",
+            "plan8_master.png"
+          ],
+          "takes": [
+            "s2_take1.mp4"
+          ],
+          "rejected": 0
+        },
+        {
+          "id": "s3",
+          "kind": "scene",
+          "plate": "Step 3. Log it in the office too",
+          "t": [
+            38,
+            52
+          ],
+          "chars": [
+            "ines"
+          ],
+          "bg": "harbour-office",
+          "img": "Ines at the harbour office desk, marking the new watch's name in the log and switching on the desk lamp as evening comes on.",
+          "anim": "She writes the name, then reaches over and turns on the lamp.",
+          "vo": "The office logs the change too - a name, a time, the lamp switched on for the night. Three logs, one line each, and they all agree.",
+          "frames": [
+            "plan6_master.png",
+            "plan7_master.png"
+          ],
+          "takes": [
+            "s3_take1.mp4"
+          ],
+          "rejected": 0
+        },
+        {
+          "id": "s4",
+          "kind": "memo",
+          "plate": "Handover: three logs, one line",
+          "t": [
+            52,
+            60
+          ],
+          "chars": [],
+          "bg": null,
+          "img": "",
+          "anim": "",
+          "vo": "Pier, lantern room, office - one same watch, three lines that agree.",
+          "frames": [],
+          "takes": [],
+          "rejected": 0
+        }
+      ],
+      "output": "Handover at the pier.mp4",
+      "buildLog": {
+        "id": "handover-at-the-pier",
+        "title": "Handover at the pier",
+        "createdAt": "2026-09-05T12:20:28.022Z",
+        "scenes": [
+          {
+            "id": "s0",
+            "kind": "title",
+            "t": [
+              0,
+              6
+            ],
+            "plate": "Handover at the pier",
+            "source": "rendered"
+          },
+          {
+            "id": "s1",
+            "kind": "scene",
+            "t": [
+              6,
+              20
+            ],
+            "plate": "Step 1. Confirm the last boat",
+            "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s1_take1.mp4",
+            "sourceDuration": 10.083333,
+            "motion": "anim",
+            "beats": 2,
+            "clipSec": 10.083333,
+            "detailSec": 3.917
+          },
+          {
+            "id": "s2",
+            "kind": "scene",
+            "t": [
+              20,
+              38
+            ],
+            "plate": "Step 2. Pass the log and the keys",
+            "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s2_take1.mp4",
+            "sourceDuration": 20.208008,
+            "frozenTail": 0,
+            "motion": "anim",
+            "beats": 1
+          },
+          {
+            "id": "s3",
+            "kind": "scene",
+            "t": [
+              38,
+              52
+            ],
+            "plate": "Step 3. Log it in the office too",
+            "source": "C:\\Firstlight\\workspace\\takes\\handover-at-the-pier\\s3_take1.mp4",
+            "sourceDuration": 10.083333,
+            "motion": "anim",
+            "beats": 2,
+            "clipSec": 10.083333,
+            "detailSec": 3.917
+          },
+          {
+            "id": "s4",
+            "kind": "memo",
+            "t": [
+              52,
+              60
+            ],
+            "plate": "Handover: three logs, one line",
+            "source": "rendered"
+          }
+        ],
+        "output": "C:\\Firstlight\\workspace\\out\\Handover at the pier.mp4",
+        "totalDuration": 60,
+        "durationTarget": 60,
+        "vo": [
+          {
+            "scene": "s0",
+            "at": 1,
+            "voAt": 1,
+            "mode": "cached",
+            "duration": 4.086712
+          },
+          {
+            "scene": "s1",
+            "at": 6.5,
+            "voAt": 0.5,
+            "mode": "cached",
+            "duration": 11.192018
+          },
+          {
+            "scene": "s2",
+            "at": 20.5,
+            "voAt": 0.5,
+            "mode": "cached",
+            "duration": 11.517098
+          },
+          {
+            "scene": "s3",
+            "at": 38.5,
+            "voAt": 0.5,
+            "mode": "cached",
+            "duration": 10.866939
+          },
+          {
+            "scene": "s4",
+            "at": 53,
+            "voAt": 1,
+            "mode": "cached",
+            "duration": 5.990748
+          }
+        ],
+        "voMode": "elevenlabs"
+      },
+      "verify": {
+        "file": "workspace/out/Handover at the pier.mp4",
+        "checkedAt": "2026-09-05T12:20:43.643Z",
+        "verdict": "pass",
+        "counts": {
+          "pass": 21,
+          "warn": 0,
+          "fail": 0
+        },
+        "checks": [
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "контейнер mp4 (mov,mp4,m4a,3gp,3g2,mj2)"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "видеокодек H.264 (h264)"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "профиль High"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "level 4.1 ≤ 4.1"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "разрешение 1920×1080"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "частота кадров 30.00 fps"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "pix_fmt yuv420p"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "аудиокодек AAC (aac)"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "частота 48000 Гц"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "каналы: 2"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "битрейт аудио 142 кбит/с"
+          },
+          {
+            "section": "Формат",
+            "verdict": "pass",
+            "message": "faststart: moov в начале файла"
+          },
+          {
+            "section": "Хронометраж",
+            "verdict": "pass",
+            "message": "длительность 60.0 с в границах стандарта 60–180 с"
+          },
+          {
+            "section": "Хронометраж",
+            "verdict": "pass",
+            "message": "в пределах ±10% цели сценария (60 с)"
+          },
+          {
+            "section": "Хронометраж",
+            "verdict": "pass",
+            "message": "все сцены собраны из настоящих дублей"
+          },
+          {
+            "section": "Хронометраж",
+            "verdict": "pass",
+            "message": "стоп-кадровых дотяжек длиннее секунды нет"
+          },
+          {
+            "section": "Громкость",
+            "verdict": "pass",
+            "message": "integrated -15.9 LUFS (цель −16 ±1)"
+          },
+          {
+            "section": "Громкость",
+            "verdict": "pass",
+            "message": "true peak -1.6 dBTP (порог −1.5)"
+          },
+          {
+            "section": "Плашки (по кадрам из середины сцен)",
+            "verdict": "pass",
+            "message": "s1: плашка в кадре (перепад яркости 198)"
+          },
+          {
+            "section": "Плашки (по кадрам из середины сцен)",
+            "verdict": "pass",
+            "message": "s2: плашка в кадре (перепад яркости 171)"
+          },
+          {
+            "section": "Плашки (по кадрам из середины сцен)",
+            "verdict": "pass",
+            "message": "s3: плашка в кадре (перепад яркости 184)"
+          }
+        ]
+      },
+      "priemka": false,
+      "acceptance": {
+        "total": 8,
+        "accepted": 8,
+        "rejected": 0,
+        "pending": 0,
+        "unshot": 0,
+        "defects": [
+          "extra-person",
+          "extra-hand",
+          "object-moved",
+          "cut-jump",
+          "face-drift",
+          "blur"
+        ]
+      },
+      "updatedAt": 1788610843643,
+      "stage": "assembled"
+    },
+    {
       "id": "fog-signal-check",
       "title": "Fog signal check",
       "durationTarget": 72,
@@ -38,8 +402,7 @@
           "anim": "She finishes the line and looks up at the window.",
           "vo": "The clerk reads the evening forecast off the radio and writes the time into the log. Fog after nine — that is the trigger.",
           "frames": [
-            "s1_sh1_frame.png",
-            "s1_sh2_frame.png"
+            "plan1_master.png"
           ],
           "takes": [
             "s1_take1.mp4"
@@ -63,8 +426,7 @@
           "anim": "Mara pulls the lever down once, holds it, lets it back up.",
           "vo": "The keeper tests the horn from the panel: two short blasts, one long. The apprentice counts them and writes what he heard, not what he expected.",
           "frames": [
-            "s2_sh1_frame.png",
-            "s2_sh2_frame.png"
+            "plan2_master.png"
           ],
           "takes": [
             "s2_take1.mp4"
@@ -87,8 +449,7 @@
           "anim": "He lowers the radio and gives a small thumbs-up towards the tower.",
           "vo": "Then somebody outside confirms it was heard. The apprentice calls the office from the pier; the clerk answers and logs the time. Now the check is done.",
           "frames": [
-            "s3_sh1_frame.png",
-            "s3_sh2_frame.png"
+            "plan3_master.png"
           ],
           "takes": [
             "s3_take1.mp4"
@@ -115,107 +476,241 @@
       ],
       "output": "Fog signal check.mp4",
       "buildLog": {
-        "createdAt": "2026-09-04T12:25:52.089Z",
+        "id": "fog-signal-check",
+        "title": "Fog signal check",
+        "createdAt": "2026-09-05T11:57:37.050Z",
+        "scenes": [
+          {
+            "id": "s0",
+            "kind": "title",
+            "t": [
+              0,
+              6
+            ],
+            "plate": "Fog signal check",
+            "source": "rendered"
+          },
+          {
+            "id": "s1",
+            "kind": "scene",
+            "t": [
+              6,
+              22
+            ],
+            "plate": "Step 1. Read the forecast, write the time",
+            "source": "C:\\Firstlight\\workspace\\takes\\fog-signal-check\\s1_take1.mp4",
+            "sourceDuration": 5.083333,
+            "motion": "anim",
+            "beats": 2,
+            "clipSec": 5.083333,
+            "detailSec": 10.917
+          },
+          {
+            "id": "s2",
+            "kind": "scene",
+            "t": [
+              22,
+              40
+            ],
+            "plate": "Step 2. Test the horn — two short, one long",
+            "source": "C:\\Firstlight\\workspace\\takes\\fog-signal-check\\s2_take1.mp4",
+            "sourceDuration": 5.083008,
+            "motion": "anim",
+            "beats": 2,
+            "clipSec": 5.083008,
+            "detailSec": 12.917
+          },
+          {
+            "id": "s3",
+            "kind": "scene",
+            "t": [
+              40,
+              56
+            ],
+            "plate": "Step 3. Confirm with the harbour by radio",
+            "source": "C:\\Firstlight\\workspace\\takes\\fog-signal-check\\s3_take1.mp4",
+            "sourceDuration": 5.083008,
+            "motion": "anim",
+            "beats": 2,
+            "clipSec": 5.083008,
+            "detailSec": 10.917
+          },
+          {
+            "id": "s4",
+            "kind": "memo",
+            "t": [
+              56,
+              72
+            ],
+            "plate": "Fog signal: three steps",
+            "source": "rendered"
+          }
+        ],
+        "output": "C:\\Firstlight\\workspace\\out\\Fog signal check.mp4",
         "totalDuration": 72,
-        "voMode": "placeholder"
+        "durationTarget": 72,
+        "vo": [
+          {
+            "scene": "s0",
+            "at": 1,
+            "voAt": 1,
+            "mode": "cached",
+            "duration": 4.040272
+          },
+          {
+            "scene": "s1",
+            "at": 6.5,
+            "voAt": 0.5,
+            "mode": "cached",
+            "duration": 9.427302
+          },
+          {
+            "scene": "s2",
+            "at": 22.5,
+            "voAt": 0.5,
+            "mode": "cached",
+            "duration": 11.609977
+          },
+          {
+            "scene": "s3",
+            "at": 40.5,
+            "voAt": 0.5,
+            "mode": "cached",
+            "duration": 11.192018
+          },
+          {
+            "scene": "s4",
+            "at": 57,
+            "voAt": 1,
+            "mode": "cached",
+            "duration": 5.944308
+          }
+        ],
+        "voMode": "elevenlabs"
       },
       "verify": {
-        "verdict": "warn",
+        "file": "workspace/out/Fog signal check.mp4",
+        "checkedAt": "2026-09-05T11:58:32.965Z",
+        "verdict": "pass",
         "counts": {
-          "pass": 20,
-          "warn": 2,
+          "pass": 21,
+          "warn": 0,
           "fail": 0
         },
-        "checkedAt": "2026-09-04T12:02:18.708Z",
         "checks": [
           {
-            "section": "Format",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "container mp4"
+            "message": "контейнер mp4 (mov,mp4,m4a,3gp,3g2,mj2)"
           },
           {
-            "section": "Format",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "video codec H.264, High profile, level 4.1"
+            "message": "видеокодек H.264 (h264)"
           },
           {
-            "section": "Format",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "1920×1080, 30.00 fps, yuv420p"
+            "message": "профиль High"
           },
           {
-            "section": "Format",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "audio AAC, 48000 Hz, 2 channels"
+            "message": "level 4.1 ≤ 4.1"
           },
           {
-            "section": "Format",
-            "verdict": "warn",
-            "message": "audio bitrate 96 kbps — below the 192k nominal (a quiet placeholder track compresses down; a real voice-over brings it back up)"
-          },
-          {
-            "section": "Format",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "faststart: moov at the front of the file"
+            "message": "разрешение 1920×1080"
           },
           {
-            "section": "Timing",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "duration 72.0 s, within the 60–180 s standard"
+            "message": "частота кадров 30.00 fps"
           },
           {
-            "section": "Timing",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "within ±10% of the scenario's target (72 s)"
+            "message": "pix_fmt yuv420p"
           },
           {
-            "section": "Timing",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "every scene cut from a real take"
+            "message": "аудиокодек AAC (aac)"
           },
           {
-            "section": "Timing",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "no still-frame extension longer than a second"
+            "message": "частота 48000 Гц"
           },
           {
-            "section": "Timing",
-            "verdict": "warn",
-            "message": "voice-over: placeholder — a real one (ElevenLabs) is needed before this ships"
-          },
-          {
-            "section": "Loudness",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "integrated -16.2 LUFS (target −16 ±1)"
+            "message": "каналы: 2"
           },
           {
-            "section": "Loudness",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "true peak -4.7 dBTP (threshold −1.5)"
+            "message": "битрейт аудио 115 кбит/с"
           },
           {
-            "section": "Title cards (sampled mid-scene)",
+            "section": "Формат",
             "verdict": "pass",
-            "message": "s1: card in frame (brightness delta 191)"
+            "message": "faststart: moov в начале файла"
           },
           {
-            "section": "Title cards (sampled mid-scene)",
+            "section": "Хронометраж",
             "verdict": "pass",
-            "message": "s2: card in frame (brightness delta 201)"
+            "message": "длительность 72.0 с в границах стандарта 60–180 с"
           },
           {
-            "section": "Title cards (sampled mid-scene)",
+            "section": "Хронометраж",
             "verdict": "pass",
-            "message": "s3: card in frame (brightness delta 188)"
+            "message": "в пределах ±10% цели сценария (72 с)"
+          },
+          {
+            "section": "Хронометраж",
+            "verdict": "pass",
+            "message": "все сцены собраны из настоящих дублей"
+          },
+          {
+            "section": "Хронометраж",
+            "verdict": "pass",
+            "message": "стоп-кадровых дотяжек длиннее секунды нет"
+          },
+          {
+            "section": "Громкость",
+            "verdict": "pass",
+            "message": "integrated -16.1 LUFS (цель −16 ±1)"
+          },
+          {
+            "section": "Громкость",
+            "verdict": "pass",
+            "message": "true peak -1.6 dBTP (порог −1.5)"
+          },
+          {
+            "section": "Плашки (по кадрам из середины сцен)",
+            "verdict": "pass",
+            "message": "s1: плашка в кадре (перепад яркости 192)"
+          },
+          {
+            "section": "Плашки (по кадрам из середины сцен)",
+            "verdict": "pass",
+            "message": "s2: плашка в кадре (перепад яркости 194)"
+          },
+          {
+            "section": "Плашки (по кадрам из середины сцен)",
+            "verdict": "pass",
+            "message": "s3: плашка в кадре (перепад яркости 185)"
           }
         ]
       },
       "priemka": false,
       "acceptance": {
         "total": 3,
-        "accepted": 1,
-        "rejected": 1,
-        "pending": 1,
+        "accepted": 3,
+        "rejected": 0,
+        "pending": 0,
         "unshot": 0,
         "defects": [
           "extra-person",
@@ -226,7 +721,7 @@
           "blur"
         ]
       },
-      "updatedAt": 1788523338708,
+      "updatedAt": 1788609512965,
       "stage": "assembled"
     },
     {
@@ -339,10 +834,15 @@
   "spend": {
     "backends": {
       "wavespeed": {
-        "spent_usd": 4.85,
-        "runs": 6
+        "spent_usd": 4.526,
+        "runs": 52,
+        "breakdown": {
+          "stills (Seedream 4, refs+backgrounds+keyframes)": 1.026,
+          "motion i2v (Kling 2.6 Std)": 2.1,
+          "motion first-last-frame (Kling 2.6 Pro)": 1.4
+        }
       }
     },
-    "total_usd": 4.85
+    "total_usd": 4.526
   }
 }
