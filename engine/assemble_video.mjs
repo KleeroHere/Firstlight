@@ -94,10 +94,10 @@ function centeredText(text, size, color, yExpr, extra = "") {
     `:fontcolor=${color}:x=(w-text_w)/2:y=${yExpr}${extra}`;
 }
 
-// Подложка-карточка (например, экспорт из Canva): если в конфиге cards.*
+// Подложка-карточка: если в конфиге cards.* (titleBg / dividerBg / memoBg)
 // указан существующий PNG — он становится фоном вместо программной
 // заливки. Текст всё равно рисует drawtext: он меняется от ролика к
-// ролику и правится за секунду. Требования к файлам — production/canva.md.
+// ролику и правится за секунду. Файлы серии — docs/BRAND.md.
 function cardBase(kindKey) {
   const rel = cfg.cards?.[kindKey];
   if (!rel) return null;
@@ -150,8 +150,14 @@ function renderTitle(sc, outFile) {
 
 function renderDivider(sc, outFile) {
   const dur = sceneDuration(sc);
+  const card = cardBase("dividerBg");
+  const text = centeredText(sc.plate, Math.round(cfg.title.fontSize * 0.8), cfg.colors.cream, "(h-text_h)/2");
+  if (card) {
+    encodeSegment(outFile, card.inputArgs, `${card.base},${text},${fades(dur)}[v]`, dur);
+    return;
+  }
   let filter = `color=c=${cfg.colors.coral}:s=${W}x${H}:r=${FPS}`;
-  filter += "," + centeredText(sc.plate, Math.round(cfg.title.fontSize * 0.8), cfg.colors.cream, "(h-text_h)/2");
+  filter += "," + text;
   filter += `,${fades(dur)}[v]`;
   encodeSegment(outFile, ["-f", "lavfi", "-i", "nullsrc=s=16x16"], filter, dur);
 }
@@ -159,10 +165,17 @@ function renderDivider(sc, outFile) {
 function renderMemo(sc, outFile) {
   const dur = sceneDuration(sc);
   const m = cfg.memo;
+  const card = cardBase("memoBg");
+  const text =
+    centeredText(sc.memo.title, m.titleFontSize, cfg.colors.ink, "h*0.12") + "," +
+    centeredText(sc.memo.items.join("\n"), m.itemFontSize, cfg.colors.ink,
+      "h*0.30", `:line_spacing=${m.lineSpacing}`);
+  if (card) {
+    encodeSegment(outFile, card.inputArgs, `${card.base},${text},${fades(dur)}[v]`, dur);
+    return;
+  }
   let filter = `color=c=${cfg.colors.cream}:s=${W}x${H}:r=${FPS}`;
-  filter += "," + centeredText(sc.memo.title, m.titleFontSize, cfg.colors.ink, "h*0.12");
-  filter += "," + centeredText(sc.memo.items.join("\n"), m.itemFontSize, cfg.colors.ink,
-    "h*0.30", `:line_spacing=${m.lineSpacing}`);
+  filter += "," + text;
   filter += `,${fades(dur)}[v]`;
   encodeSegment(outFile, ["-f", "lavfi", "-i", "nullsrc=s=16x16"], filter, dur);
 }
