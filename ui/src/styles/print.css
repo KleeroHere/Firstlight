@@ -1,90 +1,93 @@
-
+/*
+  Printing. The one thing worth printing here is a roll — its scenes and the
+  acceptance checklist — to carry to a screening and mark up by hand. So the
+  header, the nav, the action buttons and the jobs drawer go, the paper grain
+  and the tints go, and the cards keep a plain rule so they still read as
+  cards on paper.
+*/
 @media print {
   :root,
   body,
-  .app-layout,
-  .app-layout__main,
-  .app-layout__content,
-  .material-page {
+  .fl-app,
+  .fl-main {
     background: #ffffff !important;
     color: #000000 !important;
   }
 
-  .sidebar,
-  .topbar,
-  .breadcrumbs,
-  .app-layout__backdrop,
-  .app-layout__search-scrim,
-  .material-actions-panel,
-  .card-actions-dock,
-  .reading-progress-bar,
-  .section-banner,
+  body::before,
+  .surface-card::after,
+  .fl-header,
+  .fl-nav,
+  .fl-actions,
+  .fl-tabs,
+  .fl-drawer,
   .toast-host,
-  .pin-button,
+  .fl-demo-banner,
+  .fl-editor__bar,
   button {
     display: none !important;
   }
 
-  .app-layout {
-    display: block !important;
-    height: auto !important;
-  }
-
-  .app-layout__main {
-    overflow: visible !important;
-  }
-
-  .app-layout__content {
+  .fl-main {
+    max-width: none !important;
     padding: 0 !important;
   }
 
-  .material-page__body,
-  .block-renderer {
-    max-width: none !important;
+  .surface-card {
+    border: 1px solid #000000 !important;
+    box-shadow: none !important;
+    background: transparent !important;
   }
 
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  .fl-h1,
+  .fl-h2,
+  .fl-scene__head,
+  .fl-plan__head {
     break-after: avoid-page;
     page-break-after: avoid;
   }
 
-  .block-renderer__list,
-  .block-renderer__alert,
-  .block-renderer__quote,
-  .block-renderer__image,
+  .fl-scene,
+  .fl-plan,
+  .fl-roll,
+  .fl-frame,
+  .fl-take,
+  .fl-keyframe,
+  .fl-variant,
   table,
   figure {
     break-inside: avoid;
     page-break-inside: avoid;
   }
 
-  .block-renderer__table-scroll {
-    overflow: visible !important;
-    border: none !important;
-  }
-
-  .block-renderer__table {
-    width: 100% !important;
-    table-layout: fixed;
-  }
-
-  .block-renderer__table th,
-  .block-renderer__table td {
+  .fl-table th,
+  .fl-table td {
     border: 1px solid #000000 !important;
     background: transparent !important;
     word-break: break-word;
   }
 
+  .fl-muted,
+  .fl-scene__cast,
+  .fl-scene__anim {
+    color: #333333 !important;
+  }
+
+  /* the chips are colour-coded on screen; on paper they need an outline */
+  .fl-stage,
+  .fl-verdict,
+  .fl-decision,
+  .fl-tag {
+    border: 1px solid #000000 !important;
+    background: transparent !important;
+    color: #000000 !important;
+  }
+
   a {
     color: #000000 !important;
     text-decoration: underline;
-  }
-
-  .block-renderer__checklist-label input[type="checkbox"] {
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    border: 1px solid #000000;
-    border-radius: 2px;
   }
 }
