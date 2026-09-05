@@ -19,6 +19,11 @@
   },
   "logoPng": "",
   "logoComment": "PNG raster of the logo for the title card (ffmpeg does not read SVG). Empty: the title card is typographic.",
+  "series": {
+    "name": "",
+    "tagline": "",
+    "comment": "Optional kicker line(s) drawn above the episode title on the programmatic title card (used only when cards.titleBg has no file). Leave both empty for a card with just the episode title — no series branding is invented here."
+  },
   "cards": {
     "titleBg": "workspace/brand/title-bg.png",
     "dividerBg": "workspace/brand/divider-bg.png",

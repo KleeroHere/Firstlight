@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Пакетная генерация клипов серии через HTTP-API ComfyUI.
 //
-//   node engine/comfy_batch.mjs --id kvartsevanie --host https://<pod>-8188.proxy.runpod.net
+//   node engine/comfy_batch.mjs --id fog-signal-check --host https://<pod>-8188.proxy.runpod.net
 //
 // Опции:
 //   --id <id>          сценарий (compiled/<id>.json); можно повторять

@@ -2,8 +2,8 @@
 // Разбор готовых кадров: из наборов и из инбокса — по местам, без ручного
 // переименования.
 //
-//   node engine/collect_shots.mjs --id izmenenie-v-raspisanii
-//   node engine/collect_shots.mjs --id razbor-dnevnikov --dry
+//   node engine/collect_shots.mjs --id fog-signal-check
+//   node engine/collect_shots.mjs --id opening-the-office --dry
 //
 // Три способа отдать кадр, любой на выбор:
 //

@@ -2,7 +2,7 @@
 // Приёмочная проверка: влезает ли записанная речь в свою сцену.
 //
 //   node engine/verify_vo_fit.mjs
-//   node engine/verify_vo_fit.mjs --only kvartsevanie
+//   node engine/verify_vo_fit.mjs --only fog-signal-check
 //   node engine/verify_vo_fit.mjs --report reports/vo-fit.md
 //
 // Тексты войсовера писались под расчёт 15,5 знака в секунду. Фактический

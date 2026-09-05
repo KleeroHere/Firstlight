@@ -2,7 +2,7 @@
 // Пересчёт хронометража сцен под фактическую длительность озвучки.
 //
 //   node engine/retime_scenes.mjs                  — только показать
-//   node engine/retime_scenes.mjs --only kvartsevanie
+//   node engine/retime_scenes.mjs --only fog-signal-check
 //   node engine/retime_scenes.mjs --apply           — записать
 //   node engine/retime_scenes.mjs --lead 0.5 --tail 1.0
 //   node engine/retime_scenes.mjs --shrink   — и укорачивать тоже

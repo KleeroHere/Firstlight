@@ -13,8 +13,8 @@
 //   node engine/tts_all.mjs --quota             остаток символов
 //   node engine/tts_all.mjs --dry-run           смета без трат
 //   node engine/tts_all.mjs --voice-name Rima   синтез всей серии
-//   node engine/tts_all.mjs --only kvartsevanie --voice-name Rima
-//   node engine/tts_all.mjs --force --only kvartsevanie --scene s1
+//   node engine/tts_all.mjs --only fog-signal-check --voice-name Rima
+//   node engine/tts_all.mjs --force --only fog-signal-check --scene s1
 //
 // Ключи:
 //   --voices          показать голоса аккаунта и выйти

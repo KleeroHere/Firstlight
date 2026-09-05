@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Сборка ролика серии из сцен, войсовера и программной графики.
 //
-//   node engine/assemble_video.mjs --id kvartsevanie [опции]
+//   node engine/assemble_video.mjs --id fog-signal-check [опции]
 //
 // Опции:
 //   --id <id>            id сценария (compiled/<id>.json)
@@ -127,8 +127,15 @@ function renderTitle(sc, outFile) {
     `drawbox=x=iw*0.14:y=ih*0.40:w=iw*0.72:h=ih*0.22:color=${cfg.colors.coral}:t=fill`,
   ];
   let filter = chain.join(",");
-  filter += "," + centeredText("ПРОБУЖДЕНИЕ", cfg.title.subFontSize, cfg.colors.ink, "h*0.18");
-  filter += "," + centeredText("реабилитационный центр", Math.round(cfg.title.subFontSize * 0.66), cfg.colors.ink, "h*0.18+" + Math.round(cfg.title.subFontSize * 1.4));
+  // Series kicker above the episode title: optional, from series.name /
+  // series.tagline in pipeline.config.json. Left unset, the card is just the
+  // episode title on the coral panel — no series branding is invented here.
+  if (cfg.series?.name) {
+    filter += "," + centeredText(cfg.series.name, cfg.title.subFontSize, cfg.colors.ink, "h*0.18");
+  }
+  if (cfg.series?.tagline) {
+    filter += "," + centeredText(cfg.series.tagline, Math.round(cfg.title.subFontSize * 0.66), cfg.colors.ink, "h*0.18+" + Math.round(cfg.title.subFontSize * 1.4));
+  }
   filter += "," + centeredText(sc.plate, cfg.title.fontSize, cfg.colors.cream, "h*0.40+(h*0.22-text_h)/2");
   if (cfg.logoPng && existsSync(join(ROOT, cfg.logoPng))) {
     // при наличии растрового логотипа — вставить сверху

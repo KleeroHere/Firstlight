@@ -11,7 +11,7 @@
 которую заполняет человек — по одной строке на план. Иначе Wan получает
 пересказ вместо режиссуры, а это и есть источник половины брака.
 
-    python engine/make_plans.py --id zhaloby-na-drugogo-konsultanta
+    python engine/make_plans.py --id fog-signal-check
     python engine/make_plans.py --id ... --write
 
 Без --write печатает, что получится, и ничего не пишет. Существующий

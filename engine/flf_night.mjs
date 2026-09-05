@@ -2,7 +2,7 @@
 // Ночной прогон: очередь роликов через конвейер FLF2V без участия человека.
 //
 //   node engine/flf_night.mjs --host https://<pod>-8188.proxy.runpod.net \
-//        --ids ezhednevniki,konflikt-mezhdu-reabilitantami,priem-novichka-1
+//        --ids fog-signal-check,opening-the-office
 //
 // Для каждого ролика по порядку: батч клипов → автоприёмка клипов →
 // сборка с --prefer-takes → приёмка ролика. Всё пишется в

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Звено 3 конвейера: генерация стартовых кадров сцен.
 //
-//   node engine/comfy_frames.mjs --id kvartsevanie \
+//   node engine/comfy_frames.mjs --id fog-signal-check \
 //        --host https://<pod>-8188.proxy.runpod.net
 //
 // Опции:

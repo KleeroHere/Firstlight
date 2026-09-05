@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // Синтетические дубли сцен для обкатки конвейера без генерации.
 //
-//   node engine/make_synthetic_takes.mjs --id kvartsevanie
+//   node engine/make_synthetic_takes.mjs --id fog-signal-check
 //
 // Для каждой генерируемой сцены сценария создаёт клип-заглушку
 // (движущийся тестовый градиент с подписью сцены) НАМЕРЕННО в чужом
