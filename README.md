@@ -210,31 +210,25 @@ Three ways to see it, in order of how much you want to install:
 ## Showcase
 
 Two Harbour Light episodes, produced end to end on the pipeline described
-above, not synthetic test clips:
+above — real reference sheets, real keyframes, real clips, real acceptance
+decisions (including two rejects and their reshoots) — plus a narrated
+walkthrough of the pipeline. Click a poster to watch in the live demo; the
+files themselves are attached to the [latest release](https://github.com/KleeroHere/Firstlight/releases/latest).
 
-| Episode | What it shows |
+| [![Fog signal check](docs/demo/posters/Fog-signal-check.jpg)](https://kleerohere.github.io/Firstlight/demo/files/out/Fog%20signal%20check.mp4) | [![Handover at the pier](docs/demo/posters/Handover-at-the-pier.jpg)](https://kleerohere.github.io/Firstlight/demo/files/out/Handover%20at%20the%20pier.mp4) |
 | --- | --- |
-| **[Fog signal check](workspace/prompts/scenarios/fog-signal-check.yaml)** — 72 s | The example scenario, shot for real: hand-written per-scene frame and motion prompts, all three shots first-last-frame (Kling 2.6 Pro). Grades **21 pass, 0 warn, 0 fail**. |
-| **[Handover at the pier](workspace/prompts/scenarios/handover-at-the-pier.yaml)** — 60 s | The *no-manual-storyboard* path: the scenario has only scene-level text and narration — `engine/auto_storyboard.py` derives the wide → medium → close shot breakdown, writes every frame prompt, and calls the image backend itself. Grades **21 pass, 0 warn, 0 fail**. |
+| **Fog signal check** · 72 s · hand-written per-scene prompts, three first-last-frame shots (Kling 2.6 Pro). Grades 21 pass / 0 warn / 0 fail. | **Handover at the pier** · 60 s · the *no-manual-storyboard* path: only scene text and narration were written; `engine/auto_storyboard.py` derived the wide → medium → close breakdown and every frame prompt. Grades 21 pass / 0 warn / 0 fail. |
 
-Both are in the [live demo](https://kleerohere.github.io/Firstlight/) — real
-reference sheets, real keyframes, real clips, real acceptance decisions,
-including two rejects (`extra-hand`, `prop-appears`) and their reshoots,
-visible on the Acceptance tab exactly as they were judged.
+[![How Firstlight works](docs/demo/posters/How-Firstlight-works.jpg)](https://github.com/KleeroHere/Firstlight/releases/latest)
 
-**[How Firstlight works](docs/demo/How%20Firstlight%20works.mp4)** (≈2:50,
-narrated) walks through the pipeline against this same material: what it
-does, why the scenario is the edit, keyframes and acceptance, the three
-motion backends, the QA reject → redo → accept cycle above, the cut/verify
-step, and real cost and time for this demo (`docs/demo/`, scripts included:
-`make_diagram.py`, `make_cards.py`, `tts_narration.mjs`, `shots.mjs`,
-`assemble_explainer.sh`).
+**How Firstlight works** · 2:51 · narrated walkthrough: the scenario is the edit,
+keyframes and acceptance, motion backends (cloud GPU, local, API), QA agents and
+metrics, cut / narration / verify, cost and time. Source and narration in
+[`docs/demo/`](docs/demo/).
 
-Both episodes together — 7 character/background stills, 18 keyframes, 17
-motion clips including 3 reshoots after a QA reject — cost **≈$4.53** on
-WaveSpeed (Seedream 4 stills + keys, Kling 2.6 Std/Pro motion) and under
-1,200 characters of narration. Character sheets: `workspace/refs/`;
-backgrounds: `workspace/backgrounds/`.
+Open the [live demo](https://kleerohere.github.io/Firstlight/) to browse both
+rolls: reference sheets, plan lists, contact sheets and every acceptance
+decision as the interface shows them.
 
 ## Quick start — the example series
 
